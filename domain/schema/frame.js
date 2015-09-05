@@ -12,11 +12,11 @@ var FrameSchema = new Schema({
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'UserModel'
   },
   users: [{
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'UserModel'
   }],
   settings: {
     status: {
@@ -27,6 +27,10 @@ var FrameSchema = new Schema({
       type: Number,
       default: 0
     }
+  },
+  created_on: {
+    type: Date,
+    default: Date.now
   }
 });
 

@@ -1,28 +1,41 @@
-module.exports = function (server, io) {
-  server.get('/frames', function(req, res, next) {
-    res.send('the list of frames.');
-    next();
-  });
+var restifyMongoose = require('restify-mongoose'),
+  FrameModel = require('../domain/model/frame'),
+  // the restify-mongoose model to endpoint mappings
+  frameMappings = restifyMongoose(FrameModel);
 
-  server.get('/frames/:frame_id', function(req, res, next) {
-    res.send('get frame ' + req.params.frame_id);
-    next();
-  });
+// This is a projection translating _id to id and not including password/salt
+var frameProjection = function(req, item, cb) {
+  var frame = {
+    id: item._id,
+    name: item.name,
+    settings: item.settings,
+    users: item.users,
+    owner: item.owner
+  };
+  cb(null, frame);
+};
 
-  server.put('/frames/:frame_id', function(req, res, next) {
-    res.send('update frame ' + req.params.frame_id);
-    next();
-  });
+module.exports = function(server, io) {
 
-  server.post('/frames', function(req, res, next) {
-    res.send('create new frame');
-    next();
-  });
+  // REST handlers
 
-  server.del('/frames/:frame_id', function(req, res, next) {
-    res.send('deleting frame ' + req.params.frame_id);
-    next();
-  });
+  server.get('/frames', frameMappings.query({
+    projection: frameProjection,
+    outputFormat: 'json-api',
+    modelName: 'frames'
+  }));
+  server.get('/frames/:id', frameMappings.detail({
+    projection: frameProjection
+  }));
+  server.post('/frames', frameMappings.insert());
+
+  // TODO: put and patch are synonomous at the moment...
+  server.put('/frames/:id', frameMappings.update());
+  server.patch('/frames/:id', frameMappings.update());
+
+  server.del('/frames/:id', frameMappings.remove());
+
+  // socket.io event handlers
 
   io.sockets.on('connection', function(socket) {
     socket.on('frame::updated', function(data) {

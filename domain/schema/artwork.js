@@ -19,11 +19,11 @@ var ArtworkSchema = new Schema({
         },
         author_user: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'UserModel'
         },
         added_by: {
             type: Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'UserModel',
             require: true
         },
         created_on: {
@@ -41,7 +41,7 @@ var ArtworkSchema = new Schema({
         },
         format: {
             type: Schema.Types.ObjectId,
-            ref: 'Format',
+            ref: 'FormatModel',
             require: true
         }
     }

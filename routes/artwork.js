@@ -1,46 +1,33 @@
-var ArtworkModel = require('../domain/model/artwork');
+var restifyMongoose = require('restify-mongoose'),
+  ArtworkModel = require('../domain/model/artwork'),
+  // the restify-mongoose model to endpoint mappings
+  artworkMappings = restifyMongoose(ArtworkModel, {populate: 'author_user,added_by,liked_artwork'});
 
 module.exports = function(server, io) {
 
-  //
-  // REST API
-  //
+  // REST handlers
 
-  server.get('/artwork', function(req, res, next) {
-    ArtworkModel.find().then(function(result) {
-      res.send(result);
-      next();
-    });
-  });
+  // server.get('/artwork', function(req, res, next) {
+  //   ArtworkModel
+  //     .find()
+  //     .populate('added_by')
+  //     .then(function(result) {
+  //       res.json(200, result);
+  //       next();
+  //     });
+  // });
+  server.get('/artwork', artworkMappings.query({
+    outputFormat: 'json-api',
+    modelName: 'artwork'
+  }));
+  server.get('/artwork/:id', artworkMappings.detail());
+  server.post('/artwork', artworkMappings.insert());
+  // TODO: put and patch are synonomous at the moment...
+  server.put('/artwork/:id', artworkMappings.update());
+  server.patch('/artwork/:id', artworkMappings.update());
+  server.del('/artwork/:id', artworkMappings.remove());
 
-  server.get('/artwork/:artwork_id', function(req, res, next) {
-    res.send('get artwork ' + req.params.artwork_id);
-    next();
-  });
-
-  server.put('/artwork/:artwork_id', function(req, res, next) {
-    res.send('update artwork ' + req.params.artwork_id);
-    next();
-  });
-
-  server.post('/artwork', function(req, res, next) {
-    var artwork = new ArtworkModel(req.params);
-    artwork.save(function(err) {
-      if (err) return handleError(err);
-      res.send(artwork);
-      next();
-    });
-  });
-
-  server.del('/artwork/:artwork_id', function(req, res, next) {
-    res.send('deleting artwork ' + req.params.artwork_id);
-    next();
-  });
-
-
-  //
   // socket.io event handlers
-  //
 
   io.sockets.on('connection', function(socket) {
     socket.on('artwork::updated', function(data) {

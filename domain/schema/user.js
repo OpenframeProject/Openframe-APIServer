@@ -5,6 +5,8 @@ var UserSchema = new Schema({
   username: {
     type: String,
     required: true,
+    unique : true,
+    dropDups: true,
     index: true
   },
   bio: {
@@ -26,7 +28,7 @@ var UserSchema = new Schema({
   },
   liked_artwork: [{
     type: Schema.Types.ObjectId,
-    ref: 'Artwork'
+    ref: 'ArtworkModel'
   }],
   password: {
     type: String,

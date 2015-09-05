@@ -5,7 +5,7 @@
 // var uri = 'mongodb://localhost/sel';
 
 var config = {
-	uri: 'mongodb://localhost/test',
+	uri: 'mongodb://localhost/of-test',
 	options: {}
 };
 

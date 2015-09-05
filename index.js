@@ -52,11 +52,11 @@ server.pre(restify.pre.sanitizePath());
 
 /*jslint unparam:true*/
 // Default error handler. Personalize according to your needs.
-server.on('uncaughtException', function (req, res, err) {
-  console.log('Error!');
-  console.log(err);
-  res.send(500, { success : false });
-});
+// server.on('uncaughtException', function (req, res, err) {
+//   console.log('Error!');
+//   console.log(err);
+//   res.send(500, { success : false });
+// });
 /*jslint unparam:false*/
 
 server.on('after', restify.auditLogger({ log: log }));

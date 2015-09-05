@@ -10,4 +10,5 @@ if (mongoose.models.ArtworkModel) {
     ArtworkModel = mongoose.model('ArtworkModel', ArtworkSchema, 'artwork');
 }
 
+console.log('registering Artwork model...');
 module.exports = ArtworkModel;
