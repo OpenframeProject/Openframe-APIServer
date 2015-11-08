@@ -42,13 +42,14 @@ server = restify.createServer({
   }
 });
 
-// create socket.io server
-io = socketio.listen(server);
 
 server.use(restify.bodyParser());
 server.use(restify.queryParser());
 server.use(restify.gzipResponse());
 server.pre(restify.pre.sanitizePath());
+
+// create socket.io server
+io = socketio.listen(server.server);
 
 /*jslint unparam:true*/
 // Default error handler. Personalize according to your needs.
