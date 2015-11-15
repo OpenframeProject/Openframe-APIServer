@@ -29,10 +29,6 @@ var FormatSchema = new Schema({
         type: Array,
         default: []
     },
-    player: {
-        type: String,
-        required: true
-    },
     download: {
         type: Boolean,
         default: false
