@@ -1,0 +1,642 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Openframe API",
+        "description": "Openframe is a platform for displaying art.",
+        "version": "0.1.0",
+        "termsOfService": "http://openframe.io/terms",
+        "contact": {
+            "name": "Openframe",
+            "url": "http://openframe.io",
+            "email": "hello@openframe.io"
+        },
+        "license": {
+            "name": "GPL v3",
+            "url": "http://www.gnu.org/licenses/gpl-3.0.en.html"
+        }
+    },
+    "host": "api.openframe.io",
+    "schemes": [
+        "http",
+        "https",
+        "ws",
+        "wss"
+    ],
+    "basePath": "/v0",
+    "consumes": [
+        "text/plain; charset=utf-8",
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "api_key",
+            "in": "query",
+            "description": "API token authentication, works over `HTTP`, `HTTPS`, `WS`, and `WSS`"
+        },
+        "basic_auth": {
+            "type": "basic",
+            "description": "HTTP Basic Authentication. Works over `HTTP`, `HTTPS`"
+        }
+    },
+    "security": [
+        {
+            "api_key": []
+        },
+        {
+            "basic_auth": []
+        }
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "summary": "Get a list of users.",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new user.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user JSON object you want to post",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}": {
+            "get": {
+                "summary": "Get a single user.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "unique username of the user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a user.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "unique username of the user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}/collection": {
+            "get": {
+                "summary": "Get the collection for a user.",
+                "description": "Returns a single user's collection of artwork. This should include any items the user\nhas displayed on her frame and items she has liked.\n",
+                "tags": [
+                    "Users",
+                    "Artwork"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "unique username of the user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Artwork"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/frames": {
+            "get": {
+                "summary": "Get a list of frames.",
+                "description": "Provides a list of frames.\n",
+                "tags": [
+                    "Frames"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Frame"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new frame.",
+                "tags": [
+                    "Frames"
+                ],
+                "parameters": [
+                    {
+                        "name": "frame",
+                        "in": "body",
+                        "description": "The frame JSON object",
+                        "schema": {
+                            "$ref": "#/definitions/Frame"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/frames/{frame_id}": {
+            "get": {
+                "summary": "Get a single frame.",
+                "description": "Returns a single frame object.\n",
+                "tags": [
+                    "Frames"
+                ],
+                "parameters": [
+                    {
+                        "name": "frame_id",
+                        "in": "path",
+                        "description": "frame uuid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Frame"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a frame.",
+                "tags": [
+                    "Frames"
+                ],
+                "parameters": [
+                    {
+                        "name": "frame_id",
+                        "in": "path",
+                        "description": "frame uuid",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "frame",
+                        "in": "body",
+                        "description": "The frame JSON object",
+                        "schema": {
+                            "$ref": "#/definitions/Frame"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/Frame"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a frame.",
+                "description": "Delete a frame.",
+                "tags": [
+                    "Frames"
+                ],
+                "parameters": [
+                    {
+                        "name": "frame_id",
+                        "in": "path",
+                        "description": "frame uuid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/artwork": {
+            "get": {
+                "summary": "Get a list of artwork.",
+                "description": "Provides a list of artwork.\n",
+                "tags": [
+                    "Artwork"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Artwork"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new artwork",
+                "description": "Create a new artwork\n",
+                "tags": [
+                    "Artwork"
+                ],
+                "parameters": [
+                    {
+                        "name": "artwork",
+                        "in": "body",
+                        "description": "The artwork JSON object you want to post",
+                        "schema": {
+                            "$ref": "#/definitions/Artwork"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/Artwork"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/artwork/{artwork_id}": {
+            "put": {
+                "summary": "Update an artwork",
+                "description": "Update an artwork\n",
+                "tags": [
+                    "Artwork"
+                ],
+                "parameters": [
+                    {
+                        "name": "artwork_id",
+                        "in": "path",
+                        "description": "artwork uuid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/Artwork"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an artwork.",
+                "description": "Delete an artwork. Only the user who originally added the artwork can delete it.",
+                "tags": [
+                    "Artwork"
+                ],
+                "parameters": [
+                    {
+                        "name": "artwork_id",
+                        "in": "path",
+                        "description": "artwork uuid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "The uuid representing a user."
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The unique username representing a user."
+                },
+                "full_name": {
+                    "type": "string",
+                    "description": "The full name of the user, entered as First Last"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "A short bio for a user."
+                },
+                "website": {
+                    "type": "string",
+                    "description": "Web URL for a user."
+                },
+                "pass": {
+                    "type": "string",
+                    "description": "The hashed password for a user"
+                },
+                "salt": {
+                    "type": "string",
+                    "description": "A salt used to hash the user's password"
+                },
+                "joined_date": {
+                    "type": "string",
+                    "description": "The date the user account was created"
+                }
+            }
+        },
+        "Frame": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "The uuid representing a frame."
+                },
+                "owner": {
+                    "type": "object",
+                    "$ref": "#/definitions/User"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the frame, defined by the frame's owner."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A short description fo the frame"
+                },
+                "rotation": {
+                    "type": "integer",
+                    "description": "A rotation value (90, 180, 270) which is used to rotate content as it gets displayed."
+                },
+                "status": {
+                    "type": "string",
+                    "description": "A value indicating the frame's status, 'on', 'off', or 'offline'"
+                }
+            }
+        },
+        "Artwork": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "The uuid representing a piece of artwork."
+                },
+                "author_name": {
+                    "type": "string",
+                    "description": "The name of the artwork's author."
+                },
+                "author_user": {
+                    "type": "object",
+                    "$ref": "#/definitions/User",
+                    "description": "If the author is an Openframe user, link the user object."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "The title of the artwork."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A brief description of the artwork."
+                },
+                "format": {
+                    "type": "object",
+                    "$ref": "#/definitions/Format",
+                    "description": "The format (i.e. media type, i.e. mime-type) of the artwork."
+                },
+                "url": {
+                    "type": "string",
+                    "description": "The URL of the hosted artwork file."
+                },
+                "is_public": {
+                    "type": "boolean",
+                    "description": "If true, the artwork will be visible in the Gallery."
+                },
+                "added_by": {
+                    "type": "object",
+                    "$ref": "#/definitions/User"
+                }
+            }
+        },
+        "Format": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "The uuid representing a format."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The plain language name for the format type, e.g. 'image'"
+                },
+                "start_command": {
+                    "type": "string",
+                    "description": "The shell command used to start the artwork"
+                },
+                "end_command": {
+                    "type": "string",
+                    "description": "The shell command used to stop the artwork"
+                },
+                "install_script": {
+                    "type": "string",
+                    "description": "A script which installs format dependencies"
+                }
+            }
+        },
+        "Error": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
