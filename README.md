@@ -1,4 +1,4 @@
-# Openframe-API
+# Openframe API
 
 The Openframe API server.
 
@@ -22,5 +22,6 @@ If you want to play around with the API specification, pull up the [Swagger edit
 
 ### TODOs / Considerations / Questions
 
+* Make sure Swagger API spec is up to date.
 * [Faye](http://faye.jcoglan.com/) might make a good global event system.
 * Do we allow user-defined events to be propogated?
