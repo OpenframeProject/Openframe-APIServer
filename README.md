@@ -22,5 +22,6 @@ If you want to play around with the API specification, pull up the [Swagger edit
 
 ### TODOs / Considerations / Questions
 
+* Update swagger.json to match current API (and keep it up to date!) 
 * [Faye](http://faye.jcoglan.com/) might make a good global event system.
 * Do we allow user-defined events to be propogated?
