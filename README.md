@@ -6,7 +6,7 @@ The Openframe API server.
 
 ### Design Notes
 
-This prototype of the API Server is built on [Restify](http://restify.com/) and [MongoDB](https://docs.mongodb.org/manual/). The goal is to work towards a data model which supports the basic goals of Openframe, guided by a handful of [pilot use cases](#).
+This prototype of the API Server is built on [Restify](http://restify.com/) and [MongoDB](https://docs.mongodb.org/manual/). The goal is to work towards a data model which supports the basic goals of Openframe, guided by a handful of [pilot use cases](https://github.com/OpenframeProject/Openframe-API/wiki/Pilot-Use-Cases).
 
 At present, the API is a basic RESTful interface along with a websocket event interface. Moving forward, our aim is to develop a unified event system which can be accessed via an authenticated websocket connection or triggered via the RESTful API.
 
@@ -22,6 +22,6 @@ If you want to play around with the API specification, pull up the [Swagger edit
 
 ### TODOs / Considerations / Questions
 
-* Make sure Swagger API spec is up to date.
+* Update swagger.json to match current API (and keep it up to date!)
 * [Faye](http://faye.jcoglan.com/) might make a good global event system.
 * Do we allow user-defined events to be propogated?
