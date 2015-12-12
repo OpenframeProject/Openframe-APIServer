@@ -1,0 +1,61 @@
+{
+  "name": "Artwork",
+  "plural": "Artwork",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Timestamp": {}
+  },
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "is_public": {
+      "type": "boolean",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "plugins": {
+      "type": "object",
+      "required": true,
+      "default": {}
+    },
+    "format": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "added_by": {
+      "type": "hasOne",
+      "model": "OpenframeUser",
+      "foreignKey": ""
+    },
+    "author_user": {
+      "type": "hasOne",
+      "model": "OpenframeUser",
+      "foreignKey": ""
+    },
+    "collections": {
+      "type": "hasAndBelongsToMany",
+      "model": "Collection",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

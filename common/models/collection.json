@@ -1,0 +1,32 @@
+{
+  "name": "Collection",
+  "plural": "Collections",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Timestamp": {}
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "artwork": {
+      "type": "referencesMany",
+      "model": "Artwork",
+      "property": "artworkIds"
+    },
+    "current_artwork": {
+      "type": "embedsOne",
+      "model": "Artwork",
+      "property": "current_artwork"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
