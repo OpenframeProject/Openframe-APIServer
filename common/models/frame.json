@@ -1,0 +1,65 @@
+{
+  "name": "Frame",
+  "plural": "Frames",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Timestamp": {}
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "connected": {
+      "type": "boolean"
+    },
+    "settings": {
+      "type": "object",
+      "required": true,
+      "default": {}
+    },
+    "plugins": {
+      "type": "object",
+      "required": true,
+      "default": {
+        "openframe-image": "git+https://git@github.com/OpenframeProject/Openframe-Image.git",
+        "openframe-glslviewer": "git+https://git@github.com/OpenframeProject/Openframe-glslViewer.git"
+      }
+    },
+    "formats": {
+      "type": "object",
+      "require": true,
+      "default": {}
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "OpenframeUser",
+      "foreignKey": "ownerId"
+    },
+    "users": {
+      "type": "hasAndBelongsToMany",
+      "model": "OpenframeUser",
+      "foreignKey": ""
+    },
+    "current_artwork": {
+      "type": "embedsOne",
+      "model": "Artwork",
+      "property": "current_artwork"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

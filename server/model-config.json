@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "mongoDs",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "mongoDs",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "mongoDs",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "mongoDs",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "mongoDs",
+    "public": false
+  },
+  "OpenframeUser": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Frame": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Artwork": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Collection": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Stream": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Format": {
+    "dataSource": "mongoDs",
+    "public": true
+  }
+}

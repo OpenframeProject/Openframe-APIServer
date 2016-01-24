@@ -1,0 +1,20 @@
+{
+  "name": "Stream",
+  "plural": "Streams",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "collections": {
+      "type": "referencesMany",
+      "model": "Collections",
+      "property": "collectionIds"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
