@@ -10,7 +10,7 @@ This version of the API Server is built on [loopback](http://loopback.io/) and u
 
 At present, the API provides a basic RESTful interface to the data model. It represents the **API Server (REST)** in the diagram below. The Global Event Bus lives in a separate repository, [Openframe-PubSubServer](https://github.com/OpenframeProject/Openframe-PubSubServer).
 
-![alt tag](https://raw.github.com/OpenframeProject/Openframe-API/master/docs/img/API Diagram.jpg)
+![alt tag](https://raw.github.com/OpenframeProject/Openframe-API/restify/docs/img/API Diagram.jpg)
 
 The block diagram above represents a proposed architecture for the Openframe platform. It will continue to evolve as development on the project progresses.
 
