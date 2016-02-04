@@ -22,6 +22,7 @@ module.exports = function(app) {
 
 
         function wipeData() {
+            console.log('wipeData');
             var usersWipe = new Promise(function(resolve, reject) {
                 app.models.OpenframeUser.destroyAll(function(err, info) {
                     if (err) reject(err);
@@ -40,44 +41,8 @@ module.exports = function(app) {
                     resolve(info);
                 });
             });
-            var formatWipe = new Promise(function(resolve, reject) {
-                app.models.Format.destroyAll(function(err, info) {
-                    if (err) reject(err);
-                    resolve(info);
-                });
-            });
 
-            return Promise.all([usersWipe, artworkWipe, framesWipe, formatWipe]);
-        }
-
-        function createFormats() {
-            return new Promise(function(resolve, reject) {
-                app.models.Format.create([{
-                    name: 'image-fbi',
-                    display_name: 'Image',
-                    tags: ['image'],
-                    start_command: 'sudo fbi -a --noverbose -T 1 $filepath',
-                    end_command: 'sudo pkill -f fbi',
-                    download: true
-                }, {
-                    name: 'shader-glslviewer',
-                    display_name: 'Shader',
-                    tags: ['shader'],
-                    start_command: 'glslViewer $filepath',
-                    end_command: 'pkill -f glslViewer',
-                    download: true
-                }, {
-                    name: 'website',
-                    tags: ['web'],
-                    start_command: 'init /usr/bin/chromium --kiosk $url',
-                    end_command: 'pkill -f xinit',
-                    download: false
-                }], function(err, formats) {
-                    if (err) reject(err);
-
-                    resolve(formats);
-                });
-            });
+            return Promise.all([usersWipe, artworkWipe, framesWipe]);
         }
 
         function createOpenframeUsers() {

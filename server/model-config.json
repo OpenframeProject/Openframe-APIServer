@@ -39,7 +39,7 @@
   },
   "Frame": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "Artwork": {
     "dataSource": "mongoDs",
@@ -50,11 +50,7 @@
     "public": true
   },
   "Stream": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Format": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   }
 }

@@ -25,6 +25,9 @@
       "type": "string",
       "required": true
     },
+    "thumb_url": {
+      "type": "string"
+    },
     "author_name": {
       "type": "string"
     },

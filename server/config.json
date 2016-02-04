@@ -23,5 +23,11 @@
       "disableStackTrace": false
     }
   },
+  "pubsub": {
+    "protocol": "http",
+    "host": "0.0.0.0",
+    "port": 8889,
+    "path": "/faye"
+  },
   "legacyExplorer": false
 }
