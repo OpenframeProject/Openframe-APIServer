@@ -1,0 +1,271 @@
+body {
+    padding-top: 70px;
+    font-family: "Lato",sans-serif;
+    color: black;
+}
+
+
+/* Navigation top bar */
+
+.navbar {
+	height: 68px;
+}
+
+.navbar-nav li a {
+ line-height: 34px;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: black;
+	font-weight: 300;
+    font-size: 16px;
+}
+
+.frames-dropdown {
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.btn-logout {
+	color: #B2B2B2;
+}
+
+h2 {
+	font-weight: normal;
+    font-size: 18px;
+    float: left;
+    padding-top: 2px;
+}
+
+h3 {
+	font-weight: normal;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+/* Global */
+
+a {
+	color: black;
+}
+
+a:hover {
+	text-decoration: none;
+	color: black;
+}
+
+
+/* User page navigation */
+
+.row-navigation {
+	border-bottom: 1px solid #D2D2D2;
+	height: 28px;
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+.tabs {
+	width: 100%;
+	font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 1px;
+	text-transform: uppercase;
+	padding-left: 0px;
+}
+
+.tabs li {
+	display: inline;
+	margin-right: 25px;
+}
+
+.tabs a {
+	color: #B2B2B2;
+	font-weight: normal;
+}
+
+.tabs a:hover {
+	color: black;
+}
+
+.active a {
+	font-weight: 600;
+	text-decoration: none;
+	padding-bottom: 5px;
+	border-bottom: 3px solid black;
+	color: black;
+}
+
+
+/* Artwork Collection Tile View */
+
+.container-centered-artwork {
+    max-width: 970px;
+    margin-top: 50px;
+}
+
+.row-collection {
+	margin-top: 40px;
+	padding: 0px;
+	margin-left: -20px;
+	margin-right: -20px;
+}
+
+.bg-image {
+    position: relative;
+}
+.bg-image img {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.artwork-tile {
+	padding: 10px;
+}
+
+.artwork-interface {
+	position: absolute;
+	bottom: 0px;
+	padding: 10px;
+	width: 100%;
+}
+
+.artist-label {
+	height: 24px;
+	display: table;
+	background-color: rgba(0, 0, 0, 0.4);
+	color: white;
+	opacity: 1;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 7px;
+	padding-bottom: 5px;
+}
+
+.artwork-label{
+	height: 24px;
+	display: table;
+	background-color: rgba(0, 0, 0, 0.4);
+	color: white;
+	opacity: 1;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 7px;
+}
+
+h4 {
+	font-size: 14px;
+	margin: 0px;
+}
+
+.artist-label h4 {
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.artwork-label h4 {
+	font-size: 14px;
+	font-weight: 200;
+}
+
+
+.btn-circle {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+  	width: 43px;
+  	height: 43px;
+  	text-align: center;
+  	padding: 6px 0;
+  	font-size: 12px;
+  	line-height: 1.42;
+  	border-radius: 50px;
+  	background-color: black;
+  	color: white;
+  	float: right;
+}
+
+.push-button img{
+	width: 40%;
+	padding-top: 7px;
+}
+
+/* Add artwork */
+
+.dropdown-formats {
+
+}
+
+
+/* Forms */
+
+.container-centered-form {
+    max-width: 400px;
+    margin-top: 50px;
+}
+
+.form-control {
+    font-weight: normal;
+    font-size: 16px;
+    color: black;
+    border: 1px solid black;
+    height: 40px;
+}
+
+.placeholder {
+	font-style: italic;
+	color: #D2D2D2;
+}
+
+input:placeholder-shown {
+  	font-style: italic;
+  	font-weight: lighter;
+}
+
+.switch-text {
+	font-weight: lighter;
+	font-size: 14px;
+	color: #AEAEAE;
+	text-align: center;
+	margin-top: 30px;
+}
+
+.switch-text a {
+	color: #AEAEAE;
+	text-decoration: underline;
+}
+
+label {
+    font-weight: normal;
+    font-size: 16px;
+    color: black;
+    font-weight: normal;
+}
+
+select {
+  -webkit-border-radius: 3px;
+  padding-left: 10px;
+}
+
+.btn-default {
+	height: 40px;
+	width: 100%;
+	margin-top: 20px;
+	text-transform: uppercase;
+	background-color: black;
+	border: none;
+	color: white;
+	letter-spacing: 1.4px;
+	font-weight: 600;
+}
+
+.btn-default:hover { 
+    background-color: #333333;
+    color: white;
+}
+

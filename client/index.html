@@ -1,10 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Test!</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
+    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <title>OpenFrame</title>
+    <script type="text/javascript" src='js/bootstrap.min.js'></script>
+    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
+
 <body>
-<h1>Block rockin' beats.</h1>
-<p>What what!?</p>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="./index.html">
+                    <img alt="Brand" src="/img/of-logo.svg">
+                </a>
+                <h2>/&nbsp;ishback<h2>
+	        </div>
+	        <!-- This items get collected inside the hamburger for mobile -->
+	        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        		<ul class="nav navbar-nav navbar-right">
+        			<li class="dropdown">
+                		<a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HOME <span class="caret"></span></a>
+                		<ul class="dropdown-menu">
+                    		<li><a href="#">Action</a></li>
+                    		<li><a href="#">Another action</a></li>
+                    		<li><a href="#">Something else here</a></li>
+                    		<li role="separator" class="divider"></li>
+                    		<li><a href="#">Separated link</a></li>
+                    		<li role="separator" class="divider"></li>
+                    		<li><a href="#">One more separated link</a></li>
+                		</ul>
+            		</li>
+            		<li class="btn-logout"><a href="#">Log out</a></li>
+            	</ul>
+	    	</div>
+	    </div>
+    </nav>
+
+    <div class="container container-centered-artwork">
+        <div class="row row-navigation">
+		    <ul class="tabs">
+		  		<li class="active"><a href="">Collection</a></li>
+		  		<li><a href="/add-artwork.html">Add Artwork</a></li>
+			</ul>
+		</div>
+
+		<div class="row row-collection">
+		 	<div class="col-sm-6 col-md-4 artwork-tile">
+		    	<!--<div class="artwork-tile" style="background-image: url(../img/flowers.jpg)"> -->
+
+		    	<div class="bg-image">
+		    		<img src="../img/flowers.jpg">
+		    		<div class="artwork-interface">
+
+		      			<div class="artist-label"><h4>ArtistName</h4></div>
+		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
+		        		<div class="push-button btn btn-circle">
+		        			<img src="../img/arrow.svg">
+		        		</div>
+		      		</div>
+		    	</div>
+		    </div>
+
+		    <div class="col-sm-6 col-md-4 artwork-tile">
+		    	<div class="bg-image">
+		    		<img src="../img/dean.png">
+		    		<div class="artwork-interface">
+
+		      			<div class="artist-label"><h4>ArtistName</h4></div>
+		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
+		        		<div class="push-button btn btn-circle">
+		        			<img src="../img/arrow.svg">
+		        		</div>
+		      		</div>
+		    	</div>
+		    </div>
+
+		    <div class="col-sm-6 col-md-4 artwork-tile">
+		    	<div class="bg-image">
+		    		<img src="../img/marcin.jpg">
+		    		<div class="artwork-interface">
+
+		      			<div class="artist-label"><h4>ArtistName</h4></div>
+		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
+		        		<div class="push-button btn btn-circle">
+		        			<img src="../img/arrow.svg">
+		        		</div>
+		      		</div>
+		    	</div>
+		    </div>
+
+		    <div class="col-sm-6 col-md-4 artwork-tile">
+		    	<div class="bg-image">
+		    		<img src="../img/larger.jpg">
+		    		<div class="artwork-interface">
+
+		      			<div class="artist-label"><h4>ArtistName</h4></div>
+		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
+		        		<div class="push-button btn btn-circle">
+		        			<img src="../img/arrow.svg">
+		        		</div>
+		      		</div>
+		    	</div>
+		    </div>	
+		    <div class="col-sm-6 col-md-4 artwork-tile">
+		    	<div class="bg-image">
+		    		<img src="../img/life.jpg">
+		    		<div class="artwork-interface">
+
+		      			<div class="artist-label"><h4>ArtistName</h4></div>
+		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
+		        		<div class="push-button btn btn-circle">
+		        			<img src="../img/arrow.svg">
+		        		</div>
+		      		</div>
+		    	</div>
+		    </div>
+		</div>
+	</div>
+	
 </body>
+
 </html>
