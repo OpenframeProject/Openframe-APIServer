@@ -14,43 +14,43 @@
     ]
   },
   "User": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "AccessToken": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "ACL": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "Role": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "OpenframeUser": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": true
   },
   "Frame": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "Artwork": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": true
   },
   "Collection": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": true
   },
   "Stream": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   }
 }

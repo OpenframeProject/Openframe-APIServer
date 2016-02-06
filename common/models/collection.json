@@ -16,17 +16,29 @@
   },
   "validations": [],
   "relations": {
-    "artwork": {
-      "type": "referencesMany",
-      "model": "Artwork",
-      "property": "artworkIds"
+    "owner": {
+      "type": "belongsTo",
+      "model": "OpenframeUser",
+      "foreignKey": "ownerId"
     },
     "current_artwork": {
       "type": "embedsOne",
       "model": "Artwork",
       "property": "current_artwork"
+    },
+    "artwork": {
+      "type": "hasAndBelongsToMany",
+      "model": "Artwork",
+      "foreignKey": ""
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
   "methods": {}
 }

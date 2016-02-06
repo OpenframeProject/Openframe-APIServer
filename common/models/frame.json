@@ -46,13 +46,11 @@
   "relations": {
     "owner": {
       "type": "belongsTo",
-      "model": "OpenframeUser",
-      "foreignKey": "ownerId"
+      "model": "OpenframeUser"
     },
     "users": {
       "type": "hasAndBelongsToMany",
-      "model": "OpenframeUser",
-      "foreignKey": ""
+      "model": "OpenframeUser"
     },
     "current_artwork": {
       "type": "embedsOne",
@@ -60,6 +58,13 @@
       "property": "current_artwork"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
   "methods": {}
 }

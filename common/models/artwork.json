@@ -43,15 +43,15 @@
   },
   "validations": [],
   "relations": {
-    "added_by": {
-      "type": "hasOne",
+    "owner": {
+      "type": "belongsTo",
       "model": "OpenframeUser",
-      "foreignKey": ""
+      "foreignKey": "ownerId"
     },
     "author_user": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "OpenframeUser",
-      "foreignKey": ""
+      "foreignKey": "authorId"
     },
     "collections": {
       "type": "hasAndBelongsToMany",
@@ -59,6 +59,20 @@
       "foreignKey": ""
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "find"
+    }
+  ],
   "methods": {}
 }

@@ -22,15 +22,29 @@
   },
   "validations": [],
   "relations": {
-    "frames": {
+    "owned_frames": {
       "type": "hasMany",
       "model": "Frame",
       "foreignKey": "ownerId"
     },
-    "collection": {
-      "type": "hasOne",
+    "managed_frames": {
+      "type": "hasAndBelongsToMany",
+      "model": "Frame"
+    },
+    "collections": {
+      "type": "hasMany",
       "model": "Collection",
-      "foreignKey": ""
+      "foreignKey": "ownerId"
+    },
+    "owned_artwork": {
+      "type": "hasMany",
+      "model": "Artwork",
+      "foreignKey": "ownerId"
+    },
+    "authored_artwork": {
+      "type": "hasMany",
+      "model": "Artwork",
+      "foreignKey": "authorId"
     }
   },
   "acls": [
@@ -61,6 +75,12 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": "__get__collection"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
     }
   ],
   "methods": {}

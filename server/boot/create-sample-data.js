@@ -1,5 +1,5 @@
 module.exports = function(app) {
-    app.dataSources.mongoDs.automigrate('Artwork', function(err) {
+    app.dataSources.memoryDb.automigrate('Artwork', function(err) {
         if (err) throw err;
 
         // WIPE DATA ON APP START
@@ -132,10 +132,10 @@ module.exports = function(app) {
             // create a collection for each user, add all
             // artwork to each
             users.forEach(function(user) {
-                user.collection.create({
+                user.collections.create({
                     name: 'Main Collection'
                 }, function(err, collection) {
-                    console.log('user.collection(): ', user.collection());
+                    console.log('user.collection(): ', user.collections());
                     collection.artwork.add(artworks[0]);
                     collection.artwork.add(artworks[1]);
                     collection.artwork.add(artworks[2]);
