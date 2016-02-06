@@ -5,8 +5,13 @@ var faye = require('faye'),
 module.exports = function(server) {
     console.log('instantiating pubsub module');
 
-    var ps_conf = server.get('pubsub'),
-        ps_url = ps_conf.protocol + '://' + ps_conf.host + ':' + ps_conf.port + ps_conf.path;
+    var ps_protocol = server.get('pubsub_protocol'),
+        ps_host = server.get('pubsub_host'),
+        ps_port = server.get('pubsub_port'),
+        ps_path = server.get('pubsub_path'),
+        ps_url = ps_protocol + '://' + ps_host + ':' + ps_port + ps_path;
+
+    console.log(ps_url);
 
     // Once the loopback app has started, start up the faye server
     server.on('started', function() {

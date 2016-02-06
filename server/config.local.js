@@ -1,7 +1,9 @@
-{
-  "restApiRoot": "/api",
-  "host": "0.0.0.0",
-  "port": 8888,
+var p = require('../package.json');
+var version = p.version.split('.').shift();
+module.exports = {
+  restApiRoot: '/api' + (version > 0 ? '/v' + version : ''),
+  host: process.env.HOST || 'localhost',
+  port: process.env.PORT || 8888,
   "remoting": {
     "context": {
       "enableHttpContext": false
@@ -28,4 +30,4 @@
   "pubsub_port": 8889,
   "pubsub_path": "/faye",
   "legacyExplorer": false
-}
+};

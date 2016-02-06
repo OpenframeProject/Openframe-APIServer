@@ -146,7 +146,13 @@ module.exports = function(app) {
 
             // add an 'owner' user to each frame
             frames.forEach(function(frame, idx) {
+                // each user owns one frame
                 frame.owner(users[idx]);
+
+                // all users are 'managers' of all frames
+                frame.managers.add(users[0]);
+                frame.managers.add(users[1]);
+                frame.managers.add(users[2]);
                 frame.save();
             });
         }

@@ -67,11 +67,23 @@
       "permission": "DENY"
     },
     {
-      "accessType": "EXECUTE",
+      "accessType": "READ",
       "principalType": "ROLE",
       "principalId": "$everyone",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": "find"
+      "property": "create"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

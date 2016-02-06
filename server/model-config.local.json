@@ -39,7 +39,7 @@
   },
   "Frame": {
     "dataSource": "memoryDb",
-    "public": false
+    "public": true
   },
   "Artwork": {
     "dataSource": "memoryDb",
@@ -47,7 +47,7 @@
   },
   "Collection": {
     "dataSource": "memoryDb",
-    "public": true
+    "public": false
   },
   "Stream": {
     "dataSource": "memoryDb",
