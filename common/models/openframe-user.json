@@ -20,6 +20,12 @@
       "type": "string"
     }
   },
+  "protected": [
+    "email",
+    "full_name",
+    "created",
+    "modified"
+  ],
   "validations": [],
   "relations": {
     "owned_frames": {
@@ -49,12 +55,6 @@
   },
   "acls": [
     {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    },
-    {
       "accessType": "READ",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -65,13 +65,6 @@
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "create"
     }
   ],
   "methods": {}

@@ -1,51 +1,56 @@
+var debug = require('debug')('loopback:security:$frameManager');
+
+/**
+ * Add custom dynamic ACL roles
+ *
+ * $frameManager - current user is a manager of the frame being accessed
+ *
+ */
 module.exports = function(app) {
     var Role = app.models.Role;
     Role.registerResolver('$frameManager', function(role, context, cb) {
-        console.log(context.modelName);
-        cb(null, true);
+        debug(context.modelName, context.accessToken);
 
-        // function reject(err) {
-        //     if (err) {
-        //         return cb(err);
-        //     }
-        //     cb(null, false);
-        // }
+        function reject(err) {
+            debug('reject:', err);
+            if (err) {
+                return cb(err);
+            }
+            cb(null, false);
+        }
 
-        // if (context.modelName !== 'OpenframeUser') {
-        //     // the target model is not an OpenframeUser
-        //     return reject();
-        // }
+        if (context.modelName !== 'Frame') {
+            // the target model is not a Frame
+            return reject();
+        }
 
-        // var userId = context.accessToken.userId;
-        // if (!userId) {
-        //     return reject(); // do not allow anonymous users
-        // }
+        var userId = context.accessToken.userId;
+        if (!userId) {
+            // do not allow anonymous users
+            return reject();
+        }
 
-        // // check if the current user is a manager of this frame
-        // var Frame = app.models.Frame;
-        // Frame.users.findById(userId, function(err, user) {
-        //     if (err) {
-        //         return reject(err);
-        //     }
-        //     cb(null, true);
-        // });
+        // get current frame
+        context.model.findById(context.modelId, function(err, frame) {
+            if (err || !frame) {
+                return reject(err);
+            }
 
-        // // check if
-        // context.model.findById(context.modelId, function(err, of_user) {
-        //     if (err || !of_user) {
-        //         reject(err);
-        //     }
+            // if user is $owner, allow
+            // XXX: Hack to work around $frameManager role taking precedence of $owner
+            Role.isOwner(context.model, context.modelId, userId, function(err, owner) {
+                if (owner) {
+                    return cb(null, true);
+                }
+                frame.managers.findById(userId, function(err, manager) {
+                    if (err || !manager) {
+                        return reject(err);
+                    }
+                    cb(null, true);
+                });
+            });
 
-        //     OpenframeUser.count({
-        //         ownerId: project.ownerId,
-        //         memberId: userId
-        //     }, function(err, count) {
-        //         if (err) {
-        //             return reject(err);
-        //         }
-        //         cb(null, count > 0); // true = is a team member
-        //     });
-        // });
+        });
     });
 };
 

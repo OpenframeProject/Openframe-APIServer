@@ -98,7 +98,8 @@ module.exports = function(app) {
                     plugins: {
                         'openframe-image': 'git+https://git@github.com/OpenframeProject/Openframe-Image.git'
                     },
-                    format: 'openframe-image'
+                    format: 'openframe-image',
+                    'ownerId': 1
                 }, {
                     title: 'Example Shader',
                     is_public: true,
@@ -106,7 +107,8 @@ module.exports = function(app) {
                     plugins: {
                         'openframe-glslviewer': 'git+https://git@github.com/OpenframeProject/Openframe-glslViewer.git'
                     },
-                    format: 'openframe-glslviewer'
+                    format: 'openframe-glslviewer',
+                    'ownerId': 2
                 }, {
                     title: 'Example Website',
                     is_public: true,
@@ -114,7 +116,8 @@ module.exports = function(app) {
                     plugins: {
                         'openframe-website': 'git+https://git@github.com/OpenframeProject/Openframe-Website.git'
                     },
-                    format: 'openframe-website'
+                    format: 'openframe-website',
+                    'ownerId': 3
                 }, ], function(err, artwork) {
                     if (err) reject(err);
                     console.log('Artworks created');
@@ -132,6 +135,10 @@ module.exports = function(app) {
             // create a collection for each user, add all
             // artwork to each
             users.forEach(function(user) {
+                // all users can manage frame id:2 (idx 1)
+                user.managed_frames.add(frames[1]);
+
+
                 user.collections.create({
                     name: 'Main Collection'
                 }, function(err, collection) {
@@ -148,11 +155,6 @@ module.exports = function(app) {
             frames.forEach(function(frame, idx) {
                 // each user owns one frame
                 frame.owner(users[idx]);
-
-                // all users are 'managers' of all frames
-                frame.managers.add(users[0]);
-                frame.managers.add(users[1]);
-                frame.managers.add(users[2]);
                 frame.save();
             });
         }

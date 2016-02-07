@@ -46,7 +46,8 @@
   "relations": {
     "owner": {
       "type": "belongsTo",
-      "model": "OpenframeUser"
+      "model": "OpenframeUser",
+      "foreignKey": "ownerId"
     },
     "managers": {
       "type": "hasAndBelongsToMany",
@@ -82,7 +83,14 @@
       "principalType": "ROLE",
       "principalId": "$frameManager",
       "permission": "ALLOW",
-      "proptery": "__update__current_artwork"
+      "property": "__update__current_artwork"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__update__current_artwork"
     }
   ],
   "methods": {}
