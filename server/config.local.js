@@ -29,5 +29,6 @@ module.exports = {
   "pubsub_host": "0.0.0.0",
   "pubsub_port": 8889,
   "pubsub_path": "/faye",
+  "cookieSecret": "246bace2-38cb-4138-85d9-0ae8160b07c8",
   "legacyExplorer": false
 };

@@ -23,16 +23,7 @@
     }
   },
   "files": {
-    "loopback#static":  [{
-        "name": "client",
-        "paths": ["/"],
-        "params": "$!../client"
-    },
-    {
-        "name": "vendor",
-        "paths": ["/vendor"],
-        "params": "$!../node_modules"
-    }]
+    "loopback#static": []
   },
   "final": {
     "loopback#urlNotFound": {}

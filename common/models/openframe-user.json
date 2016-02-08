@@ -9,6 +9,12 @@
   "mixins": {
     "Timestamp": {}
   },
+  "protected": [
+    "email",
+    "full_name",
+    "created",
+    "modified"
+  ],
   "properties": {
     "bio": {
       "type": "string"
@@ -20,12 +26,6 @@
       "type": "string"
     }
   },
-  "protected": [
-    "email",
-    "full_name",
-    "created",
-    "modified"
-  ],
   "validations": [],
   "relations": {
     "owned_frames": {
@@ -51,6 +51,26 @@
       "type": "hasMany",
       "model": "Artwork",
       "foreignKey": "authorId"
+    },
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "AccessToken",
+      "foreignKey": "userId"
+    },
+    "identities": {
+      "type": "hasMany",
+      "model": "OpenframeUserIdentity",
+      "foreignKey": "userId"
+    },
+    "credentials": {
+      "type": "hasMany",
+      "model": "OpenframeUserCredential",
+      "foreignKey": "userId"
+    },
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "OpenframeAccessToken",
+      "foreignKey": "userId"
     }
   },
   "acls": [

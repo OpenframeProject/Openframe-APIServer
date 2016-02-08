@@ -27,5 +27,6 @@
   "pubsub_host": "0.0.0.0",
   "pubsub_port": 8889,
   "pubsub_path": "/faye",
-  "legacyExplorer": false
+  "legacyExplorer": false,
+  "secret_cookie": "yabbadabbadoo!"
 }

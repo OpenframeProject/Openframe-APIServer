@@ -4,6 +4,7 @@
       "loopback/common/models",
       "loopback/server/models",
       "../common/models",
+      "../node_modules/loopback-component-passport/lib/models",
       "./models"
     ],
     "mixins": [
@@ -14,43 +15,55 @@
     ]
   },
   "User": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "AccessToken": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "ACL": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "Role": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": false
   },
   "OpenframeUser": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": true
   },
   "Frame": {
-    "dataSource": "mongoDb",
-    "public": false
+    "dataSource": "memoryDb",
+    "public": true
   },
   "Artwork": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
     "public": true
   },
   "Collection": {
-    "dataSource": "mongoDb",
-    "public": true
+    "dataSource": "memoryDb",
+    "public": false
   },
   "Stream": {
-    "dataSource": "mongoDb",
+    "dataSource": "memoryDb",
+    "public": false
+  },
+  "OpenframeUserIdentity": {
+    "dataSource": "memoryDb",
+    "public": false
+  },
+  "OpenframeUserCredential": {
+    "dataSource": "memoryDb",
+    "public": false
+  },
+  "OpenframeAccessToken": {
+    "dataSource": "memoryDb",
     "public": false
   }
 }

@@ -7,15 +7,17 @@ module.exports = function(OpenframeUser) {
      *
      * @return {Object} Plain JS Object which will be transformed to JSON for output.
      */
-    OpenframeUser.prototype.toJSON = function() {
-        var accessToken = loopback.getCurrentContext().active.accessToken,
-            obj = this.toObject(false, true, false);
+    // OpenframeUser.prototype.toJSON = function() {
+    //     console.log(loopback.getCurrentContext());
+    //     var obj = this.toObject(false, true, false);
+    //     // var accessToken = loopback.getCurrentContext().active.accessToken,
+    //     //     obj = this.toObject(false, true, false);
 
-        // if this isn't the currently logged in user, don't display email address
-        if (!accessToken || this.id !== accessToken.userId) {
-            delete obj.email;
-        }
+    //     // if this isn't the currently logged in user, don't display email address
+    //     // if (!accessToken || this.id !== accessToken.userId) {
+    //     //     delete obj.email;
+    //     // }
 
-        return obj;
-    }
+    //     return obj;
+    // }
 };

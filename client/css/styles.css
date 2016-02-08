@@ -8,7 +8,7 @@ body {
 /* Navigation top bar */
 
 .navbar {
-	height: 68px;
+	height: 66px;
 }
 
 .navbar-nav li a {
@@ -34,7 +34,7 @@ h2 {
 	font-weight: normal;
     font-size: 18px;
     float: left;
-    padding-top: 2px;
+    padding-top: 3px;
 }
 
 h3 {
@@ -264,7 +264,7 @@ select {
 	font-weight: 600;
 }
 
-.btn-default:hover { 
+.btn-default:hover {
     background-color: #333333;
     color: white;
 }
