@@ -5,6 +5,7 @@ var debug = require('debug')('routes'),
 module.exports = function(app) {
     var router = app.loopback.Router();
 
+    // this needs to be here in order to show flash messages from passport
     router.use(flash());
 
     router.get('/user/:username', ensureLoggedIn('/login'), function(req, res, next) {
@@ -19,7 +20,6 @@ module.exports = function(app) {
 
     // Render login page
     router.get('/login', function(req, res, next) {
-        // debug(req.flash('error'));
         return res.render('login');
     });
 

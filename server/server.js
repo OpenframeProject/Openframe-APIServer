@@ -68,17 +68,6 @@ for (var s in config) {
     passportConfigurator.configureProvider(s, c);
 }
 
-// Render login page
-app.get('/login', function(req, res, next) {
-    res.render('login');
-});
-
-
-
-
-
-
-
 // Set static file dirs here, NOT in middleware.json... that doesn't work in this case (not sure why)
 app.use(loopback.static(path.resolve(__dirname, '../client')));
 app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
