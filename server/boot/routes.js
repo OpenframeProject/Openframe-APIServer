@@ -28,10 +28,16 @@ module.exports = function(app) {
         return res.render('create-account');
     });
 
+    // Render create account page
+    router.get('/logout', function(req, res, next) {
+        req.logout();
+        res.redirect('/');
+    });
 
 
 
-    router.post('/signup', function(req, res, next) {
+
+    router.post('/create-account', function(req, res, next) {
 
         var OpenframeUser = app.models.OpenframeUser,
             newUser = {};
@@ -59,7 +65,7 @@ module.exports = function(app) {
                         req.flash('error', err.message);
                         return res.redirect('back');
                     }
-                    return res.redirect('/auth/account');
+                    return res.redirect('/');
                 });
             }
         });
