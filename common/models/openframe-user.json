@@ -52,11 +52,6 @@
       "model": "Artwork",
       "foreignKey": "authorId"
     },
-    "accessTokens": {
-      "type": "hasMany",
-      "model": "AccessToken",
-      "foreignKey": "userId"
-    },
     "identities": {
       "type": "hasMany",
       "model": "OpenframeUserIdentity",
@@ -75,9 +70,22 @@
   },
   "acls": [
     {
-      "accessType": "READ",
+      "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": ["find", "findById", "findOne"]
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$owner",
       "permission": "ALLOW"
     },
     {

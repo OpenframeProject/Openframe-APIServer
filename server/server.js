@@ -29,6 +29,12 @@ app.set('view engine', 'ejs'); // LoopBack comes with EJS out-of-box
 app.set('json spaces', 2); // format json responses for easier viewing
 app.set('views', path.resolve(__dirname, 'views'));
 
+app.use(loopback.token({
+  cookies: ['access_token'],
+  headers: ['access_token'],
+  params: ['access_token']
+}));
+
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
@@ -36,25 +42,24 @@ boot(app, __dirname);
 app.middleware('parse', bodyParser.json());
 // to support URL-encoded bodies
 app.middleware('parse', bodyParser.urlencoded({
-  extended: true
+    extended: true
 }));
+
 // The access token is only available after boot
 app.middleware('auth', loopback.token({
-  model: app.models.AccessToken
+    model: app.models.OpenframeAccessToken
 }));
 
 app.middleware('session:before', loopback.cookieParser(app.get('cookieSecret')));
 app.middleware('session', loopback.session({
-  secret: app.get('cookieSecret'),
-  saveUninitialized: true,
-  resave: true
+    secret: app.get('cookieSecret'),
+    saveUninitialized: true,
+    resave: true
 }));
+
 passportConfigurator.init();
 
-// We need flash messages to see passport errors
-app.use(flash());
-// app.locals.messages = null;
-// Set up related models
+// Set up related models for Passport
 passportConfigurator.setupModels({
     userModel: app.models.OpenframeUser,
     userIdentityModel: app.models.OpenframeUserIdentity,
@@ -75,7 +80,7 @@ app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
 // // Requests that get this far won't be handled
 // // by any middleware. Convert them into a 404 error
 // // that will be handled later down the chain.
-app.use(loopback.urlNotFound());
+// app.use(loopback.urlNotFound());
 
 // // The ultimate error handler.
 app.use(loopback.errorHandler());
@@ -95,5 +100,6 @@ app.start = function() {
 
 // start the server if `$ node server.js`
 if (require.main === module) {
-  app.start();
+    app.start();
 }
+

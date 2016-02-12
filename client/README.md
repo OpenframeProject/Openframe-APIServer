@@ -1,3 +1,3 @@
 ## Client
 
-This is the place for your application front-end files.
+This is the place for your application's static front-end files.

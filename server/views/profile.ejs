@@ -5,13 +5,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="access_token" content="<%= user.accessToken %>">
     <link href='https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-    <title>OpenFrame</title>
-    <script type="text/javascript" src="/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src='/bootstrap/dist/js/bootstrap.min.js'></script>
+    <title>OpenFrame / <%= user.username %></title>
     <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
+
+    <script type="text/javascript">
+        // Globals rendered from server
+        window.USER_ID = '<%= user.id %>';
+    </script>
 </head>
 
 <body>
@@ -28,7 +32,7 @@
                 <a class="navbar-brand" href="/">
                     <img alt="Brand" src="/img/of-logo.svg">
                 </a>
-                <h2>/&nbsp;ishback<h2>
+                <h2>/&nbsp;<%= user.username %><h2>
 	        </div>
 	        <!-- This items get collected inside the hamburger for mobile -->
 	        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -55,83 +59,37 @@
         <div class="row row-navigation">
 		    <ul class="tabs">
 		  		<li class="active"><a href="">Collection</a></li>
-		  		<li><a href="/add-artwork.html">Add Artwork</a></li>
+		  		<li><a href="/add-artwork">Add Artwork</a></li>
 			</ul>
 		</div>
 
 		<div class="row row-collection">
-		 	<div class="col-sm-6 col-md-4 artwork-tile">
-		    	<!--<div class="artwork-tile" style="background-image: url(../img/flowers.jpg)"> -->
 
-		    	<div class="bg-image">
-		    		<img src="../img/flowers.jpg">
-		    		<div class="artwork-interface">
-
-		      			<div class="artist-label"><h4>ArtistName</h4></div>
-		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
-		        		<div class="push-button btn btn-circle">
-		        			<img src="../img/arrow.svg">
-		        		</div>
-		      		</div>
-		    	</div>
-		    </div>
-
-		    <div class="col-sm-6 col-md-4 artwork-tile">
-		    	<div class="bg-image">
-		    		<img src="../img/dean.png">
-		    		<div class="artwork-interface">
-
-		      			<div class="artist-label"><h4>ArtistName</h4></div>
-		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
-		        		<div class="push-button btn btn-circle">
-		        			<img src="../img/arrow.svg">
-		        		</div>
-		      		</div>
-		    	</div>
-		    </div>
-
-		    <div class="col-sm-6 col-md-4 artwork-tile">
-		    	<div class="bg-image">
-		    		<img src="../img/marcin.jpg">
-		    		<div class="artwork-interface">
-
-		      			<div class="artist-label"><h4>ArtistName</h4></div>
-		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
-		        		<div class="push-button btn btn-circle">
-		        			<img src="../img/arrow.svg">
-		        		</div>
-		      		</div>
-		    	</div>
-		    </div>
-
-		    <div class="col-sm-6 col-md-4 artwork-tile">
-		    	<div class="bg-image">
-		    		<img src="../img/larger.jpg">
-		    		<div class="artwork-interface">
-
-		      			<div class="artist-label"><h4>ArtistName</h4></div>
-		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
-		        		<div class="push-button btn btn-circle">
-		        			<img src="../img/arrow.svg">
-		        		</div>
-		      		</div>
-		    	</div>
-		    </div>
-		    <div class="col-sm-6 col-md-4 artwork-tile">
-		    	<div class="bg-image">
-		    		<img src="../img/life.jpg">
-		    		<div class="artwork-interface">
-
-		      			<div class="artist-label"><h4>ArtistName</h4></div>
-		        		<div class="artwork-label"><h4>ArtworkTitle</h4></div>
-		        		<div class="push-button btn btn-circle">
-		        			<img src="../img/arrow.svg">
-		        		</div>
-		      		</div>
-		    	</div>
-		    </div>
 		</div>
 	</div>
+
+    <script type="text/template" id="ArtworkTemplate">
+        <div class="col-sm-6 col-md-4 artwork-tile">
+            <div class="bg-image">
+                <img src="{{- thumb_url }}">
+                <div class="artwork-interface">
+                    <div class="artist-label"><h4>{{- author_name }}</h4></div>
+                    <div class="artwork-label"><h4>{{- title }}</h4></div>
+                    <div class="push-button btn btn-circle" rel="{{- id }}">
+                        <img src="../img/arrow.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+
+    <script type="text/javascript" src="/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src='/bootstrap/dist/js/bootstrap.min.js'></script>
+    <script type="text/javascript" src="/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="/wookmark/wookmark.min.js"></script>
+    <script type="text/javascript" src='/js/cookies.js'></script>
+    <script type="text/javascript" src='/js/script.js'></script>
 
 </body>
 

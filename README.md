@@ -16,7 +16,7 @@ The block diagram above represents a proposed architecture for the Openframe pla
 
 ### Local Development
 
-The codebase was largely generated following the [loopback doc's](https://docs.strongloop.com/display/public/LB/LoopBack) recommendations. To run the server locally, checkout this branch and run `node .`. You'll need mongod to be available locally as well.
+The codebase was largely generated following the [loopback docs'](https://docs.strongloop.com/display/public/LB/LoopBack) recommendations. To run the server locally, checkout this branch and run `npm start`. You'll need mongod to be available locally as well.
 
 ### API Docs
 

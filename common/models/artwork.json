@@ -19,7 +19,8 @@
     },
     "is_public": {
       "type": "boolean",
-      "required": true
+      "required": true,
+      "default": true
     },
     "url": {
       "type": "string",

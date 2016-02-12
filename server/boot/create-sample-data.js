@@ -93,8 +93,10 @@ module.exports = function(app) {
             return new Promise(function(resolve, reject) {
                 app.models.Artwork.create([{
                     title: 'Example Image',
+                    author_name: 'Ima Geofit',
                     is_public: true,
                     url: 'http://www.codex99.com/cartography/images/everest/everest_imhof_lg.jpg',
+                    thumb_url: 'http://www.codex99.com/cartography/images/everest/everest_imhof_lg.jpg',
                     plugins: {
                         'openframe-image': 'git+https://git@github.com/OpenframeProject/Openframe-Image.git'
                     },
@@ -102,8 +104,10 @@ module.exports = function(app) {
                     'ownerId': 1
                 }, {
                     title: 'Example Shader',
+                    author_name: 'Slim Shady',
                     is_public: true,
                     url: 'http://jonathanwohl.com/test.frag',
+                    thumb_url: 'http://jonathanwohl.com/shader-thumb.png',
                     plugins: {
                         'openframe-glslviewer': 'git+https://git@github.com/OpenframeProject/Openframe-glslViewer.git'
                     },
@@ -111,8 +115,10 @@ module.exports = function(app) {
                     'ownerId': 2
                 }, {
                     title: 'Example Website',
+                    author_name: 'Webster McBride',
                     is_public: true,
                     url: 'http://www.flyingfrying.com/',
+                    thumb_url: 'http://jonathanwohl.com/frying-egg.png',
                     plugins: {
                         'openframe-website': 'git+https://git@github.com/OpenframeProject/Openframe-Website.git'
                     },

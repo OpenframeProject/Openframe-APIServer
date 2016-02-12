@@ -6,7 +6,7 @@ module.exports = {
   port: process.env.PORT || 8888,
   "remoting": {
     "context": {
-      "enableHttpContext": false
+      "enableHttpContext": true
     },
     "rest": {
       "normalizeHttpPath": false,

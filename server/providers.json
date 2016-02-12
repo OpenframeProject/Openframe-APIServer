@@ -5,9 +5,11 @@
         "usernameField": "username",
         "passwordField": "password",
         "authPath": "/auth/local",
-        "successRedirect": "/",
+        "successRedirect": "/login-success",
         "failureRedirect": "/login",
-        "failureFlash": true
+        "failureFlash": true,
+        "setAccessToken" : true,
+        "session" : true
     }
 }
 
