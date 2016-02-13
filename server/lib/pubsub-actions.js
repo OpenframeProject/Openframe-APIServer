@@ -29,6 +29,16 @@ module.exports = (function() {
         // listen for all /frame/disconnected events
         _pubsub.subscribe('/frame/disconnected', function(frame_id) {
             console.log('frame %s disconnected', frame_id);
+            // update frame status
+            console.log('frame %s connected', frame_id);
+            app.models.Frame.findById(frame_id, function(err, frame) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                frame.connected = false;
+                frame.save();
+            });
         });
     };
 

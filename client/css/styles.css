@@ -37,12 +37,32 @@ body {
 
 .navbar-nav li a {
     height: 66px;
+    padding-top: 22px;
+    padding-bottom: 15px;
+}
+
+.navbar-nav ul {
+    background-color: #f8f8f8;
 }
 
 .navbar-default .navbar-nav>li>a {
     color: black;
     font-weight: 300;
     font-size: 16px;
+}
+
+.navbar-default .navbar-collapse {
+    border-top: 0;
+}
+
+
+.navbar-toggle {
+    margin-top: 16px;
+}
+
+.dropdown-frames {
+    // background: #fff;
+    margin-right: 20px;
 }
 
 .frame-list-item {
@@ -65,7 +85,8 @@ body {
 
 .frame-list-item--caret {
     position: relative;
-    top: 10px;
+    top: -2px;
+    left: 10px;
 }
 
 .frame-list-item__name {
@@ -195,8 +216,7 @@ a:hover {
     height: 24px;
     display: table;
     background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-    opacity: 1;
+    color: #fff;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 7px;
@@ -221,13 +241,12 @@ h4 {
 }
 
 .artist-label h4 {
-    font-size: 14px;
-    font-weight: normal;
+    font-weight: 200;
+    opacity: .5;
 }
 
 .artwork-label h4 {
-    font-size: 14px;
-    font-weight: 200;
+    font-weight: normal;
 }
 
 .btn-circle {

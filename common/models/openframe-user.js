@@ -83,5 +83,41 @@ module.exports = function(OpenframeUser) {
 
         return obj;
     }
+
+
+    /**
+     * Get all frames, owned and managed
+     */
+    OpenframeUser.prototype.all_frames = function(cb) {
+        console.log(this);
+        var self = this, allFrames;
+        var ownedFrames = self.owned_frames(function(err, ownFrames) {
+            ownFrames = ownFrames || [];
+            self.managed_frames(function(err, manFrames) {
+                manFrames = manFrames || [];
+                allFrames = ownFrames.concat(manFrames);
+                cb(null, allFrames);
+            });
+        });
+    };
+
+    /**
+     * Expose all_frames remote method
+     */
+    OpenframeUser.remoteMethod(
+        'all_frames', {
+            description: 'Get all frames (owned and managed) by this user.',
+            accepts: [],
+            http: {
+                verb: 'get',
+                path: '/all_frames'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'result',
+                type: 'OpenframeUser'
+            }
+        }
+    );
 };
 

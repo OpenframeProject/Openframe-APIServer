@@ -77,15 +77,15 @@
     <script type="text/template" id="FramesDropdownTemplate">
         <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <div class="frame-list-item {{= currentFrame.connected ? 'frame-list-item--connected' : '' }}">
-                <div class="frame-list-item__name">{{- currentFrame.name }}</div>
+                <div class="frame-list-item__name">{{- currentFrame.name }} <span class="caret frame-list-item--caret"></span></div>
                 {{ if (currentFrame._current_artwork) { }}
                     <div class="frame-list-item__status">{{- currentFrame._current_artwork.author_name }}: {{- currentFrame._current_artwork.title }}</div>
                 {{ } }}
             </div>
-            <span class="caret frame-list-item--caret pull-right"></span>
         </a>
         <ul class="dropdown-menu">
             {{ frames.forEach(function(frame) { }}
+                {{ if (frame.id !== currentFrame.id) { }}
                 <li>
                     <a href="#/frame/{{- frame.id }}" class="frame-select-link" data-frameid="{{- frame.id }}">
                         <div class="frame-list-item {{= frame.connected ? 'frame-list-item--connected' : '' }}" >
@@ -96,6 +96,7 @@
                         </div>
                     </a>
                 </li>
+                {{ } }}
             {{ }); }}
         </ul>
     </script>

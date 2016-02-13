@@ -17,22 +17,23 @@ $(function() {
 
     function fetchUser() {
         return $.get('/api/OpenframeUsers/' + window.USER_ID, {
-            'filter': {
-                'include': [
-                    'owned_artwork',
-                    'owned_frames',
-                    'managed_frames',
-                    {
-                        collections: {
-                            relation: 'artwork',
-                            scope: {
-                                order: 'created DESC'
+                'filter': {
+                    'include': [
+                        {
+                            collections: {
+                                relation: 'artwork',
+                                scope: {
+                                    order: 'created DESC'
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        });
+                    ]
+                }
+            }).done(function(user) {
+                console.log(user);
+                collections = user.collections;
+                currentCollection = collections[0];
+            });
     }
 
     function fetchCollection(id) {
@@ -42,6 +43,21 @@ $(function() {
                     'artwork'
                 ]
             }
+        });
+    }
+
+    function fetchFrames() {
+        console.log('fetchFrames');
+        return $.get('/api/OpenframeUsers/' + window.USER_ID + '/all_frames').done(function(resp) {
+            allFrames = resp.result;
+            if (currentFrame) {
+                currentFrame = _.find(allFrames, function(frame) {
+                    return currentFrame.id === frame.id;
+                });
+            } else {
+                currentFrame = allFrames[0];
+            }
+            console.log(allFrames, currentFrame);
         });
     }
 
@@ -62,7 +78,8 @@ $(function() {
     }
 
     // render artworks to screen
-    function renderCollection(artworks) {
+    function renderCollection() {
+        var artworks = currentCollection.artwork;
         if (!artworks || !artworks.length) return;
         artworks.forEach(function(artwork) {
             $rowCollection.append(artworkTemplate(artwork));
@@ -71,12 +88,13 @@ $(function() {
 
     // render frame list to screen
     function renderFrameDropdown() {
+        console.log('renderFrameDropdown');
         if (!currentFrame || !allFrames.length) return;
         var data = {
             currentFrame: currentFrame,
             frames: allFrames
         };
-        $frameDropdown.html(framesDropdownTemplate(data));
+        $frameDropdown.empty().html(framesDropdownTemplate(data));
     }
 
     // zip through and setup event handlers
@@ -93,7 +111,7 @@ $(function() {
                 pushArtwork(currentFrame.id, artwork)
                     .then(function(resp) {
                         console.log(resp);
-
+                        fetchFrames().then(renderFrameDropdown);
                     })
                     .fail(function(err) {
                         console.log(err);
@@ -112,24 +130,13 @@ $(function() {
 
     function init() {
         bindEvents();
+        var userDfd = fetchUser(),
+            framesDfd = fetchFrames();
 
-        fetchUser()
-            .done(function(user) {
-                console.log(user);
-                collections = user.collections;
-                currentCollection = collections[0];
-                ownedFrames = user.owned_frames;
-                managedFrames = user.managed_frames;
-                allFrames = ownedFrames.concat(managedFrames);
-                currentFrame = user.owned_frames[0];
-
-
-                renderCollection(collections[0].artwork);
+        $.when(userDfd, framesDfd)
+            .done(function() {
+                renderCollection();
                 renderFrameDropdown();
-
-                // $rowCollection.find('ul')wookmark({
-                //     itemWidth: '25%'
-                // });
             })
             .fail(function(err) {
                 console.log(err);
