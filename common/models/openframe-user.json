@@ -66,6 +66,11 @@
       "type": "hasMany",
       "model": "OpenframeAccessToken",
       "foreignKey": "userId"
+    },
+    "roleMappings": {
+      "type": "hasMany",
+      "model": "RoleMapping",
+      "foreignKey": "principalId"
     }
   },
   "acls": [

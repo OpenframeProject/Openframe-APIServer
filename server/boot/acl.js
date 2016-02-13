@@ -1,4 +1,4 @@
-var debug = require('debug')('loopback:security:$frameManager');
+var debug = require('debug')('loopback:security:frameManager');
 
 /**
  * Add custom dynamic ACL roles
@@ -7,9 +7,14 @@ var debug = require('debug')('loopback:security:$frameManager');
  *
  */
 module.exports = function(app) {
+    debug('TEST TEST TEST');
     var Role = app.models.Role;
+
     Role.registerResolver('$frameManager', function(role, context, cb) {
-        debug(context.modelName, context.accessToken);
+        debug(context);
+
+        var req = context && context.active ? context.active.http.req : null,
+            user = req ? req.user : null;
 
         function reject(err) {
             debug('reject:', err);
@@ -24,8 +29,8 @@ module.exports = function(app) {
             return reject();
         }
 
-        var userId = context.accessToken.userId;
-        if (!userId) {
+
+        if (!user.id) {
             // do not allow anonymous users
             return reject();
         }
@@ -38,11 +43,11 @@ module.exports = function(app) {
 
             // if user is $owner, allow
             // XXX: Hack to work around $frameManager role taking precedence of $owner
-            Role.isOwner(context.model, context.modelId, userId, function(err, owner) {
+            Role.isOwner(context.model, context.modelId, user.id, function(err, owner) {
                 if (owner) {
                     return cb(null, true);
                 }
-                frame.managers.findById(userId, function(err, manager) {
+                frame.managers.findById(user.id, function(err, manager) {
                     if (err || !manager) {
                         return reject(err);
                     }

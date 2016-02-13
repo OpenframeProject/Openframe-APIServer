@@ -21,7 +21,7 @@ body {
     font-size: 16px;
 }
 
-.frames-dropdown {
+.current-frame-name {
 	font-weight: 500;
 	text-transform: uppercase;
 }
@@ -190,7 +190,7 @@ h4 {
   	float: right;
 }
 
-.push-button img{
+.btn-push img {
 	width: 40%;
 	padding-top: 7px;
 }

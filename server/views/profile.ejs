@@ -37,17 +37,8 @@
 	        <!-- This items get collected inside the hamburger for mobile -->
 	        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         		<ul class="nav navbar-nav navbar-right">
-        			<li class="dropdown">
-                		<a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HOME <span class="caret"></span></a>
-                		<ul class="dropdown-menu">
-                    		<li><a href="#">Action</a></li>
-                    		<li><a href="#">Another action</a></li>
-                    		<li><a href="#">Something else here</a></li>
-                    		<li role="separator" class="divider"></li>
-                    		<li><a href="#">Separated link</a></li>
-                    		<li role="separator" class="divider"></li>
-                    		<li><a href="#">One more separated link</a></li>
-                		</ul>
+        			<li class="dropdown dropdown-frames">
+
             		</li>
             		<li class="btn-logout"><a href="/logout">Log out</a></li>
             	</ul>
@@ -75,7 +66,7 @@
                 <div class="artwork-interface">
                     <div class="artist-label"><h4>{{- author_name }}</h4></div>
                     <div class="artwork-label"><h4>{{- title }}</h4></div>
-                    <div class="push-button btn btn-circle" rel="{{- id }}">
+                    <div class="btn btn-circle btn-push" data-artworkid="{{- id }}">
                         <img src="../img/arrow.svg">
                     </div>
                 </div>
@@ -83,11 +74,20 @@
         </div>
     </script>
 
+    <script type="text/template" id="FramesDropdownTemplate">
+        <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{- currentFrame.name }} <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            {{ frames.forEach(function(frame) { }}
+                <li><a href="#/frame/{{- frame.id }}" class="frame-select-link" data-frameid="{{- frame.id }}">{{- frame.name}}</a></li>
+            {{ }); }}
+        </ul>
+    </script>
+
 
     <script type="text/javascript" src="/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src='/bootstrap/dist/js/bootstrap.min.js'></script>
     <script type="text/javascript" src="/underscore/underscore-min.js"></script>
-    <script type="text/javascript" src="/wookmark/wookmark.min.js"></script>
+    <!-- <script type="text/javascript" src="/wookmark/wookmark.min.js"></script> -->
     <script type="text/javascript" src='/js/cookies.js'></script>
     <script type="text/javascript" src='/js/script.js'></script>
 
