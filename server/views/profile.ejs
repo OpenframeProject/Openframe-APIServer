@@ -54,13 +54,13 @@
 			</ul>
 		</div>
 
-		<div class="row row-collection">
+		<div class="row row-collection row-tile">
 
 		</div>
 	</div>
 
     <script type="text/template" id="ArtworkTemplate">
-        <div class="col-sm-6 col-md-4 artwork-tile">
+        <div class="tile-item tile-artwork">
             <div class="bg-image">
                 <img src="{{- thumb_url }}">
                 <div class="artwork-interface">
@@ -75,10 +75,27 @@
     </script>
 
     <script type="text/template" id="FramesDropdownTemplate">
-        <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{- currentFrame.name }} <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <div class="frame-list-item {{= currentFrame.connected ? 'frame-list-item--connected' : '' }}">
+                <div class="frame-list-item__name">{{- currentFrame.name }}</div>
+                {{ if (currentFrame._current_artwork) { }}
+                    <div class="frame-list-item__status">{{- currentFrame._current_artwork.author_name }}: {{- currentFrame._current_artwork.title }}</div>
+                {{ } }}
+            </div>
+            <span class="caret frame-list-item--caret pull-right"></span>
+        </a>
         <ul class="dropdown-menu">
             {{ frames.forEach(function(frame) { }}
-                <li><a href="#/frame/{{- frame.id }}" class="frame-select-link" data-frameid="{{- frame.id }}">{{- frame.name}}</a></li>
+                <li>
+                    <a href="#/frame/{{- frame.id }}" class="frame-select-link" data-frameid="{{- frame.id }}">
+                        <div class="frame-list-item {{= frame.connected ? 'frame-list-item--connected' : '' }}" >
+                            <div class="frame-list-item__name">{{- frame.name }}</div>
+                            {{ if (frame._current_artwork) { }}
+                                <div class="frame-list-item__status">{{- frame._current_artwork.author_name }}: {{- frame._current_artwork.title }}</div>
+                            {{ } }}
+                        </div>
+                    </a>
+                </li>
             {{ }); }}
         </ul>
     </script>

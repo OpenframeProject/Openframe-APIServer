@@ -57,8 +57,8 @@ module.exports = function(app) {
                     });
                 }
             }
+            res.redirect('/' + user.username);
         });
-        res.redirect('/' + user.username);
     });
 
     // Render create account page

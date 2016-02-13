@@ -35,14 +35,6 @@ $(function() {
         });
     }
 
-    function pushArtwork(frameId, artworkData) {
-        return $.ajax({
-            url: '/api/Frames/' + frameId + '/current_artwork',
-            method: 'PUT',
-            data: artworkData
-        });
-    }
-
     function fetchCollection(id) {
         return $.get('/api/OpenframeUsers/' + window.USER_ID + '/collections/' + id, {
             'filter': {
@@ -52,6 +44,15 @@ $(function() {
             }
         });
     }
+
+    function pushArtwork(frameId, artworkData) {
+        return $.ajax({
+            url: '/api/Frames/' + frameId + '/current_artwork',
+            method: 'PUT',
+            data: artworkData
+        });
+    }
+
 
     function selectFrame(_frameId) {
         currentFrame = _.find(allFrames, function(frame) {
@@ -92,6 +93,7 @@ $(function() {
                 pushArtwork(currentFrame.id, artwork)
                     .then(function(resp) {
                         console.log(resp);
+
                     })
                     .fail(function(err) {
                         console.log(err);

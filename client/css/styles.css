@@ -1,6 +1,30 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box !important;
+}
+
+.row-tile {
+    -moz-column-width: 18em;
+    -webkit-column-width: 18em;
+    -moz-column-gap: 1em;
+    -webkit-column-gap: 1em;
+}
+
+.tile-item {
+    display: inline-block;
+    padding: .25rem;
+    width: 100%;
+}
+
+.tile-well {
+    position: relative;
+    display: block;
+}
+
 body {
     padding-top: 70px;
-    font-family: "Lato",sans-serif;
+    font-family: "Lato", sans-serif;
     color: black;
 }
 
@@ -8,37 +32,69 @@ body {
 /* Navigation top bar */
 
 .navbar {
-	height: 66px;
+    height: 66px;
 }
 
 .navbar-nav li a {
- line-height: 34px;
+    height: 66px;
 }
 
 .navbar-default .navbar-nav>li>a {
-	color: black;
-	font-weight: 300;
+    color: black;
+    font-weight: 300;
     font-size: 16px;
 }
 
-.current-frame-name {
-	font-weight: 500;
-	text-transform: uppercase;
+.frame-list-item {
+    position: relative;
+    padding: 0px 20px;
+    float: left;
 }
 
+.frame-list-item::before {
+    content: "\2022";
+    color: #a00;
+    position: absolute;
+    left: -2px;
+    top: -1px;
+}
+
+.frame-list-item--connected::before {
+    color: #0a0;
+}
+
+.frame-list-item--caret {
+    position: relative;
+    top: 10px;
+}
+
+.frame-list-item__name {
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.frame-list-item__name--current {
+}
+
+.frame-list-item__status {
+    font-size: 10px;
+    color: #aaa;
+}
+
+
 .btn-logout {
-	color: #B2B2B2;
+    color: #B2B2B2;
 }
 
 h2 {
-	font-weight: normal;
+    font-weight: normal;
     font-size: 18px;
     float: left;
     padding-top: 3px;
 }
 
 h3 {
-	font-weight: normal;
+    font-weight: normal;
     font-size: 20px;
     color: black;
     text-align: center;
@@ -49,53 +105,53 @@ h3 {
 /* Global */
 
 a {
-	color: black;
+    color: black;
 }
 
 a:hover {
-	text-decoration: none;
-	color: black;
+    text-decoration: none;
+    color: black;
 }
 
 
 /* User page navigation */
 
 .row-navigation {
-	border-bottom: 1px solid #D2D2D2;
-	height: 28px;
-	margin-left: -10px;
-	margin-right: -10px;
+    border-bottom: 1px solid #D2D2D2;
+    height: 28px;
+    margin-left: -10px;
+    margin-right: -10px;
 }
 
 .tabs {
-	width: 100%;
-	font-weight: 600;
+    width: 100%;
+    font-weight: 600;
     font-size: 15px;
     letter-spacing: 1px;
-	text-transform: uppercase;
-	padding-left: 0px;
+    text-transform: uppercase;
+    padding-left: 0px;
 }
 
 .tabs li {
-	display: inline;
-	margin-right: 25px;
+    display: inline;
+    margin-right: 25px;
 }
 
 .tabs a {
-	color: #B2B2B2;
-	font-weight: normal;
+    color: #B2B2B2;
+    font-weight: normal;
 }
 
 .tabs a:hover {
-	color: black;
+    color: black;
 }
 
 .active a {
-	font-weight: 600;
-	text-decoration: none;
-	padding-bottom: 5px;
-	border-bottom: 3px solid black;
-	color: black;
+    font-weight: 600;
+    text-decoration: none;
+    padding-bottom: 5px;
+    border-bottom: 3px solid black;
+    color: black;
 }
 
 
@@ -107,15 +163,16 @@ a:hover {
 }
 
 .row-collection {
-	margin-top: 40px;
-	padding: 0px;
-	margin-left: -20px;
-	margin-right: -20px;
+    margin-top: 40px;
+    padding: 0px;
+    margin-left: -20px;
+    margin-right: -20px;
 }
 
 .bg-image {
     position: relative;
 }
+
 .bg-image img {
     display: block;
     width: 100%;
@@ -123,83 +180,81 @@ a:hover {
     margin: 0 auto;
 }
 
-.artwork-tile {
-	padding: 10px;
+.tile-artwork {
+    padding: 10px;
 }
 
 .artwork-interface {
-	position: absolute;
-	bottom: 0px;
-	padding: 10px;
-	width: 100%;
+    position: absolute;
+    bottom: 0px;
+    padding: 10px;
+    width: 100%;
 }
 
 .artist-label {
-	height: 24px;
-	display: table;
-	background-color: rgba(0, 0, 0, 0.4);
-	color: white;
-	opacity: 1;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 7px;
-	padding-bottom: 5px;
+    height: 24px;
+    display: table;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    opacity: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 7px;
+    padding-bottom: 5px;
 }
 
-.artwork-label{
-	height: 24px;
-	display: table;
-	background-color: rgba(0, 0, 0, 0.4);
-	color: white;
-	opacity: 1;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 5px;
-	padding-bottom: 7px;
+.artwork-label {
+    height: 24px;
+    display: table;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    opacity: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 7px;
 }
 
 h4 {
-	font-size: 14px;
-	margin: 0px;
+    font-size: 14px;
+    margin: 0px;
 }
 
 .artist-label h4 {
-	font-size: 14px;
-	font-weight: normal;
+    font-size: 14px;
+    font-weight: normal;
 }
 
 .artwork-label h4 {
-	font-size: 14px;
-	font-weight: 200;
+    font-size: 14px;
+    font-weight: 200;
 }
 
-
 .btn-circle {
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
-  	width: 43px;
-  	height: 43px;
-  	text-align: center;
-  	padding: 6px 0;
-  	font-size: 12px;
-  	line-height: 1.42;
-  	border-radius: 50px;
-  	background-color: black;
-  	color: white;
-  	float: right;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 43px;
+    height: 43px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.42;
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+    float: right;
 }
 
 .btn-push img {
-	width: 40%;
-	padding-top: 7px;
+    width: 40%;
+    padding-top: 7px;
 }
+
 
 /* Add artwork */
 
-.dropdown-formats {
-
-}
+.dropdown-formats {}
 
 
 /* Forms */
@@ -218,26 +273,26 @@ h4 {
 }
 
 .placeholder {
-	font-style: italic;
-	color: #D2D2D2;
+    font-style: italic;
+    color: #D2D2D2;
 }
 
 input:placeholder-shown {
-  	font-style: italic;
-  	font-weight: lighter;
+    font-style: italic;
+    font-weight: lighter;
 }
 
 .switch-text {
-	font-weight: lighter;
-	font-size: 14px;
-	color: #AEAEAE;
-	text-align: center;
-	margin-top: 30px;
+    font-weight: lighter;
+    font-size: 14px;
+    color: #AEAEAE;
+    text-align: center;
+    margin-top: 30px;
 }
 
 .switch-text a {
-	color: #AEAEAE;
-	text-decoration: underline;
+    color: #AEAEAE;
+    text-decoration: underline;
 }
 
 label {
@@ -248,24 +303,23 @@ label {
 }
 
 select {
-  -webkit-border-radius: 3px;
-  padding-left: 10px;
+    -webkit-border-radius: 3px;
+    padding-left: 10px;
 }
 
 .btn-default {
-	height: 40px;
-	width: 100%;
-	margin-top: 20px;
-	text-transform: uppercase;
-	background-color: black;
-	border: none;
-	color: white;
-	letter-spacing: 1.4px;
-	font-weight: 600;
+    height: 40px;
+    width: 100%;
+    margin-top: 20px;
+    text-transform: uppercase;
+    background-color: black;
+    border: none;
+    color: white;
+    letter-spacing: 1.4px;
+    font-weight: 600;
 }
 
 .btn-default:hover {
     background-color: #333333;
     color: white;
 }
-

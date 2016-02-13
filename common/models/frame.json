@@ -33,7 +33,6 @@
       "required": true,
       "default": {
         "openframe-image": "git+https://git@github.com/OpenframeProject/Openframe-Image.git",
-        "openframe-website": "git+https://git@github.com/OpenframeProject/Openframe-Website.git",
         "openframe-glslviewer": "git+https://git@github.com/OpenframeProject/Openframe-glslViewer.git"
       }
     },
