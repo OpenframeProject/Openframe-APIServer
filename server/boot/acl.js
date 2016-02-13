@@ -29,10 +29,11 @@ module.exports = function(app) {
             return reject();
         }
 
-
-        if (!user.id) {
-            // do not allow anonymous users
-            return reject();
+        // do not allow anonymous users
+        var userId = context.accessToken.userId;
+        console.log(context.accessToken);
+        if (!userId) {
+          return reject();
         }
 
         // get current frame
@@ -43,11 +44,11 @@ module.exports = function(app) {
 
             // if user is $owner, allow
             // XXX: Hack to work around $frameManager role taking precedence of $owner
-            Role.isOwner(context.model, context.modelId, user.id, function(err, owner) {
+            Role.isOwner(context.model, context.modelId, userId, function(err, owner) {
                 if (owner) {
                     return cb(null, true);
                 }
-                frame.managers.findById(user.id, function(err, manager) {
+                frame.managers.findById(userId, function(err, manager) {
                     if (err || !manager) {
                         return reject(err);
                     }
