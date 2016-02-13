@@ -11,19 +11,19 @@ module.exports = function(app) {
     router.use(flash());
 
     // add accessToken to user
-    router.use(function(req, res, next) {
-        // user added to req by passport deserialize function, if logged in.
-        var user = req.user;
-        if (user) {
-            user.accessTokens(function(err, tokens) {
-                // attach the first token to the user for rendering
-                user.accessToken = tokens && tokens.length ? tokens[0].id : null;
-                next();
-            });
-        } else {
-            next();
-        }
-    });
+    // router.use(function(req, res, next) {
+    //     // user added to req by passport deserialize function, if logged in.
+    //     var user = req.user;
+    //     if (user) {
+    //         user.accessTokens(function(err, tokens) {
+    //             // attach the first token to the user for rendering
+    //             user.accessToken = tokens && tokens.length ? tokens[0].id : null;
+    //             next();
+    //         });
+    //     } else {
+    //         next();
+    //     }
+    // });
 
     router.get('/', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
@@ -57,9 +57,8 @@ module.exports = function(app) {
                     });
                 }
             }
-
-            res.redirect('/' + user.username);
         });
+        res.redirect('/' + user.username);
     });
 
     // Render create account page
@@ -71,14 +70,15 @@ module.exports = function(app) {
     });
 
     // Render create account page
-    router.get('/create-account', ensureLoggedIn('/login'), function(req, res, next) {
+    router.get('/create-account', function(req, res, next) {
         return res.render('create-account');
     });
 
     // Create account form handler
-    router.post('/create-account', ensureLoggedIn('/login'), function(req, res, next) {
+    router.post('/create-account', function(req, res, next) {
 
         var OpenframeUser = app.models.OpenframeUser,
+            Collection = app.models.Collection,
             newUser = {};
 
         if (req.body.password !== req.body.password_confirm) {
@@ -101,17 +101,24 @@ module.exports = function(app) {
                 req.flash('error', err.message);
                 return res.redirect('back');
             } else {
-                // Passport exposes a login() function on req (also aliased as logIn())
-                // that can be used to establish a login session. This function is
-                // primarily used when users sign up, during which req.login() can
-                // be invoked to log in the newly registered user.
-                req.login(user, function(err) {
+                // new user... create default collection
+                Collection.create({ownerId: user.id}, function(err, collection) {
                     if (err) {
-                        req.flash('error', err.message);
-                        return res.redirect('back');
+                        console.log(err);
                     }
-                    return res.redirect('/login-success');
+                    // Passport exposes a login() function on req (also aliased as logIn())
+                    // that can be used to establish a login session. This function is
+                    // primarily used when users sign up, during which req.login() can
+                    // be invoked to log in the newly registered user.
+                    req.login(user, function(err) {
+                        if (err) {
+                            req.flash('error', err.message);
+                            return res.redirect('back');
+                        }
+                        return res.redirect('/login-success');
+                    });
                 });
+
             }
         });
     });
@@ -145,6 +152,11 @@ module.exports = function(app) {
                 req.flash('error', err.message);
                 return res.redirect('back');
             }
+
+            if (collections.length < 1) {
+
+            }
+
             // TODO: once we support multiple collections, select
             // which collection to add to... for now, add to first
             collections[0].artwork.create(newArtwork, function(err, artwork) {

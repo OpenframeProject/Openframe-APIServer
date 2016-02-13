@@ -36,7 +36,11 @@ $(function() {
     }
 
     function pushArtwork(frameId, artworkData) {
-        return $.post('/api/Frames/' + frameId + '/current_artwork', artworkData);
+        return $.ajax({
+            url: '/api/Frames/' + frameId + '/current_artwork',
+            method: 'PUT',
+            data: artworkData
+        });
     }
 
     function fetchCollection(id) {
@@ -58,6 +62,7 @@ $(function() {
 
     // render artworks to screen
     function renderCollection(artworks) {
+        if (!artworks || !artworks.length) return;
         artworks.forEach(function(artwork) {
             $rowCollection.append(artworkTemplate(artwork));
         });
@@ -65,6 +70,7 @@ $(function() {
 
     // render frame list to screen
     function renderFrameDropdown() {
+        if (!currentFrame || !allFrames.length) return;
         var data = {
             currentFrame: currentFrame,
             frames: allFrames
