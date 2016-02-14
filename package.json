@@ -5,6 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node .",
+    "start-pubsub": "node ./node_modules/openframe-pubsubserver/start",
     "pretest": "eslint ."
   },
   "author": {
@@ -47,7 +48,8 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "eslint": "^2.0.0"
+    "eslint": "^2.0.0",
+    "openframe-pubsubserver": "^0.1.1"
   },
   "keywords": [
     "openframe"

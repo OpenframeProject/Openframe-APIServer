@@ -48,20 +48,20 @@ module.exports = function(app) {
         function createOpenframeUsers() {
             return new Promise(function(resolve, reject) {
                 app.models.OpenframeUser.create([{
-                    username: 'jon',
-                    email: 'jon@openframe.io',
+                    username: 'slewitt',
+                    email: 'slewitt@openframe.io',
                     password: 'asdf',
-                    full_name: 'Jonathan Wohl'
+                    full_name: 'Sol Lewitt'
                 }, {
-                    username: 'ishac',
-                    email: 'ishac@openframe.io',
+                    username: 'ppan',
+                    email: 'ppan@openframe.io',
                     password: 'asdf',
-                    full_name: 'Ishac Bertran'
+                    full_name: 'Peter Pan'
                 }, {
-                    username: 'nancy',
-                    email: 'nancy@openframe.io',
+                    username: 'melliot',
+                    email: 'melliot@openframe.io',
                     password: 'asdf',
-                    full_name: 'Nancy Mishnokov'
+                    full_name: 'Missy Elliot'
                 }, ], function(err, users) {
                     if (err) reject(err);
                     console.log('Users created');
