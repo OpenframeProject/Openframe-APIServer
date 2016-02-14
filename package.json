@@ -1,11 +1,27 @@
 {
-  "name": "Openframe-Loopback",
+  "name": "openframe-apiserver",
   "version": "0.1.0",
+  "description": "The Openframe API Server.",
   "main": "server/server.js",
   "scripts": {
     "start": "node .",
-    "pretest": "jshint ."
+    "pretest": "eslint ."
   },
+  "author": {
+    "name": "Jonathan Wohl",
+    "url": "http://jonathanwohl.com"
+  },
+  "contributors": [
+    {
+      "name": "Jonathan Wohl",
+      "url": "http://jonathanwohl.com"
+    },
+    {
+      "name": "Ishac Bertran",
+      "url": "http://ishacbertran.com"
+    }
+  ],
+  "license": "GPL-3.0",
   "dependencies": {
     "bcrypt": "^0.8.5",
     "bootstrap": "^3.3.6",
@@ -31,11 +47,13 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "jshint": "^2.5.6"
+    "eslint": "^2.0.0"
   },
+  "keywords": [
+    "openframe"
+  ],
   "repository": {
-    "type": "",
-    "url": ""
-  },
-  "description": "Openframe-Loopback"
+    "type": "git",
+    "url": "https://github.com/OpenframeProject/Openframe-APIServer"
+  }
 }

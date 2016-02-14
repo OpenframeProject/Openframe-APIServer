@@ -7,11 +7,9 @@ var debug = require('debug')('loopback:security:frameManager');
  *
  */
 module.exports = function(app) {
-    debug('TEST TEST TEST');
     var Role = app.models.Role;
 
     Role.registerResolver('$frameManager', function(role, context, cb) {
-        debug(context);
 
         var req = context && context.active ? context.active.http.req : null,
             user = req ? req.user : null;
@@ -24,6 +22,7 @@ module.exports = function(app) {
             cb(null, false);
         }
 
+        // $frameManager is only applicabale to Frame models
         if (context.modelName !== 'Frame') {
             // the target model is not a Frame
             return reject();
@@ -31,7 +30,6 @@ module.exports = function(app) {
 
         // do not allow anonymous users
         var userId = context.accessToken.userId;
-        console.log(context.accessToken);
         if (!userId) {
           return reject();
         }

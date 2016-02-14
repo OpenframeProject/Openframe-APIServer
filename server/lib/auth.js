@@ -1,13 +1,14 @@
 module.exports = {
     blacklist: [
+        "404",
         "admin",
+        "create-account",
+        "error",
+        "home",
         "login",
         "login-success",
         "logout",
-        "create-account",
         "reset-password",
-        "error",
-        "404",
         "test"
     ]
 };

@@ -10,21 +10,7 @@ module.exports = function(app) {
     // this needs to be here in order to show flash messages from passport
     router.use(flash());
 
-    // add accessToken to user
-    // router.use(function(req, res, next) {
-    //     // user added to req by passport deserialize function, if logged in.
-    //     var user = req.user;
-    //     if (user) {
-    //         user.accessTokens(function(err, tokens) {
-    //             // attach the first token to the user for rendering
-    //             user.accessToken = tokens && tokens.length ? tokens[0].id : null;
-    //             next();
-    //         });
-    //     } else {
-    //         next();
-    //     }
-    // });
-
+    // index route redirects to user profile for the moment (requires login)
     router.get('/', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
         return res.redirect('/' + user.username);
@@ -36,7 +22,7 @@ module.exports = function(app) {
     });
 
     /**
-     * Login success route
+     * Login success handler route
      *
      * Sets access_token and userId cookies then redirects to user profile.
      */
@@ -45,28 +31,31 @@ module.exports = function(app) {
         user.accessTokens(function(err, tokens) {
             // use the first access token
             token = tokens && tokens.length ? tokens[0] : null;
-            if (token !== null) {
-                if (token.id !== null) {
-                    res.cookie('access_token', token.id, {
-                        signed: req.signedCookies ? true : false,
-                        maxAge: 1000 * token.ttl
-                    });
-                    res.cookie('userId', token.userId.toString(), {
-                        signed: req.signedCookies ? true : false,
-                        maxAge: 1000 * token.ttl
-                    });
-                }
+            if (token && token.id) {
+                res.cookie('access_token', token.id, {
+                    signed: req.signedCookies ? true : false,
+                    maxAge: 1000 * token.ttl
+                });
+                res.cookie('userId', token.userId.toString(), {
+                    signed: req.signedCookies ? true : false,
+                    maxAge: 1000 * token.ttl
+                });
             }
             res.redirect('/' + user.username);
         });
     });
 
-    // Render create account page
-    router.get('/logout', function(req, res, next) {
-        req.logout();
-        res.clearCookie('access_token');
-        res.clearCookie('userId');
-        res.redirect('/');
+    // Log out route - clear cookies, redirect to login
+    router.get('/logout', ensureLoggedIn('/login'), function(req, res, next) {
+        var OpenframeUser = app.models.OpenframeUser;
+        debug(req.accessToken);
+        OpenframeUser.logout(req.accessToken.id, function(err) {
+            debug(err || 'logged out');
+            req.logout();
+            res.clearCookie('access_token');
+            res.clearCookie('userId');
+            res.redirect('/');
+        });
     });
 
     // Render create account page
@@ -95,35 +84,52 @@ module.exports = function(app) {
             return res.redirect('back');
         }
 
+        // Tip of dreaded callback pyramid... sounds like loopback will be supporting Promises eventually.
         OpenframeUser.create(newUser, function(err, user) {
             if (err) {
                 // TODO: better user-facing error messages...
                 req.flash('error', err.message);
                 return res.redirect('back');
-            } else {
-                // new user... create default collection
-                Collection.create({ownerId: user.id}, function(err, collection) {
+            }
+
+            // new user created... create default collection
+            Collection.create({
+                ownerId: user.id
+            }, function(err, collection) {
+                if (err) {
+                    debug(err);
+                }
+
+                // In order to create an accessToken for the new user, we need to
+                // login via loopback. Then we'll login via req.login (passport) in
+                // order to create the user session.
+                OpenframeUser.login({
+                    email: newUser.email,
+                    password: newUser.password
+                }, function(err, token) {
                     if (err) {
-                        console.log(err);
+                        debug(err);
+                        req.flash('error', err.message);
+                        return req.redirect('back');
                     }
-                    // Passport exposes a login() function on req (also aliased as logIn())
-                    // that can be used to establish a login session. This function is
-                    // primarily used when users sign up, during which req.login() can
-                    // be invoked to log in the newly registered user.
                     req.login(user, function(err) {
                         if (err) {
                             req.flash('error', err.message);
                             return res.redirect('back');
                         }
+                        // all successful login-ing, hit success route to set cookies.
                         return res.redirect('/login-success');
                     });
+
                 });
 
-            }
+
+            });
         });
     });
 
     // Render add artwork page
+    // TODO: this will become a modal
     router.get('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
 
@@ -132,12 +138,12 @@ module.exports = function(app) {
         });
     });
 
-      // Create an account form handler
+    // Add artwork form handler route
     router.post('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user,
             newArtwork = {};
 
-        // TODO: validation
+        // TODO: validation... or let the model validator handle it?
 
         newArtwork.author_name = req.body.author_name;
         newArtwork.title = req.body.title;
@@ -153,10 +159,6 @@ module.exports = function(app) {
                 return res.redirect('back');
             }
 
-            if (collections.length < 1) {
-
-            }
-
             // TODO: once we support multiple collections, select
             // which collection to add to... for now, add to first
             collections[0].artwork.create(newArtwork, function(err, artwork) {
@@ -165,25 +167,9 @@ module.exports = function(app) {
                     req.flash('error', err.message);
                     return res.redirect('back');
                 }
-                return res.redirect('/'+user.username);
+                return res.redirect('/' + user.username);
             });
         });
-
-        // user.owned_artwork.create(newArtwork, function(err, artwork) {
-        //     if (err) {
-        //         // TODO: better user-facing error messages...
-        //         req.flash('error', err.message);
-        //         return res.redirect('back');
-        //     } else {
-        //         // artwork successfully, add it to collection
-        //         // TODO: once we support multiple collections, select
-        //         // which collection to add to... for now, add to first
-        //         user.collections(function(err, collections) {
-        //             collections.
-        //         });
-        //         return res.redirect('/'+user.username);
-        //     }
-        // });
     });
 
 
@@ -213,7 +199,7 @@ module.exports = function(app) {
             if (err) return res.sendStatus(404);
             user.updateAttribute('password', req.body.password, function(err, user) {
                 if (err) return res.sendStatus(404);
-                console.log('> password reset processed successfully');
+                debug('> password reset processed successfully');
                 res.render('response', {
                     title: 'Password reset success',
                     content: 'Your password has been reset successfully',
@@ -224,11 +210,8 @@ module.exports = function(app) {
         });
     });
 
-
-
-
-    // PROFILE route
-    // This route is last -- this way we can use the old /username thing
+    // PROFILE route (i.e. 'collection' for the moment)
+    // This route is handled last -- this way we can use /[username] as the route
     router.get('/:username', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
 

@@ -1,14 +1,15 @@
+var debug = require('debug')('Frame');
+
 module.exports = function(Frame) {
+    Frame.disableRemoteMethod('createChangeStream', true);
+
+    // whenever a Frame model is saved, broadcast an update event
     Frame.observe('after save', function(ctx, next) {
         if (ctx.instance) {
-            console.log('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
+            debug('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
             if (Frame.app.pubsub) {
-                Frame.app.pubsub.publish('/frame/updated/' + ctx.instance.id, ctx.instance);
+                Frame.app.pubsub.publish('/frame/' + ctx.instance.id + '/updated', ctx.instance);
             }
-        } else {
-            console.log('Updated %s matching %j',
-                ctx.Model.pluralModelName,
-                ctx.where);
         }
         next();
     });

@@ -49,7 +49,7 @@ $(function() {
     function fetchFrames() {
         console.log('fetchFrames');
         return $.get('/api/OpenframeUsers/' + window.USER_ID + '/all_frames').done(function(resp) {
-            allFrames = resp.result;
+            allFrames = resp.frames;
             if (currentFrame) {
                 currentFrame = _.find(allFrames, function(frame) {
                     return currentFrame.id === frame.id;

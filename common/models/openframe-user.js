@@ -1,71 +1,87 @@
-var loopback = require('loopback'),
-    disableAllMethods = require('../../helpers').disableAllMethods;
+var loopback = require('loopback');
 
 module.exports = function(OpenframeUser) {
-    // disableAllMethods(OpenframeUser, [
-    //     'find',
-    //     'findById',
-    //     'findOne',
-    //     'create',
-    //     'upsert',
-    //     'updateAttributes',
-    //     'deleteById',
-    //     'updateAll',
-    //     'count',
-    //     'login',
-
-    //     '__get__owned_frames',
-    //     '__findById__owned_frames',
-    //     '__destroyById__owned_frames',
-    //     '__updateById__owned_frames',
-    //     '__create__owned_frames',
-    //     '__delete__owned_frames',
-    //     '__count__owned_frames',
-
-    //     '__get__managed_frames',
-    //     '__findById__managed_frames',
-    //     '__destroyById__managed_frames',
-    //     '__updateById__managed_frames',
-    //     '__create__managed_frames',
-    //     '__delete__managed_frames',
-    //     '__count__managed_frames',
-
-    //     '__get__owned_artwork',
-    //     '__findById__owned_artwork',
-    //     '__destroyById__owned_artwork',
-    //     '__updateById__owned_artwork',
-    //     '__create__owned_artwork',
-    //     '__delete__owned_artwork',
-    //     '__count__owned_artwork',
-
-    //     '__get__authored_artwork',
-    //     '__findById__authored_artwork',
-    //     '__destroyById__authored_artwork',
-    //     '__updateById__authored_artwork',
-    //     '__create__authored_artwork',
-    //     '__delete__authored_artwork',
-    //     '__count__authored_artwork',
-
-    //     '__get__collections',
-    //     '__create__collections',
-    //     '__delete__collections',
-    //     '__count__collections'
-    // ]);
-    // OpenframeUser.disableRemoteMethod('create', true); // Removes (POST) /products
-    // OpenframeUser.disableRemoteMethod('upsert', true); // Removes (PUT) /products
-    // OpenframeUser.disableRemoteMethod('deleteById', true); // Removes (DELETE) /products/:id
-    // OpenframeUser.disableRemoteMethod("updateAll", true); // Removes (POST) /products/update
-    // OpenframeUser.disableRemoteMethod("__get__openframe_user_credentials", true); // Removes (PUT) /products/:id
-    // OpenframeUser.disableRemoteMethod('createChangeStream', true); // removes (GET|POST) /products/change-stream
-
-    // Maybe a custom method to get the main (i.e. first) collection?
-    // OpenframeUser.prototype.mainCollection = function() {
-
-    // }
 
 
     /**
-     * Override toJSON in order to display email address only for the logged-in user.
+     * Disable specific default remote methods
+     */
+
+    OpenframeUser.disableRemoteMethod('createChangeStream', true);
+
+
+    /**
+     * CUSTOM remote methods
+     */
+
+    // Get all frames, owned and managed
+    OpenframeUser.prototype.all_frames = function(cb) {
+        var self = this,
+            allFrames;
+        var ownedFrames = self.owned_frames(function(err, ownFrames) {
+            ownFrames = ownFrames || [];
+            self.managed_frames(function(err, manFrames) {
+                manFrames = manFrames || [];
+                allFrames = ownFrames.concat(manFrames);
+                cb(null, allFrames);
+            });
+        });
+    };
+
+    // Expose all_frames remote method
+    OpenframeUser.remoteMethod(
+        'all_frames', {
+            description: 'Get all frames (owned and managed) by this user.',
+            accepts: [],
+            http: {
+                verb: 'get',
+                path: '/all_frames'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'frames',
+                type: 'Array'
+            }
+        }
+    );
+
+    // Get the first collection for this user -- this will be the 'primary' user
+    OpenframeUser.prototype.primary_collection = function(cb) {
+        var self = this,
+            collection;
+        var collections = self.collections({
+            include: {
+                relation: 'artwork',
+                scope: {
+                    order: 'created DESC'
+                }
+            }
+        }, function(err, cols) {
+            collection = cols && cols.length ? cols[0] : [];
+            cb(null, collection);
+        });
+    };
+
+    // Expose primary_collection remote method
+    OpenframeUser.remoteMethod(
+        'primary_collection', {
+            description: 'Get the first collection for this user.',
+            accepts: [],
+            http: {
+                verb: 'get',
+                path: '/collections/primary'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'collection',
+                type: 'Array'
+            }
+        }
+    );
+
+    /**
+     * Override toJSON in order to remove inclusion of email address for users that are
+     * not the currently logged-in user.
      *
      * @return {Object} Plain JS Object which will be transformed to JSON for output.
      */
@@ -85,39 +101,6 @@ module.exports = function(OpenframeUser) {
     }
 
 
-    /**
-     * Get all frames, owned and managed
-     */
-    OpenframeUser.prototype.all_frames = function(cb) {
-        console.log(this);
-        var self = this, allFrames;
-        var ownedFrames = self.owned_frames(function(err, ownFrames) {
-            ownFrames = ownFrames || [];
-            self.managed_frames(function(err, manFrames) {
-                manFrames = manFrames || [];
-                allFrames = ownFrames.concat(manFrames);
-                cb(null, allFrames);
-            });
-        });
-    };
 
-    /**
-     * Expose all_frames remote method
-     */
-    OpenframeUser.remoteMethod(
-        'all_frames', {
-            description: 'Get all frames (owned and managed) by this user.',
-            accepts: [],
-            http: {
-                verb: 'get',
-                path: '/all_frames'
-            },
-            isStatic: false,
-            returns: {
-                arg: 'result',
-                type: 'OpenframeUser'
-            }
-        }
-    );
 };
 
