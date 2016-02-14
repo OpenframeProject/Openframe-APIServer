@@ -25,10 +25,10 @@ module.exports = {
       "disableStackTrace": false
     }
   },
-  "pubsub_protocol": "http",
-  "pubsub_host": "0.0.0.0",
-  "pubsub_port": 8889,
-  "pubsub_path": "/faye",
-  "cookieSecret": "246bace2-38cb-4138-85d9-0ae8160b07c8",
+  "pubsub_protocol": process.env.PS_PROTOCOL || "http",
+  "pubsub_host": process.env.PS_HOST || "localhost",
+  "pubsub_port": process.env.PS_PORT || 8889,
+  "pubsub_path": process.env.PS_PATH || "/faye",
+  "cookieSecret": process.env.COOKIE_SECRECT || "cce6829c-328e-4e38-aa5c-f4714ac93914",
   "legacyExplorer": false
 };

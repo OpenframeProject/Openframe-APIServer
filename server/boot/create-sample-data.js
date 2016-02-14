@@ -1,3 +1,5 @@
+var debug = require('debug')('sample-data');
+
 module.exports = function(app) {
     app.dataSources.memoryDb.automigrate('Artwork', function(err) {
         if (err) throw err;
@@ -6,7 +8,7 @@ module.exports = function(app) {
         // !!! FOR TESTING ONLY !!!
         wipeData()
             .then(function(info) {
-                console.log('wiped!', info);
+                debug('wiped!', info);
 
                 Promise.all([
                         createOpenframeUsers(),
@@ -15,14 +17,14 @@ module.exports = function(app) {
                     ])
                     .then(formRelationships)
                     .catch(function(err) {
-                        console.log('ERROR!', err);
+                        debug('ERROR!', err);
                     });
             });
 
 
 
         function wipeData() {
-            console.log('wipeData');
+            debug('wipeData');
             var usersWipe = new Promise(function(resolve, reject) {
                 app.models.OpenframeUser.destroyAll(function(err, info) {
                     if (err) reject(err);
@@ -64,7 +66,7 @@ module.exports = function(app) {
                     full_name: 'Missy Elliot'
                 }, ], function(err, users) {
                     if (err) reject(err);
-                    console.log('Users created');
+                    debug('Users created');
                     resolve(users);
                 });
             });
@@ -83,7 +85,7 @@ module.exports = function(app) {
                     settings: {}
                 }, ], function(err, frames) {
                     if (err) reject(err);
-                    console.log('Frames created');
+                    debug('Frames created');
                     resolve(frames);
                 });
             });
@@ -126,14 +128,14 @@ module.exports = function(app) {
                     'ownerId': 3
                 }, ], function(err, artwork) {
                     if (err) reject(err);
-                    console.log('Artworks created');
+                    debug('Artworks created');
                     resolve(artwork);
                 });
             });
         }
 
         function formRelationships(values) {
-            console.log('formRelationships', values);
+            debug('formRelationships', values);
             var users = values[0],
                 artworks = values[1],
                 frames = values[2];
@@ -148,7 +150,7 @@ module.exports = function(app) {
                 user.collections.create({
                     name: 'Main Collection'
                 }, function(err, collection) {
-                    console.log('user.collection(): ', user.collections());
+                    debug('user.collection(): ', user.collections());
                     collection.artwork.add(artworks[0]);
                     collection.artwork.add(artworks[1]);
                     collection.artwork.add(artworks[2]);

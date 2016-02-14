@@ -8,6 +8,9 @@
     "start-pubsub": "node ./node_modules/openframe-pubsubserver/start",
     "pretest": "eslint ."
   },
+  "bin": {
+    "openframe-apiserver": "./cli.js"
+  },
   "author": {
     "name": "Jonathan Wohl",
     "url": "http://jonathanwohl.com"
@@ -26,10 +29,12 @@
   "dependencies": {
     "bcrypt": "^0.8.5",
     "bootstrap": "^3.3.6",
+    "commander": "^2.9.0",
     "compression": "^1.0.3",
     "connect-ensure-login": "^0.1.1",
     "cors": "^2.5.2",
     "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
     "ejs": "^2.4.1",
     "express-flash": "0.0.2",
     "express-session": "^1.13.0",

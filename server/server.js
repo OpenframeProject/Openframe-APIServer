@@ -1,10 +1,8 @@
-'use strict';
-
 var loopback = require('loopback'),
     boot = require('loopback-boot'),
     bodyParser = require('body-parser'),
     path = require('path'),
-    config = require('./providers.json'),
+    providers = require('./providers.json'),
     /**
      * Flash messages for passport
      *
@@ -17,6 +15,7 @@ var loopback = require('loopback'),
 
     // EXPORT THE APP
     app = module.exports = loopback();
+
 
 
 // Create an instance of PassportConfigurator with the app instance
@@ -67,8 +66,8 @@ passportConfigurator.setupModels({
 });
 
 // Configure passport strategies for third party auth providers
-for (var s in config) {
-    var c = config[s];
+for (var s in providers) {
+    var c = providers[s];
     c.session = c.session !== false;
     passportConfigurator.configureProvider(s, c);
 }

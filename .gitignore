@@ -4,3 +4,4 @@ log/*
 npm-debug.log
 coverage/*
 .DS_Store
+.env
