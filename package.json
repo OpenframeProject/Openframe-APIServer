@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node .",
     "start-pubsub": "node ./node_modules/openframe-pubsubserver/start",
-    "pretest": "eslint ."
+    "pretest": "eslint .",
+    "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
   "bin": {
     "openframe-apiserver": "./cli.js"
