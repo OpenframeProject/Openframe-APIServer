@@ -20,7 +20,7 @@ module.exports = {
   },
   "AccessToken": {
     "dataSource": process.env.LOOPBACK_DATASOURCE_NAME || "memoryDb",
-    "public": false
+    "public": true
   },
   "ACL": {
     "dataSource": process.env.LOOPBACK_DATASOURCE_NAME || "memoryDb",
