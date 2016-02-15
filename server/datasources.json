@@ -2,12 +2,5 @@
   "memoryDb": {
     "name": "memoryDb",
     "connector": "memory"
-  },
-  "mongoDb": {
-    "host": "localhost",
-    "port": 27017,
-    "database": "ofsl",
-    "name": "mongoDb",
-    "connector": "mongodb"
   }
 }

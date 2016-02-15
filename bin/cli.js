@@ -24,15 +24,8 @@ if (!program.verbose) {
 
 if (program.pubsub) {
     debug('Starting pubsub server...');
-    exec('npm run start-pubsub', (err, stdout, stderr) => {
-        debug(`stdout: ${stdout}`);
-        debug(`stderr: ${stderr}`);
-        if (err) {
-            debug(`err: ${err}`);
-        } else {
-            debug(`started?`);
-        }
-    });
+    ps = require('openframe-pubsubserver');
+    ps.start();
 }
 
 // load env vars from a .env file
