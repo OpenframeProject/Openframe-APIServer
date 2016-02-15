@@ -1,5 +1,5 @@
 var faye = require('faye'),
-    debug = require('debug')('pubsub');
+    debug = require('debug')('openframe:apiserver:pubsub');
 
 // Note: the 'app' arg is called 'app' elsewhere in loopback
 module.exports = function(app) {

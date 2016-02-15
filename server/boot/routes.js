@@ -1,4 +1,4 @@
-var debug = require('debug')('routes'),
+var debug = require('debug')('openframe:apiserver:routes'),
     ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn,
     loopback = require('loopback'),
     flash = require('express-flash'),

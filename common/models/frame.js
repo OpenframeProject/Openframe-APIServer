@@ -1,4 +1,4 @@
-var debug = require('debug')('Frame');
+var debug = require('debug')('openframe:apiserver:model:Frame');
 
 module.exports = function(Frame) {
     Frame.disableRemoteMethod('createChangeStream', true);

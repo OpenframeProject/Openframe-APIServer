@@ -2,7 +2,7 @@
 
 var program = require('commander'),
     exec = require('child_process').exec,
-    debug = require('debug')('cli'),
+    debug = require('debug')('openframe:apiserver:cli'),
     p = require('../package.json'),
     version = p.version.split('.').shift(),
     conf = {};

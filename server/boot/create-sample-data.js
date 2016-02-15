@@ -1,4 +1,4 @@
-var debug = require('debug')('sample-data');
+var debug = require('debug')('openframe:apiserver:sample-data');
 
 module.exports = function(app) {
     app.dataSources.memoryDb.automigrate('Artwork', function(err) {

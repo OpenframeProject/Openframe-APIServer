@@ -4,7 +4,8 @@
   "description": "The Openframe API Server.",
   "main": "server/server.js",
   "scripts": {
-    "start": "./bin/cli.js",
+    "start": "./bin/cli.js -p",
+    "start-api": "./bin/cli.js",
     "start-pubsub": "node ./node_modules/openframe-pubsubserver/start",
     "pretest": "eslint .",
     "patch-release": "npm version patch && npm publish && git push --follow-tags"
