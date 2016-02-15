@@ -40,6 +40,16 @@ If you're not running an instance of the pubsub server separately, you can start
 $ openframe-apiserver -p
 ```
 
+Various configuration can be set using a `.env` file using the `-f` flag. An example .env file might specify the port on which to expose the API server, and specify a host and port on which the API server can expect to find the pubsub server.
+
+```
+# in .env file...
+PORT=1234
+
+# indicate how the API server should connect to the pubsub server
+PS_HOST='pubsub.openframe.io'
+PS_PORT=2345
+```
 
 ### Local Development
 
