@@ -1,7 +1,8 @@
 var debug = require('debug')('openframe:apiserver:sample-data');
 
 module.exports = function(app) {
-    app.dataSources.memoryDb.automigrate('Artwork', function(err) {
+    var dataSource = process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb';
+    app.dataSources[dataSource].automigrate('Artwork', function(err) {
         if (err) throw err;
 
         // WIPE DATA ON APP START
