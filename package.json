@@ -48,14 +48,14 @@
     "loopback-component-passport": "^1.5.0",
     "loopback-connector-mongodb": "^1.13.3",
     "loopback-datasource-juggler": "^2.7.0",
+    "openframe-pubsubserver": "^0.1.5",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "serve-favicon": "^2.0.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "eslint": "^2.0.0",
-    "openframe-pubsubserver": "^0.1.1"
+    "eslint": "^2.0.0"
   },
   "keywords": [
     "openframe"
