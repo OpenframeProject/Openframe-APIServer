@@ -1,6 +1,6 @@
 {
   "name": "openframe-apiserver",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "The Openframe API Server.",
   "main": "server/server.js",
   "scripts": {
