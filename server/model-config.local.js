@@ -61,5 +61,9 @@ module.exports = {
     'OpenframeAccessToken': {
         'dataSource': process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb',
         'public': false
+    },
+    'Channel': {
+        'dataSource': process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb',
+        'public': false
     }
 };
