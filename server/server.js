@@ -30,9 +30,9 @@ app.set('json spaces', 2); // format json responses for easier viewing
 app.set('views', path.resolve(__dirname, 'views'));
 
 app.use(loopback.token({
-  cookies: ['access_token'],
-  headers: ['access_token'],
-  params: ['access_token']
+    cookies: ['access_token'],
+    headers: ['access_token'],
+    params: ['access_token']
 }));
 
 // boot scripts mount components like REST API
@@ -47,7 +47,7 @@ app.middleware('parse', bodyParser.urlencoded({
 
 // The access token is only available after boot
 app.middleware('auth', loopback.token({
-    model: app.models.OpenframeAccessToken
+    model: app.models.AccessToken
 }));
 
 app.middleware('session:before', loopback.cookieParser(app.get('cookieSecret')));
@@ -102,4 +102,3 @@ app.start = function() {
 if (require.main === module) {
     app.start();
 }
-

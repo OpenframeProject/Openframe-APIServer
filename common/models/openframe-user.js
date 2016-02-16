@@ -8,7 +8,39 @@ module.exports = function(OpenframeUser) {
      */
 
     OpenframeUser.disableRemoteMethod('createChangeStream', true);
+    OpenframeUser.disableRemoteMethod('updateAll', true);
 
+    OpenframeUser.disableRemoteMethod('__count__accessTokens', false);
+    OpenframeUser.disableRemoteMethod('__create__accessTokens', false);
+    OpenframeUser.disableRemoteMethod('__delete__accessTokens', false);
+    OpenframeUser.disableRemoteMethod('__destroyById__accessTokens', false);
+    OpenframeUser.disableRemoteMethod('__findById__accessTokens', false);
+    OpenframeUser.disableRemoteMethod('__get__accessTokens', false);
+    OpenframeUser.disableRemoteMethod('__updateById__accessTokens', false);
+
+    OpenframeUser.disableRemoteMethod('__count__credentials', false);
+    OpenframeUser.disableRemoteMethod('__create__credentials', false);
+    OpenframeUser.disableRemoteMethod('__delete__credentials', false);
+    OpenframeUser.disableRemoteMethod('__destroyById__credentials', false);
+    OpenframeUser.disableRemoteMethod('__findById__credentials', false);
+    OpenframeUser.disableRemoteMethod('__get__credentials', false);
+    OpenframeUser.disableRemoteMethod('__updateById__credentials', false);
+
+    OpenframeUser.disableRemoteMethod('__count__credentials', false);
+    OpenframeUser.disableRemoteMethod('__create__credentials', false);
+    OpenframeUser.disableRemoteMethod('__delete__credentials', false);
+    OpenframeUser.disableRemoteMethod('__destroyById__credentials', false);
+    OpenframeUser.disableRemoteMethod('__findById__credentials', false);
+    OpenframeUser.disableRemoteMethod('__get__credentials', false);
+    OpenframeUser.disableRemoteMethod('__updateById__credentials', false);
+
+    OpenframeUser.disableRemoteMethod('__count__identities', false);
+    OpenframeUser.disableRemoteMethod('__create__identities', false);
+    OpenframeUser.disableRemoteMethod('__delete__identities', false);
+    OpenframeUser.disableRemoteMethod('__destroyById__identities', false);
+    OpenframeUser.disableRemoteMethod('__findById__identities', false);
+    OpenframeUser.disableRemoteMethod('__get__identities', false);
+    OpenframeUser.disableRemoteMethod('__updateById__identities', false);
 
     /**
      * CUSTOM remote methods
@@ -18,10 +50,10 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
             allFrames;
-        var ownedFrames = self.owned_frames(function(err, ownFrames) {
-            ownFrames = ownFrames || [];
-            self.managed_frames(function(err, manFrames) {
-                manFrames = manFrames || [];
+        self.owned_frames(function(err, _ownFrames) {
+            var ownFrames = _ownFrames || [];
+            self.managed_frames(function(err, _manFrames) {
+                var manFrames = _manFrames || [];
                 allFrames = ownFrames.concat(manFrames);
                 cb(null, allFrames);
             });
@@ -47,9 +79,9 @@ module.exports = function(OpenframeUser) {
 
     // Get the first collection for this user -- this will be the 'primary' user
     OpenframeUser.prototype.primary_collection = function(cb) {
-        var self = this,
-            collection;
-        var collections = self.collections({
+        var collection;
+
+        this.collections({
             include: {
                 relation: 'artwork',
                 scope: {
@@ -98,7 +130,7 @@ module.exports = function(OpenframeUser) {
         }
 
         return obj;
-    }
+    };
 
 
 

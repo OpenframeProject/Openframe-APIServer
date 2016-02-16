@@ -1,6 +1,6 @@
 {
   "name": "Collection",
-  "plural": "Collections",
+  "plural": "collections",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {

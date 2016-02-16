@@ -12,14 +12,14 @@ module.exports = function(app) {
                 debug('wiped!', info);
 
                 Promise.all([
-                        createOpenframeUsers(),
-                        createArtwork(),
-                        createFrames()
-                    ])
-                    .then(formRelationships)
-                    .catch(function(err) {
-                        debug('ERROR!', err);
-                    });
+                    createOpenframeUsers(),
+                    createArtwork(),
+                    createFrames()
+                ])
+                .then(formRelationships)
+                .catch(function(err) {
+                    debug('ERROR!', err);
+                });
             });
 
 
@@ -171,4 +171,3 @@ module.exports = function(app) {
 
     });
 };
-

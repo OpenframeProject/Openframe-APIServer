@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 var program = require('commander'),
-    exec = require('child_process').exec,
     debug = require('debug')('openframe:apiserver:cli'),
     p = require('../package.json'),
     version = p.version.split('.').shift(),

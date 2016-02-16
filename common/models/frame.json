@@ -1,6 +1,6 @@
 {
   "name": "Frame",
-  "plural": "Frames",
+  "plural": "frames",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {

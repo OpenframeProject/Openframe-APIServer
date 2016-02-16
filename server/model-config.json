@@ -50,10 +50,6 @@
     "dataSource": "memoryDb",
     "public": false
   },
-  "Stream": {
-    "dataSource": "memoryDb",
-    "public": false
-  },
   "OpenframeUserIdentity": {
     "dataSource": "memoryDb",
     "public": false
@@ -65,5 +61,9 @@
   "OpenframeAccessToken": {
     "dataSource": "memoryDb",
     "public": false
+  },
+  "Channel": {
+    "dataSource": "memoryDb",
+    "public": true
   }
 }

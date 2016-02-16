@@ -1,6 +1,6 @@
 {
   "name": "Artwork",
-  "plural": "Artwork",
+  "plural": "artwork",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {

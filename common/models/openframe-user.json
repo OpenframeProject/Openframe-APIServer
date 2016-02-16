@@ -1,6 +1,6 @@
 {
   "name": "OpenframeUser",
-  "plural": "OpenframeUsers",
+  "plural": "users",
   "base": "User",
   "idInjection": true,
   "options": {
@@ -37,6 +37,23 @@
       "type": "hasAndBelongsToMany",
       "model": "Frame"
     },
+    "owned_channels": {
+      "type": "hasMany",
+      "model": "Channel",
+      "foreignKey": "ownerId"
+    },
+    "managed_channels": {
+      "type": "hasAndBelongsToMany",
+      "model": "Channel",
+      "foreignKey": "managersId",
+      "through": "ChannelManager"
+    },
+    "subscribed_channels": {
+      "type": "hasAndBelongsToMany",
+      "model": "Channel",
+      "foreignKey": "subscribersId",
+      "through": "ChannelSubscriber"
+    },
     "collections": {
       "type": "hasMany",
       "model": "Collection",
@@ -61,46 +78,47 @@
       "type": "hasMany",
       "model": "OpenframeUserCredential",
       "foreignKey": "userId"
-    },
-    "accessTokens": {
-      "type": "hasMany",
-      "model": "OpenframeAccessToken",
-      "foreignKey": "userId"
-    },
-    "roleMappings": {
-      "type": "hasMany",
-      "model": "RoleMapping",
-      "foreignKey": "principalId"
     }
   },
-  "acls": [{
-    "accessType": "*",
-    "principalType": "ROLE",
-    "principalId": "$everyone",
-    "permission": "DENY"
-  }, {
-    "accessType": "EXECUTE",
-    "principalType": "ROLE",
-    "principalId": "$authenticated",
-    "permission": "ALLOW",
-    "property": ["find", "findById", "findOne"]
-  }, {
-    "accessType": "READ",
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW"
-  }, {
-    "accessType": "WRITE",
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW"
-  }, {
-    "accessType": "EXECUTE",
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": ["all_frames"]
-  }],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "find",
+        "findById",
+        "findOne"
+      ]
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": [
+        "all_frames"
+      ]
+    }
+  ],
   "methods": {}
 }
-

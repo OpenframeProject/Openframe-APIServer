@@ -16,7 +16,7 @@ $(function() {
         framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text());
 
     function fetchUser() {
-        return $.get('/api/OpenframeUsers/' + window.USER_ID, {
+        return $.get('/api/users/' + window.USER_ID, {
                 'filter': {
                     'include': [
                         {
@@ -37,7 +37,7 @@ $(function() {
     }
 
     function fetchCollection(id) {
-        return $.get('/api/OpenframeUsers/' + window.USER_ID + '/collections/' + id, {
+        return $.get('/api/users/' + window.USER_ID + '/collections/' + id, {
             'filter': {
                 'include': [
                     'artwork'
@@ -48,7 +48,7 @@ $(function() {
 
     function fetchFrames() {
         console.log('fetchFrames');
-        return $.get('/api/OpenframeUsers/' + window.USER_ID + '/all_frames').done(function(resp) {
+        return $.get('/api/users/' + window.USER_ID + '/all_frames').done(function(resp) {
             allFrames = resp.frames;
             if (currentFrame) {
                 currentFrame = _.find(allFrames, function(frame) {
@@ -63,7 +63,7 @@ $(function() {
 
     function pushArtwork(frameId, artworkData) {
         return $.ajax({
-            url: '/api/Frames/' + frameId + '/current_artwork',
+            url: '/api/frames/' + frameId + '/current_artwork',
             method: 'PUT',
             data: artworkData
         });

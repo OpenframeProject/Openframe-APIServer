@@ -12,7 +12,7 @@ if (process.env.LOOPBACK_DATASOURCE_CONNECTOR) {
         url: process.env.LOOPBACK_DATASOURCE_URL || null,
         username: process.env.LOOPBACK_DATASOURCE_USERNAME || null,
         password: process.env.LOOPBACK_DATASOURCE_PASSWORD || null
-    }
+    };
 }
 
 module.exports = db_conf;
