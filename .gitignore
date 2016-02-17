@@ -5,3 +5,4 @@ npm-debug.log
 coverage/*
 .DS_Store
 .env
+server/boot/create-sample-data.js
