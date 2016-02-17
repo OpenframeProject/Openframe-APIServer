@@ -10,6 +10,12 @@ module.exports = function(app) {
     // this needs to be here in order to show flash messages from passport
     router.use(flash());
 
+    // add path to response locals
+    router.use(function(req, res, next) {
+        res.locals.path = req.path;
+        next();
+    });
+
     // index route redirects to user profile for the moment (requires login)
     router.get('/', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
@@ -208,6 +214,21 @@ module.exports = function(app) {
                 });
             });
         });
+    });
+
+    // Stream route
+    router.get('/stream', ensureLoggedIn('/login'), function(req, res, next) {
+        var user = req.user;
+
+        // For the moment, only let people view their own profile
+        // if (req.params.username !== user.username) {
+        //     return res.redirect('/' + user.username);
+        // }
+
+        return res.render('stream', {
+            user: user
+        });
+
     });
 
     // PROFILE route (i.e. 'collection' for the moment)

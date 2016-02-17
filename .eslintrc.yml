@@ -69,6 +69,8 @@ rules:
 env:
   # allow node env globals
   node: true
+  browser: true
+  jquery: true
   # allow commonjs module definition globals (e.g. require, module.exports)
   commonjs: true
   es6: true
@@ -77,3 +79,4 @@ env:
 
 
 globals:
+  _: true

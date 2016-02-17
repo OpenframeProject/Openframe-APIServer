@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>OpenFrame / <%= user.username %></title>
+    <title>OpenFrame / <%= user.username %> / stream</title>
 
     <% include includes/head-config %>
 </head>
@@ -13,8 +13,8 @@
     <div class="container container-centered-artwork">
         <div class="row row-navigation">
 		    <ul class="tabs">
-                <li><a href="/stream">Stream</a></li>
-		  		<li class="active"><a href="<%= user.username %> ">Collection</a></li>
+		  		<li class="active"><a href="/stream">Stream</a></li>
+                <li><a href="/<%= user.username %>">Collection</a></li>
 		  		<li><a href="/add-artwork">Add Artwork</a></li>
 			</ul>
 		</div>

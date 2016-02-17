@@ -1,22 +1,19 @@
-_.templateSettings = {
-    evaluate:    /\{\{(.+?)\}\}/g,
-    interpolate: /\{\{=(.+?)\}\}/g,
-    escape:      /\{\{-(.+?)\}\}/g
-};
-
-$(function() {
-    var collections = [],
-        ownedFrames = [],
-        managedFrames = [],
+$(function( ) {
+    var _user = {},
+        collections = [],
         allFrames = [],
         currentFrame,
+        currentCollection,
         $rowCollection = $('.row-collection'),
         $frameDropdown = $('.dropdown-frames'),
         artworkTemplate = _.template($('#ArtworkTemplate').text()),
         framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text());
 
-    function fetchUser() {
-        return $.get('/api/users/' + window.USER_ID, {
+    function fetchUser(includeCollections) {
+        console.log('fetchUser', includeCollections);
+        var filter = {};
+        if (includeCollections) {
+            filter = {
                 'filter': {
                     'include': [
                         {
@@ -29,11 +26,9 @@ $(function() {
                         }
                     ]
                 }
-            }).done(function(user) {
-                console.log(user);
-                collections = user.collections;
-                currentCollection = collections[0];
-            });
+            };
+        }
+        return $.get('/api/users/' + window.USER_ID, filter);
     }
 
     function fetchCollection(id) {
@@ -42,6 +37,17 @@ $(function() {
                 'include': [
                     'artwork'
                 ]
+            }
+        });
+    }
+
+    // Return the current stream.
+    // TODO: pagination
+    function fetchStream(skip) {
+        skip = skip || 0;
+        return $.get('/api/artwork/stream', {
+            'filter': {
+                'skip': skip
             }
         });
     }
@@ -78,8 +84,8 @@ $(function() {
     }
 
     // render artworks to screen
-    function renderCollection() {
-        var artworks = currentCollection.artwork;
+    function renderCollection(artworks) {
+        console.log('renderCollection', artworks);
         if (!artworks || !artworks.length) return;
         artworks.forEach(function(artwork) {
             $rowCollection.append(artworkTemplate(artwork));
@@ -103,7 +109,7 @@ $(function() {
         $(document).on('click', '.btn-push', function(e) {
             var artworkId = $(this).data('artworkid'),
                 // get the artwork data from the collection
-                artwork = _.find(currentCollection.artwork, function(artworkData) {
+                artwork = _.find(currentCollection, function(artworkData) {
                     return artworkData.id === artworkId;
                 });
 
@@ -125,25 +131,51 @@ $(function() {
             if (frameId) {
                 selectFrame(frameId);
             }
-        })
+        });
     }
 
     function init() {
         bindEvents();
-        var userDfd = fetchUser(),
-            framesDfd = fetchFrames();
 
-        $.when(userDfd, framesDfd)
-            .done(function() {
-                renderCollection();
-                renderFrameDropdown();
-            })
-            .fail(function(err) {
-                console.log(err);
-            });
+        fetchUser(window.PATH !== '/stream').then(function(user) {
+            console.log(user);
+            _user = user;
+            if (user.collections) {
+                collections = user.collections;
+                currentCollection = collections[0].artwork;
+                renderCollection(currentCollection);
+            }
+        }).fail(function(err) {
+            console.log(err);
+        });
+
+        fetchFrames().then(function(frames) {
+            renderFrameDropdown();
+        }).fail(function(err) {
+            console.log(err);
+        });
+
+        switch (window.PATH) {
+            case '/stream':
+                fetchStream().then(function(stream) {
+                    // collections = [stream.artwork];
+                    currentCollection = stream.artwork;
+                    renderCollection(currentCollection);
+                }).fail(function(err) {
+                    console.log(err);
+                });
+                break;
+            case '/' + window.USERNAME:
+
+                break;
+            default:
+
+        }
+
+        var userDfd = window.PATH === '/stream' ? fetchUser() : fetchUser(true),
+            framesDfd = fetchFrames();
 
     }
 
     init();
 });
-

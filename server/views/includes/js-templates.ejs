@@ -1,0 +1,41 @@
+<script type="text/template" id="ArtworkTemplate">
+    <div class="tile-item tile-artwork">
+        <div class="bg-image">
+            <img src="{{- thumb_url }}">
+            <div class="artwork-interface">
+                <div class="artist-label"><h4>{{- author_name }}</h4></div>
+                <div class="artwork-label"><h4>{{- title }}</h4></div>
+                <div class="btn btn-circle btn-push" data-artworkid="{{- id }}">
+                    <img src="../img/arrow.svg">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="FramesDropdownTemplate">
+    <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <div class="frame-list-item {{= currentFrame.connected ? 'frame-list-item--connected' : '' }}">
+            <div class="frame-list-item__name">{{- currentFrame.name }} <span class="caret frame-list-item--caret"></span></div>
+            {{ if (currentFrame._current_artwork) { }}
+                <div class="frame-list-item__status">{{- currentFrame._current_artwork.author_name }}: {{- currentFrame._current_artwork.title }}</div>
+            {{ } }}
+        </div>
+    </a>
+    <ul class="dropdown-menu">
+        {{ frames.forEach(function(frame) { }}
+            {{ if (frame.id !== currentFrame.id) { }}
+            <li>
+                <a href="#/frame/{{- frame.id }}" class="frame-select-link" data-frameid="{{- frame.id }}">
+                    <div class="frame-list-item {{= frame.connected ? 'frame-list-item--connected' : '' }}" >
+                        <div class="frame-list-item__name">{{- frame.name }}</div>
+                        {{ if (frame._current_artwork) { }}
+                            <div class="frame-list-item__status">{{- frame._current_artwork.author_name }}: {{- frame._current_artwork.title }}</div>
+                        {{ } }}
+                    </div>
+                </a>
+            </li>
+            {{ } }}
+        {{ }); }}
+    </ul>
+</script>
