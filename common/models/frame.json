@@ -32,8 +32,8 @@
       "type": "object",
       "required": true,
       "default": {
-        "openframe-image": "git+https://git@github.com/OpenframeProject/Openframe-Image.git",
-        "openframe-glslviewer": "git+https://git@github.com/OpenframeProject/Openframe-glslViewer.git"
+        "openframe-image": "^0.1.0",
+        "openframe-glslviewer": "^0.1.0"
       }
     },
     "formats": {

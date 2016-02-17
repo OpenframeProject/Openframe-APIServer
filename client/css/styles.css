@@ -249,6 +249,16 @@ h4 {
     font-weight: normal;
 }
 
+.artwork-label .artwork-format {
+    text-transform: uppercase;
+    font-size: 9px;
+    margin-left: 8px;
+    opacity: .5;
+    position: relative;
+    top: -1px;
+    letter-spacing: 1px;
+}
+
 .btn-circle {
     position: absolute;
     bottom: 10px;
@@ -263,6 +273,14 @@ h4 {
     background-color: black;
     color: white;
     float: right;
+}
+
+.btn-push--disabled {
+    background-color: #ddd;
+}
+
+.btn-push--enabled {
+
 }
 
 .btn-push img {

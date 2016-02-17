@@ -88,6 +88,8 @@ $(function( ) {
         console.log('renderCollection', artworks);
         if (!artworks || !artworks.length) return;
         artworks.forEach(function(artwork) {
+            addFormatDisplayName(artwork);
+            artwork.disabled = currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
             $rowCollection.append(artworkTemplate(artwork));
         });
     }
@@ -103,10 +105,27 @@ $(function( ) {
         $frameDropdown.empty().html(framesDropdownTemplate(data));
     }
 
+    // add more human-friendly names for the standard three plugins
+    function addFormatDisplayName(artwork) {
+        switch (artwork.format) {
+            case 'openframe-glslviewer':
+                artwork.formatDisplayName = 'shader';
+                break;
+            case 'openframe-image':
+                artwork.formatDisplayName = 'image';
+                break;
+            case 'openframe-website':
+                artwork.formatDisplayName = 'website';
+                break;
+            default:
+                artwork.formatDisplayName = artwork.format;
+        }
+    }
+
     // zip through and setup event handlers
     function bindEvents() {
         console.log('bindEvents');
-        $(document).on('click', '.btn-push', function(e) {
+        $(document).on('click', '.btn-push--enabled', function(e) {
             var artworkId = $(this).data('artworkid'),
                 // get the artwork data from the collection
                 artwork = _.find(currentCollection, function(artworkData) {
@@ -137,44 +156,40 @@ $(function( ) {
     function init() {
         bindEvents();
 
-        fetchUser(window.PATH !== '/stream').then(function(user) {
-            console.log(user);
-            _user = user;
-            if (user.collections) {
-                collections = user.collections;
-                currentCollection = collections[0].artwork;
-                renderCollection(currentCollection);
+        fetchFrames().then(function(frames) {
+            renderFrameDropdown();
+            fetchUser(window.PATH !== '/stream').then(function(user) {
+                console.log(user);
+                _user = user;
+                if (user.collections) {
+                    collections = user.collections;
+                    currentCollection = collections[0].artwork;
+                    renderCollection(currentCollection);
+                }
+            }).fail(function(err) {
+                console.log(err);
+            });
+
+
+            switch (window.PATH) {
+                case '/stream':
+                    fetchStream().then(function(stream) {
+                        // collections = [stream.artwork];
+                        currentCollection = stream.artwork;
+                        renderCollection(currentCollection);
+                    }).fail(function(err) {
+                        console.log(err);
+                    });
+                    break;
+                case '/' + window.USERNAME:
+
+                    break;
+                default:
+
             }
         }).fail(function(err) {
             console.log(err);
         });
-
-        fetchFrames().then(function(frames) {
-            renderFrameDropdown();
-        }).fail(function(err) {
-            console.log(err);
-        });
-
-        switch (window.PATH) {
-            case '/stream':
-                fetchStream().then(function(stream) {
-                    // collections = [stream.artwork];
-                    currentCollection = stream.artwork;
-                    renderCollection(currentCollection);
-                }).fail(function(err) {
-                    console.log(err);
-                });
-                break;
-            case '/' + window.USERNAME:
-
-                break;
-            default:
-
-        }
-
-        var userDfd = window.PATH === '/stream' ? fetchUser() : fetchUser(true),
-            framesDfd = fetchFrames();
-
     }
 
     init();

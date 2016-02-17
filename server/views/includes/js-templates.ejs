@@ -4,8 +4,8 @@
             <img src="{{- thumb_url }}">
             <div class="artwork-interface">
                 <div class="artist-label"><h4>{{- author_name }}</h4></div>
-                <div class="artwork-label"><h4>{{- title }}</h4></div>
-                <div class="btn btn-circle btn-push" data-artworkid="{{- id }}">
+                <div class="artwork-label"><h4>{{- title }} <span class="artwork-format">{{- formatDisplayName }}</span></h4></div>
+                <div class="btn btn-circle btn-push {{- disabled }}" data-artworkid="{{- id }}">
                     <img src="../img/arrow.svg">
                 </div>
             </div>
