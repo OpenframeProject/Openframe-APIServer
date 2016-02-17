@@ -107,7 +107,7 @@ $(function() {
                     return artworkData.id === artworkId;
                 });
 
-            if (artwork) {
+            if (artwork && currentFrame) {
                 pushArtwork(currentFrame.id, artwork)
                     .then(function(resp) {
                         console.log(resp);
