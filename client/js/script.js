@@ -89,7 +89,7 @@ $(function( ) {
         if (!artworks || !artworks.length) return;
         artworks.forEach(function(artwork) {
             addFormatDisplayName(artwork);
-            artwork.disabled = currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+            artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
             $rowCollection.append(artworkTemplate(artwork));
         });
     }
