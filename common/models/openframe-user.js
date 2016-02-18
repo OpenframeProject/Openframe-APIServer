@@ -89,7 +89,7 @@ module.exports = function(OpenframeUser) {
                 }
             }
         }, function(err, cols) {
-            collection = cols && cols.length ? cols[0] : [];
+            collection = cols && cols.length ? cols[0] : null;
             cb(null, collection);
         });
     };
@@ -107,6 +107,41 @@ module.exports = function(OpenframeUser) {
             returns: {
                 arg: 'collection',
                 type: 'Array'
+            }
+        }
+    );
+
+    // Post a new artwork to this user's primary collection
+    OpenframeUser.prototype.primary_collection_add_artwork = function(artwork, cb) {
+        this.primary_collection(function(err, collection) {
+            if (collection) {
+                collection.artwork.create(artwork, function(err, artwork) {
+                    if (err) {
+                        return cb(err);
+                    }
+                    cb(null, artwork);
+                });
+            }
+        });
+    };
+
+    // Expose primary_collection remote method
+    OpenframeUser.remoteMethod(
+        'primary_collection_add_artwork', {
+            description: 'Add a new artwork to the user\'s primary collection',
+            accepts: {
+                arg: 'artwork',
+                type: 'Object',
+                http: { source: 'body' }
+            },
+            http: {
+                verb: 'post',
+                path: '/collections/primary/artwork'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'artwork',
+                type: 'Object'
             }
         }
     );
