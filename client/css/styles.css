@@ -107,6 +107,61 @@ body {
     color: #B2B2B2;
 }
 
+.btn-transparent {
+    background: transparent;
+    border: none !important;
+}
+
+.btn-frame-settings a:hover {
+    fill: black;
+}
+
+.icon-frame-settings {
+    padding-bottom: 4px;
+}
+
+/* Modal */
+
+.modal-dialog {
+    width: 500px;
+}
+
+.modal-backdrop {
+    opacity:0.2 !important;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-title {
+    text-align: center;
+    font-weight: 300;
+    font-size: 20px;
+    color: black;
+    padding-top: 14px;
+}
+
+.modal-body {
+    margin-top: 10px;
+}
+
+#SaveButton {    
+}
+
+.fine-copy {
+    font-weight: 200;
+    font-size: 12px;
+    color: black;
+}
+
+.with-fine-copy {
+    margin-bottom: 0px;
+}
+
+
+
+
 h2 {
     font-weight: normal;
     font-size: 18px;
@@ -170,7 +225,7 @@ a:hover {
 .active a {
     font-weight: 600;
     text-decoration: none;
-    padding-bottom: 5px;
+    padding-bottom: 6px;
     border-bottom: 3px solid black;
     color: black;
 }
@@ -242,7 +297,6 @@ h4 {
 
 .artist-label h4 {
     font-weight: 200;
-    opacity: .5;
 }
 
 .artwork-label h4 {
@@ -298,6 +352,17 @@ h4 {
 
 .container-centered-form {
     max-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.container-login {
+    margin-top: 50px;
+}
+
+.container-create-account {
     margin-top: 50px;
 }
 
@@ -359,4 +424,22 @@ select {
 .btn-default:hover {
     background-color: #333333;
     color: white;
+}
+
+.btn-red {
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: none;
+    color: #CB554D;
+    letter-spacing: 1.4px;
+    font-weight: normal;
+}
+
+.btn-red:hover{
+    border: 1px solid #CB554D;
+    background-color: transparent;
+    color: #CB554D;
 }

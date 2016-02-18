@@ -16,6 +16,7 @@
                 <li><a href="/stream">Stream</a></li>
 		  		<li class="active"><a href="<%= user.username %> ">Collection</a></li>
 		  		<li><a href="/add-artwork">Add Artwork</a></li>
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 			</ul>
 		</div>
 
@@ -23,6 +24,67 @@
 
 		</div>
 	</div>
+
+    <!-- Modal -->
+    <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Frame settings</h3>
+              </div>
+              <div class="modal-body container container-centered-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="/auth/local" method="POST">
+                            <div class="form-group">
+                                <label for="Username">Frame name</label>
+                                <input type="text" class="form-control" name="framename" id="Framename" placeholder="framename" autocapitalize="off">
+                            </div>
+                            <div class="form-group">
+                                <label class="with-fine-copy" for="Managers">Frame managers</label>
+                                <p class="fine-copy">Managers will be able to push artwork to this frame</p>
+                                <input type="text" class="form-control" name="managers" id="Managers" placeholder="add usernames separated by comma" autocapitalize="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="Extensions">Extensions installed in this frame</label>
+                                <input type="text" class="form-control" name="extensions" id="Extensions" placeholder="no extensions" autocapitalize="off" readonly="readonly">
+                            </div>
+                            <div class="form-group">
+                                <label for="sel1">Display rotation</label>
+                                <select class="form-control" id="rotation">
+                                    <option>0&#176;</option>
+                                    <option>90&#176;</option>
+                                    <option>180&#176;</option>
+                                    <option>270&#176;</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="SaveButton" href="#" class="btn btn-default" data="dismiss-modal">Save Changes</button>
+                            </div>
+                            <div class="switch-text">
+                                <p>Wanna get rid of this frame? <a href="/create-account" class="red">Delete frame</a>.</p>
+                            </div>
+                            <!--
+                            <div class="form-group">
+                                <button type="submit" id="DeleteFrame" href="#" class="btn btn-default btn-red" data="dismiss-modal">Delete frame</button>
+                            </div>
+                            -->
+                        </form>
+                    </div>
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <% include includes/js-templates %>
 
