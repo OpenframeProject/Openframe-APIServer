@@ -95,7 +95,8 @@
       "property": [
         "find",
         "findById",
-        "findOne"
+        "findOne",
+        "config"
       ]
     },
     {

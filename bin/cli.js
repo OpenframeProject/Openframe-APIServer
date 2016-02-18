@@ -26,10 +26,7 @@ require('dotenv').config(conf);
 
 if (program.pubsub) {
     debug('Starting pubsub server...');
-    ps = require('openframe-pubsubserver');
-    ps.start();
+    require('openframe-pubsubserver').start();
 }
 
-var server = require('../server/server');
-
-server.start();
+require('../server/server').start();

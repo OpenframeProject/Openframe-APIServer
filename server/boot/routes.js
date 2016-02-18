@@ -1,6 +1,5 @@
 var debug = require('debug')('openframe:apiserver:routes'),
     ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn,
-    loopback = require('loopback'),
     flash = require('express-flash'),
     auth = require('../lib/auth');
 
@@ -36,7 +35,7 @@ module.exports = function(app) {
         var user = req.user;
         user.accessTokens(function(err, tokens) {
             // use the first access token
-            token = tokens && tokens.length ? tokens[0] : null;
+            var token = tokens && tokens.length ? tokens[0] : null;
             if (token && token.id) {
                 res.cookie('access_token', token.id, {
                     signed: req.signedCookies ? true : false,
@@ -183,38 +182,38 @@ module.exports = function(app) {
     // TODO: Implement these...
 
     //show password reset form
-    app.get('/reset-password', function(req, res, next) {
-        if (!req.accessToken) return res.sendStatus(401);
-        res.render('password-reset', {
-            accessToken: req.accessToken.id
-        });
-    });
+    // app.get('/reset-password', function(req, res, next) {
+    //     if (!req.accessToken) return res.sendStatus(401);
+    //     res.render('password-reset', {
+    //         accessToken: req.accessToken.id
+    //     });
+    // });
 
-    //reset the user's pasword
-    app.post('/reset-password', function(req, res, next) {
-        if (!req.accessToken) return res.sendStatus(401);
+    // //reset the user's pasword
+    // app.post('/reset-password', function(req, res, next) {
+    //     if (!req.accessToken) return res.sendStatus(401);
 
-        //verify passwords match
-        if (!req.body.password ||
-            !req.body.confirmation ||
-            req.body.password !== req.body.confirmation) {
-            return res.sendStatus(400, new Error('Passwords do not match'));
-        }
+    //     //verify passwords match
+    //     if (!req.body.password ||
+    //         !req.body.confirmation ||
+    //         req.body.password !== req.body.confirmation) {
+    //         return res.sendStatus(400, new Error('Passwords do not match'));
+    //     }
 
-        User.findById(req.accessToken.userId, function(err, user) {
-            if (err) return res.sendStatus(404);
-            user.updateAttribute('password', req.body.password, function(err, user) {
-                if (err) return res.sendStatus(404);
-                debug('> password reset processed successfully');
-                res.render('response', {
-                    title: 'Password reset success',
-                    content: 'Your password has been reset successfully',
-                    redirectTo: '/',
-                    redirectToLinkText: 'Log in'
-                });
-            });
-        });
-    });
+    //     User.findById(req.accessToken.userId, function(err, user) {
+    //         if (err) return res.sendStatus(404);
+    //         user.updateAttribute('password', req.body.password, function(err, user) {
+    //             if (err) return res.sendStatus(404);
+    //             debug('> password reset processed successfully');
+    //             res.render('response', {
+    //                 title: 'Password reset success',
+    //                 content: 'Your password has been reset successfully',
+    //                 redirectTo: '/',
+    //                 redirectToLinkText: 'Log in'
+    //             });
+    //         });
+    //     });
+    // });
 
     // Stream route
     router.get('/stream', ensureLoggedIn('/login'), function(req, res, next) {

@@ -9,12 +9,36 @@ module.exports = function(app) {
         ps_host = app.get('pubsub_host'),
         ps_port = app.get('pubsub_port'),
         ps_path = app.get('pubsub_path'),
-        ps_url = ps_protocol + '://' + ps_host + ':' + ps_port + ps_path;
+        ps_token = app.get('pubsub_token'),
+        ps_url = ps_protocol + '://' + ps_host + ':' + ps_port + ps_path,
+        clientAuth = {
+            outgoing: function(message, callback) {
+                // Again, leave non-subscribe messages alone
+                if (message.channel !== '/meta/subscribe') {
+                    return callback(message);
+                }
+
+                // Add ext field if it's not present
+                if (!message.ext) {
+                    message.ext = {};
+                }
+
+                // Set the auth token
+                message.ext.accessToken = ps_token;
+
+                // Carry on and send the message to the server
+                callback(message);
+            }
+        };
+
+    app.set('ps_url', ps_url);
 
     // Once the loopback app has started, connect to the PubSub server
     app.on('started', function() {
         // add a pubsub client for the API app
         app.pubsub = new faye.Client(ps_url);
+
+        app.pubsub.addExtension(clientAuth);
 
         // handlers for pubsub connection events
         app.pubsub.on('transport:down', function() {
@@ -57,4 +81,3 @@ module.exports = function(app) {
         });
     });
 };
-

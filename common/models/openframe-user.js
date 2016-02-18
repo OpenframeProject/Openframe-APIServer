@@ -46,6 +46,30 @@ module.exports = function(OpenframeUser) {
      * CUSTOM remote methods
      */
 
+    // Get configuration via REST endpoint
+    OpenframeUser.config = function(cb) {
+        var config = {
+            pubsub_url: OpenframeUser.app.get('ps_url')
+        };
+        cb(null, config);
+    };
+
+    // Expose all_frames remote method
+    OpenframeUser.remoteMethod(
+        'config', {
+            description: 'Get some general config info from the API server.',
+            accepts: [],
+            http: {
+                verb: 'get',
+            },
+            isStatic: true,
+            returns: {
+                arg: 'config',
+                type: 'Object'
+            }
+        }
+    );
+
     // Get all frames, owned and managed
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
