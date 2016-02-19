@@ -66,6 +66,7 @@ body {
 
 .frame-list-item {
     position: relative;
+    top: -9px;
     padding: 0px 20px;
     float: left;
 }
@@ -90,9 +91,9 @@ body {
 
 .frame-list-item__name {
     color: black;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.75px;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.25px;
     text-transform: uppercase;
 }
 
@@ -100,8 +101,9 @@ body {
 }
 
 .frame-list-item__status {
-    font-size: 10px;
-    color: #aaa;
+    font-style: italic;
+    font-size: 14px;
+    color: #B2B2B2;
 }
 
 /*
@@ -168,6 +170,7 @@ body {
 .btn-transparent {
     background: transparent;
     border: none !important;
+    padding-top: 1px;
 }
 
 .btn-frame-settings a:hover {
@@ -557,12 +560,13 @@ select {
 
 .checkbox {
     margin-top: 22px;
+    margin-right: 2px;
 }
 
 .checkbox label {
     padding: 0px;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .toggle {
@@ -576,40 +580,51 @@ select {
     min-height: 0px;
     min-width: 0px;
     border: none;
-
-    width: 40px !important;
+    width: 36px !important;
     height: 20px !important;
 }
 
 .toggle-on.btn {
     background-color: white;
     color: green;
-    padding-left: 6px;
+    padding-left: 7px;
+    border: 1px solid #DEDEDE;
 }
 
-.toggle-off {
+.toggle-off.btn {
+    background-color: #f8f8f8;
+    color: #BEBEBE;
+    padding-left: 3px;
+    border: 1px solid #DEDEDE;
+    box-shadow: none;
 }
 
 .toggle-handle {
     height: 26px;
     margin-top: -5px;
-    width: 6px;
+    width: 8px;
     padding: 0px;
+    background-color: #B2B2B2;
 }
 
-
-.toggle-off.btn-xs {
-    padding-left: 50px;
-}
-
-.toggle:hover {
-    background-color: #DEDEDE;
+.toggle-off.btn:hover {
+    color: #B2B2B2;
     border-color: #DEDEDE;
+    background-color: #f8f8f8;
 }
 
+.toggle-on.btn:hover {
+    color: #B2B2B2;
+    border-color: #DEDEDE;
+    background-color: #f8f8f8;
+}
 
-
-
+.toggle-on.btn:active {
+    color: #B2B2B2;
+    border-color: #DEDEDE;
+    background-color: #f8f8f8;
+    box-shadow: none;
+}
 
 .btn-default:hover {
     background-color: #333333;
