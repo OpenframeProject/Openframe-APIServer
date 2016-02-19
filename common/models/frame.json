@@ -84,6 +84,12 @@
       "principalId": "$frameManager",
       "permission": "ALLOW",
       "property": "__update__current_artwork"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

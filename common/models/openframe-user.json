@@ -116,8 +116,15 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": [
-        "all_frames", "primary_collection_add_artwork"
+        "all_frames",
+        "primary_collection_add_artwork"
       ]
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

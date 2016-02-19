@@ -1,57 +1,67 @@
 {
-    "name": "Channel",
-    "plural": "channels",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-        "validateUpsert": true
+  "name": "Channel",
+  "plural": "channels",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "OpenframeUser",
+      "foreignKey": "ownerId"
     },
-    "properties": {
-        "name": {
-            "type": "string",
-            "required": true
-        }
+    "managers": {
+      "type": "hasAndBelongsToMany",
+      "model": "OpenframeUser",
+      "foreignKey": "managersId",
+      "through": "ChannelManager"
     },
-    "validations": [],
-    "relations": {
-        "owner": {
-            "type": "belongsTo",
-            "model": "OpenframeUser",
-            "foreignKey": "ownerId"
-        },
-        "managers": {
-            "type": "hasAndBelongsToMany",
-            "model": "OpenframeUser",
-            "foreignKey": "managersId",
-            "through": "ChannelManager"
-        },
-        "subscribers": {
-            "type": "hasAndBelongsToMany",
-            "model": "OpenframeUser",
-            "foreignKey": "subscribersId",
-            "through": "ChannelSubscriber"
-        },
-        "current_artwork": {
-            "type": "embedsOne",
-            "model": "Artwork",
-            "property": "current_artwork"
-        }
+    "subscribers": {
+      "type": "hasAndBelongsToMany",
+      "model": "OpenframeUser",
+      "foreignKey": "subscribersId",
+      "through": "ChannelSubscriber"
     },
-    "acls": [{
-        "accessType": "*",
-        "principalType": "ROLE",
-        "principalId": "$everyone",
-        "permission": "DENY"
-    }, {
-        "accessType": "READ",
-        "principalType": "ROLE",
-        "principalId": "$authenticated",
-        "permission": "ALLOW"
-    }, {
-        "accessType": "WRITE",
-        "principalType": "ROLE",
-        "principalId": "$owner",
-        "permission": "ALLOW"
-    }],
-    "methods": {}
+    "current_artwork": {
+      "type": "embedsOne",
+      "model": "Artwork",
+      "property": "current_artwork"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
 }
