@@ -23,7 +23,8 @@ app.set('views', path.resolve(__dirname, 'views'));
 app.use(loopback.token({
     cookies: ['access_token'],
     headers: ['access_token'],
-    params: ['access_token']
+    params: ['access_token'],
+    currentUserLiteral: 'current'
 }));
 
 // boot scripts mount components like REST API
