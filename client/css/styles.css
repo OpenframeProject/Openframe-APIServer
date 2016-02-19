@@ -46,18 +46,17 @@ body {
 }
 
 .navbar-default .navbar-nav>li>a {
-    color: black;
+    color: #B2B2B2;
     font-weight: 300;
-    font-size: 16px;
+    font-size: 14px;
+}
+
+.btn-logout {
+    color: #DEDEDE;
 }
 
 .navbar-default .navbar-collapse {
     border-top: 0;
-}
-
-
-.navbar-toggle {
-    margin-top: 16px;
 }
 
 .dropdown-frames {
@@ -73,9 +72,9 @@ body {
 
 .frame-list-item::before {
     content: "\2022";
-    color: #a00;
+    color: #CB554D;
     position: absolute;
-    left: -2px;
+    left: 4px;
     top: -1px;
 }
 
@@ -90,7 +89,10 @@ body {
 }
 
 .frame-list-item__name {
-    font-weight: 500;
+    color: black;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.75px;
     text-transform: uppercase;
 }
 
@@ -102,9 +104,65 @@ body {
     color: #aaa;
 }
 
+/*
+.btn-add-artwork {
+    width: 100%;
+    padding: 0px;
+    background-color: white;
+    border: 1px solid #DEDEDE;
+    height: 80px;
+    border-radius: 0px;
+    -webkit-transition: border 0.2s;
+    -moz-transition: border 0.2s;
+    -o-transition: border 0.2s;
+    transition: border 0.2s;
+}
 
-.btn-logout {
-    color: #B2B2B2;
+.btn-add-artwork:hover {
+    border: 1px solid black;
+}
+*/
+
+.btn-add-artwork {
+    width: 56px;
+    height: 56px;
+    padding: 0px;
+    background-color: white;
+    border: 1px solid #DEDEDE;
+    border-radius: 0px;
+    position: relative;
+    top: 10px;
+
+    -webkit-transition: scale .1s ease; /* Safari and Chrome */
+    -moz-transition: scale .1s ease; /* Firefox */
+    -o-transition: scale .1s ease; /* IE 9 */
+    -ms-transition: scale .1s ease; /* Opera */
+    transition: scale .1s ease;
+}
+
+.btn-add-artwork:hover {
+    -webkit-transform:scale(1.05); /* Safari and Chrome */
+    -moz-transform:scale(1.05); /* Firefox */
+    -ms-transform:scale(1.05); /* IE 9 */
+    -o-transform:scale(1.05); /* Opera */
+    transform: scale(1.05);
+}
+
+.btn-add-artwork:focus {
+    outline:0 !important;
+}
+
+.btn-add-artwork:active {
+
+    box-shadow: none;
+}
+
+.add-button-area {
+    padding: 10px;
+    height: 100px;
+    text-align: center;
+    display: block;
+    position: relative;
 }
 
 .btn-transparent {
@@ -116,8 +174,14 @@ body {
     fill: black;
 }
 
-.icon-frame-settings {
+.icon-topbar {
     padding-bottom: 4px;
+}
+
+.navbar .divider-vertical {
+    height: 45px;
+    border-right: 1px solid #DEDEDE;
+    margin-top: 10px;
 }
 
 /* Modal */
@@ -130,8 +194,40 @@ body {
     opacity:0.2 !important;
 }
 
+div.modal-content{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    padding-bottom: 16px;
+}
+
 .modal-header {
     border: none;
+}
+
+.modal.fade .modal-dialog {
+    -webkit-transform: scale(0.2);
+    -moz-transform: scale(0.2);
+    -ms-transform: scale(0.2);
+    transform: scale(0.2);
+    -webkit-transform: translate3d(0, -300px, 0);
+    transform: translate3d(0, -300px, 0);
+    top: 300px;
+    opacity: 0;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.modal.fade.in .modal-dialog {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform: translate3d(0, -300px, 0);
+    transform: translate3d(0, -300px, 0);
+    opacity: 1;
 }
 
 .modal-title {
@@ -151,7 +247,7 @@ body {
 
 .fine-copy {
     font-weight: 200;
-    font-size: 12px;
+    font-size: 14px;
     color: black;
 }
 
@@ -229,7 +325,6 @@ a:hover {
     border-bottom: 3px solid black;
     color: black;
 }
-
 
 /* Artwork Collection Tile View */
 
@@ -317,31 +412,65 @@ h4 {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    width: 43px;
-    height: 43px;
+    width: 36px;
+    height: 36px;
     text-align: center;
     padding: 6px 0;
     font-size: 12px;
     line-height: 1.42;
     border-radius: 50px;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     float: right;
 }
 
 .btn-push--disabled {
-    background-color: #ddd;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .btn-push--enabled {
+    -webkit-transition: all .1s ease; /* Safari and Chrome */
+    -moz-transition: all .1s ease; /* Firefox */
+    -o-transition: all .1s ease; /* IE 9 */
+    -ms-transition: all .1s ease; /* Opera */
+    transition: all .1s ease;
+}
 
+.btn-push--enabled:hover {
+    background-color: black;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform:translateZ(0) scale(1.05); /* Safari and Chrome */
+    -moz-transform:scale(1.05); /* Firefox */
+    -ms-transform:scale(1.05); /* IE 9 */
+    -o-transform:translatZ(0) scale(1.05); /* Opera */
+    transform:translatZ(0) scale(1.05);
+}
+
+.btn-push--disabled:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.btn-push {
+    bottom: 50px;
 }
 
 .btn-push img {
-    width: 40%;
-    padding-top: 7px;
+    width: 16px;
+    padding-top: 3px;
+    bottom: 40px;
 }
 
+.btn-like img {
+    width: 18px;
+    padding-top: 3px;
+}
+
+.btn-artwork-settings {
+    padding: 0px;
+    padding-bottom: 5px;
+    border: none;
+}
 
 /* Add artwork */
 
@@ -384,6 +513,11 @@ input:placeholder-shown {
     font-weight: lighter;
 }
 
+.radio-inline {
+    padding-right: 20px;
+    padding-left: 10px;
+}
+
 .switch-text {
     font-weight: lighter;
     font-size: 14px;
@@ -420,6 +554,62 @@ select {
     letter-spacing: 1.4px;
     font-weight: 600;
 }
+
+.checkbox {
+    margin-top: 22px;
+}
+
+.checkbox label {
+    padding: 0px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.toggle {
+    border-radius: 2px;
+}
+
+.toggle-group {
+}
+
+.toggle.btn {
+    min-height: 0px;
+    min-width: 0px;
+    border: none;
+
+    width: 40px !important;
+    height: 20px !important;
+}
+
+.toggle-on.btn {
+    background-color: white;
+    color: green;
+    padding-left: 6px;
+}
+
+.toggle-off {
+}
+
+.toggle-handle {
+    height: 26px;
+    margin-top: -5px;
+    width: 6px;
+    padding: 0px;
+}
+
+
+.toggle-off.btn-xs {
+    padding-left: 50px;
+}
+
+.toggle:hover {
+    background-color: #DEDEDE;
+    border-color: #DEDEDE;
+}
+
+
+
+
 
 .btn-default:hover {
     background-color: #333333;

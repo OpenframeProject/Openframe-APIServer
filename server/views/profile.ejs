@@ -16,74 +16,201 @@
                 <li><a href="/stream">Stream</a></li>
 		  		<li class="active"><a href="<%= user.username %> ">Collection</a></li>
 		  		<li><a href="/add-artwork">Add Artwork</a></li>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 			</ul>
 		</div>
-
 		<div class="row row-collection row-tile">
-
+            <div class="tile-item tile-artwork add-button-area">
+                <!--<button type="button" class="btn btn-add-artwork" data-toggle="modal" data-target="#add-artwork">Add artwork</button>-->
+                <button type="button" class="btn btn-add-artwork" data-toggle="modal" data-target="#add-artwork">
+                    <img class="add-artwork" src="../img/add.svg">
+                </button>
+            </div>
 		</div>
 	</div>
 
-    <!-- Modal -->
-    <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
+    <!-- Artwork Settings Modal -->
+        <div id="artwork-settings" class="modal fade" role="dialog">
           <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Edit artwork</h3>
+                    </div>
+                    <div class="modal-body container container-centered-form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="/add-artwork" method="POST">
+                                <div class="form-group">
+                                    <label for="Author">Author</label>
+                                    <input type="text" class="form-control" name="author_name" id="Author" placeholder="Author" autocapitalize="off" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Title">Artwork title</label>
+                                    <input type="text" class="form-control" name="title" id="Title" placeholder="Title" autocapitalize="off">
+                                </div>
 
-            <!-- Modal content-->
+                                <div class="form-group">
+                                    <label for="Format">Artwork format</label>
+                                    <select class="form-control" name="format">
+                                        <option value="openframe-image">Image (JPG, JPEG, PNG)</option>
+                                        <option value="openframe-website">Website</option>
+                                        <option value="openframe-glslviewer">Shader</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="url">URL where the artwork is hosted</label>
+                                    <input type="text" class="form-control" name="url" id="URL" autocapitalize="off" placeholder="http://server.com/here.jpg">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="thumb_url">URL of a preview image</label>
+                                    <input type="text" class="form-control" name="thumb_url" id="ThumbURL" autocapitalize="off" placeholder="http://server.com/thumbnail.jpg">
+                                </div>
+                                <div class="form-group">
+                                    <label class="radio-inline"><input type="radio" name="optradio">Publish to Stream</label>
+                                    <label class="radio-inline"><input type="radio" name="optradio">Keep private</label>
+                                </div>
+                                <div class="form-group">
+                                    <button id="AddButton" href="#" class="btn btn-default">Save changes</button>
+                                </div>
+                                <div class="switch-text">
+                                    <p><a href="/create-account" class="red">Click here</a> to delete this artwork</p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+    <!-- Frame Settings Modal -->
+        <div id="frame-settings" class="modal fade" role="dialog">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Frame settings</h3>
-              </div>
-              <div class="modal-body container container-centered-form">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form action="/auth/local" method="POST">
-                            <div class="form-group">
-                                <label for="Username">Frame name</label>
-                                <input type="text" class="form-control" name="framename" id="Framename" placeholder="framename" autocapitalize="off">
-                            </div>
-                            <div class="form-group">
-                                <label class="with-fine-copy" for="Managers">Frame managers</label>
-                                <p class="fine-copy">Managers will be able to push artwork to this frame</p>
-                                <input type="text" class="form-control" name="managers" id="Managers" placeholder="add usernames separated by comma" autocapitalize="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="Extensions">Extensions installed in this frame</label>
-                                <input type="text" class="form-control" name="extensions" id="Extensions" placeholder="no extensions" autocapitalize="off" readonly="readonly">
-                            </div>
-                            <div class="form-group">
-                                <label for="sel1">Display rotation</label>
-                                <select class="form-control" id="rotation">
-                                    <option>0&#176;</option>
-                                    <option>90&#176;</option>
-                                    <option>180&#176;</option>
-                                    <option>270&#176;</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" id="SaveButton" href="#" class="btn btn-default" data="dismiss-modal">Save Changes</button>
-                            </div>
-                            <div class="switch-text">
-                                <p>Wanna get rid of this frame? <a href="/create-account" class="red">Delete frame</a>.</p>
-                            </div>
-                            <!--
-                            <div class="form-group">
-                                <button type="submit" id="DeleteFrame" href="#" class="btn btn-default btn-red" data="dismiss-modal">Delete frame</button>
-                            </div>
-                            -->
-                        </form>
+                    </div>
+                    <div class="modal-body container container-centered-form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="/auth/local" method="POST">
+                                <div class="form-group">
+                                    <label for="Username">Frame name</label>
+                                    <input type="text" class="form-control" name="framename" id="Framename" placeholder="framename" autocapitalize="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="with-fine-copy" for="Managers">Frame managers</label>
+                                    <p class="fine-copy">Managers will be able to push artwork to this frame</p>
+                                    <input type="text" class="form-control" name="managers" id="Managers" placeholder="add usernames separated by comma" autocapitalize="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Extensions">Extensions installed in this frame</label>
+                                    <input type="text" class="form-control" name="extensions" id="Extensions" placeholder="no extensions" autocapitalize="off" readonly="readonly">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sel1">Display rotation</label>
+                                    <select class="form-control" id="rotation">
+                                        <option>0&#176;</option>
+                                        <option>90&#176;</option>
+                                        <option>180&#176;</option>
+                                        <option>270&#176;</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" id="SaveButton" href="#" class="btn btn-default" data="dismiss-modal">Save Changes</button>
+                                </div>
+                                <div class="switch-text">
+                                    <p><a href="/create-account" class="red">Click here</a> to delete this frame</p>
+                                </div>
+                                <!--
+                                <div class="form-group">
+                                    <button type="submit" id="DeleteFrame" href="#" class="btn btn-default btn-red" data="dismiss-modal">Delete frame</button>
+                                </div>
+                                -->
+                            </form>
+                        </div>
                     </div>
                 </div>
-              </div>
-              
             </div>
-
-          </div>
+            </div>
         </div>
 
-      </div>
+
+
+        <!-- Add New Artwork Modal -->
+        <div id="add-artwork" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Add artwork</h3>
+                    </div>
+                    <div class="modal-body container container-centered-form">
+                        <% if (messages.error) { %>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger" role="alert">
+                                    <%- messages.error %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="/add-artwork" method="POST">
+                                    <!--<h3><span class="openframe">Add new artwork to collection</span></h3> -->
+                                    <div class="form-group">
+                                        <label for="Author">Author</label>
+                                        <input type="text" class="form-control" name="author_name" id="Author" placeholder="Author" autocapitalize="off" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Title">Artwork title</label>
+                                        <input type="text" class="form-control" name="title" id="Title" placeholder="Title" autocapitalize="off">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Format">Artwork format</label>
+                                        <select class="form-control" name="format">
+                                            <option value="openframe-image">Image (JPG, JPEG, PNG)</option>
+                                            <option value="openframe-website">Website</option>
+                                            <option value="openframe-glslviewer">Shader</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="url">URL where the artwork is hosted</label>
+                                        <input type="text" class="form-control" name="url" id="URL" autocapitalize="off" placeholder="http://server.com/here.jpg">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="thumb_url">URL of a preview image</label>
+                                        <input type="text" class="form-control" name="thumb_url" id="ThumbURL" autocapitalize="off" placeholder="http://server.com/thumbnail.jpg">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="radio-inline"><input type="radio" name="optradio">Publish to Stream</label>
+                                        <label class="radio-inline"><input type="radio" name="optradio">Keep private</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="AddButton" href="#" class="btn btn-default">Add artwork</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+
+
     </div>
 
     <% include includes/js-templates %>
