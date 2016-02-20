@@ -4,15 +4,6 @@ var loopback = require('loopback'),
     path = require('path'),
     debug = require('debug')('openframe:apiserver'),
     providers = require('./providers.json'),
-    /**
-     * Flash messages for passport
-     *
-     * Setting the failureFlash option to true instructs Passport to flash an
-     * error message using the message given by the strategy's verify callback,
-     * if any. This is often the best approach, because the verify callback
-     * can make the most accurate determination of why authentication failed.
-     */
-    flash = require('express-flash'),
 
     // EXPORT THE APP
     app = module.exports = loopback();
@@ -32,7 +23,8 @@ app.set('views', path.resolve(__dirname, 'views'));
 app.use(loopback.token({
     cookies: ['access_token'],
     headers: ['access_token'],
-    params: ['access_token']
+    params: ['access_token'],
+    currentUserLiteral: 'current'
 }));
 
 // boot scripts mount components like REST API
