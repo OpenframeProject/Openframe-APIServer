@@ -1,5 +1,6 @@
-$(function( ) {
+$(function() {
     var _user = {},
+        _currentCollectionId,
         collections = [],
         allFrames = [],
         currentFrame,
@@ -8,73 +9,6 @@ $(function( ) {
         $frameDropdown = $('.dropdown-frames'),
         artworkTemplate = _.template($('#ArtworkTemplate').text()),
         framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text());
-
-    function fetchUser(includeCollections) {
-        console.log('fetchUser', includeCollections);
-        var filter = {};
-        if (includeCollections) {
-            filter = {
-                'filter': {
-                    'include': [
-                        {
-                            collections: {
-                                relation: 'artwork',
-                                scope: {
-                                    order: 'created DESC'
-                                }
-                            }
-                        }
-                    ]
-                }
-            };
-        }
-        return $.get('/api/users/' + window.USER_ID, filter);
-    }
-
-    function fetchCollection(id) {
-        return $.get('/api/users/' + window.USER_ID + '/collections/' + id, {
-            'filter': {
-                'include': [
-                    'artwork'
-                ]
-            }
-        });
-    }
-
-    // Return the current stream.
-    // TODO: pagination
-    function fetchStream(skip) {
-        skip = skip || 0;
-        return $.get('/api/artwork/stream', {
-            'filter': {
-                'skip': skip
-            }
-        });
-    }
-
-    function fetchFrames() {
-        console.log('fetchFrames');
-        return $.get('/api/users/' + window.USER_ID + '/all_frames').done(function(resp) {
-            allFrames = resp.frames;
-            if (currentFrame) {
-                currentFrame = _.find(allFrames, function(frame) {
-                    return currentFrame.id === frame.id;
-                });
-            } else {
-                currentFrame = allFrames[0];
-            }
-            console.log(allFrames, currentFrame);
-        });
-    }
-
-    function pushArtwork(frameId, artworkData) {
-        return $.ajax({
-            url: '/api/frames/' + frameId + '/current_artwork',
-            method: 'PUT',
-            data: artworkData
-        });
-    }
-
 
     function selectFrame(_frameId) {
         currentFrame = _.find(allFrames, function(frame) {
@@ -88,10 +22,40 @@ $(function( ) {
         console.log('renderCollection', artworks);
         if (!artworks || !artworks.length) return;
         artworks.forEach(function(artwork) {
-            addFormatDisplayName(artwork);
-            artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
-            $rowCollection.append(artworkTemplate(artwork));
+            renderArtwork(artwork);
         });
+    }
+
+    function renderArtwork(artwork, top) {
+        addFormatDisplayName(artwork);
+        artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        if (top) {
+            $('.tile-item').first().after(artworkTemplate(artwork));
+        } else {
+            $rowCollection.append(artworkTemplate(artwork));
+        }
+    }
+
+    function removeArtwork(artwork) {
+        var index = _.findIndex(currentCollection, function(art) {
+            return art.id === artwork.id;
+        });
+        if (index !== -1) {
+            currentCollection.splice(index, 1);
+        }
+        $('*[data-artworkid="' + artwork.id + '"]').remove();
+    }
+
+    function replaceArtwork(artwork) {
+        var index = _.findIndex(currentCollection, function(art) {
+            return art.id === artwork.id;
+        });
+        if (index !== -1) {
+            currentCollection[index] = artwork;
+        }
+        addFormatDisplayName(artwork);
+        artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        $('*[data-artworkid="' + artwork.id + '"]').replaceWith(artworkTemplate(artwork));
     }
 
     // render frame list to screen
@@ -125,6 +89,15 @@ $(function( ) {
     // zip through and setup event handlers
     function bindEvents() {
         console.log('bindEvents');
+        $(document).on('click', '.btn-like', function(e) {
+            e.preventDefault();
+            console.log(currentCollection);
+            OF.addArtworkToCollection($(this).data('artworkid'), _currentCollectionId).then(function(resp) {
+                console.log(resp);
+            }).fail(function(err) {
+                console.log(err);
+            });
+        });
         $(document).on('click', '.btn-push--enabled', function(e) {
             var artworkId = $(this).data('artworkid'),
                 // get the artwork data from the collection
@@ -133,10 +106,24 @@ $(function( ) {
                 });
 
             if (artwork && currentFrame) {
-                pushArtwork(currentFrame.id, artwork)
+                console.log(artwork, currentFrame);
+                OF.pushArtwork(currentFrame.id, artwork)
                     .then(function(resp) {
                         console.log(resp);
-                        fetchFrames().then(renderFrameDropdown);
+                        OF.fetchFrames().then(function(data) {
+                            console.log(data);
+                            allFrames = data.frames;
+                            if (currentFrame) {
+                                currentFrame = _.find(allFrames, function(frame) {
+                                    return currentFrame.id === frame.id;
+                                });
+                            } else {
+                                currentFrame = allFrames[0];
+                            }
+                            renderFrameDropdown();
+                        }).fail(function(err) {
+                            console.log(err);
+                        });
                     })
                     .fail(function(err) {
                         console.log(err);
@@ -151,45 +138,114 @@ $(function( ) {
                 selectFrame(frameId);
             }
         });
+
+        $(document).on('click', '#AddButton', function(e) {
+            e.preventDefault();
+            var artwork = $('#AddForm').getObject();
+            OF.addArtwork(artwork).then(function(resp) {
+                currentCollection.unshift(resp.artwork);
+                renderArtwork(resp.artwork, true);
+                $('#AddArtworkModal').modal('hide');
+            }).fail(function(err) {
+                $('#AddArtworkModal .alert').html(err.responseJSON.error.message);
+                $('#AddArtworkModal .row-errors').removeClass('hide');
+                console.log(err);
+            });
+            console.log(artwork);
+        });
+
+        // when the edit modal appears, populate with artwork
+        $('#EditArtworkModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget),
+                artworkId = button.data('artworkid'),
+                // get the artwork data from the collection
+                artwork = _.find(currentCollection, function(artworkData) {
+                    return artworkData.id === artworkId;
+                }),
+                modal = $(this);
+            console.log(artwork);
+            modal.find('form').fromObject(artwork);
+        });
+
+        $(document).on('click', '#EditButton', function(e) {
+            e.preventDefault();
+            var artwork = $('#EditForm').getObject();
+            OF.updateArtwork(artwork.id, artwork).then(function(resp) {
+                replaceArtwork(resp);
+                // renderArtwork(resp.artwork, true);
+                $('#EditArtworkModal').modal('hide');
+            }).fail(function(err) {
+                $('#EditArtworkModal .alert').html(err.responseJSON.error.message);
+                $('#EditArtworkModal .row-errors').removeClass('hide');
+                console.log(err);
+            });
+            console.log(artwork);
+        });
+
+        $(document).on('click', '#DeleteArtwork', function(e) {
+            console.log('delete it!');
+            var artwork = $('#EditForm').getObject();
+            e.preventDefault();
+            if(confirm('Are you sure you want to delete this artwork? This action cannot be undone.')) {
+                OF.deleteArtwork(artwork.id).then(function() {
+                    $('#EditArtworkModal').modal('hide');
+                    removeArtwork(artwork);
+                }).fail(function(err) {
+                    $('#EditArtworkModal .alert').html(err.responseJSON.error.message);
+                    $('#EditArtworkModal .row-errors').removeClass('hide');
+                });
+            }
+        });
     }
 
     function init() {
         bindEvents();
 
-        fetchFrames().then(function(frames) {
-            renderFrameDropdown();
-            fetchUser(window.PATH !== '/stream').then(function(user) {
-                console.log(user);
-                _user = user;
-                if (user.collections) {
-                    collections = user.collections;
-                    currentCollection = collections[0].artwork;
-                    renderCollection(currentCollection);
-                }
-            }).fail(function(err) {
-                console.log(err);
-            });
-
-
-            switch (window.PATH) {
-                case '/stream':
-                    fetchStream().then(function(stream) {
-                        // collections = [stream.artwork];
-                        currentCollection = stream.artwork;
-                        renderCollection(currentCollection);
-                    }).fail(function(err) {
-                        console.log(err);
-                    });
-                    break;
-                case '/' + window.USERNAME:
-
-                    break;
-                default:
-
+        OF.fetchFrames().then(function(data) {
+            allFrames = data.frames;
+            if (currentFrame) {
+                currentFrame = _.find(allFrames, function(frame) {
+                    return currentFrame.id === frame.id;
+                });
+            } else {
+                currentFrame = allFrames[0];
             }
+            renderFrameDropdown();
         }).fail(function(err) {
             console.log(err);
         });
+
+        OF.fetchUser(true).then(function(user) {
+            console.log(user.collections);
+            _currentCollectionId = user.collections[0].id;
+            _user = user;
+        }).fail(function(err) {
+            console.log(err);
+        });
+
+
+        switch (window.PATH) {
+            case '/stream':
+                OF.fetchStream().then(function(stream) {
+                    // collections = [stream.artwork];
+                    currentCollection = stream.artwork;
+                    renderCollection(currentCollection);
+                }).fail(function(err) {
+                    console.log(err);
+                });
+                break;
+            case '/' + window.USERNAME:
+                OF.fetchCollection().then(function(data) {
+                    console.log(data);
+                    currentCollection = data.collection.artwork;
+                    renderCollection(currentCollection);
+                }).fail(function(err) {
+                    console.log(err);
+                });
+                break;
+            default:
+
+        }
     }
 
     init();

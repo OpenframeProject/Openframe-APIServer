@@ -13,9 +13,8 @@
     <div class="container container-centered-artwork">
         <div class="row row-navigation">
 		    <ul class="tabs">
-		  		<li class="active"><a href="/stream">Stream</a></li>
+                <li class="active"><a href="/stream">Stream</a></li>
                 <li><a href="/<%= user.username %>">Collection</a></li>
-		  		<li><a href="/add-artwork">Add Artwork</a></li>
 			</ul>
 		</div>
 
@@ -24,9 +23,8 @@
 		</div>
 	</div>
 
+    <% include includes/modals %>
     <% include includes/js-templates %>
-
-
     <% include includes/js-libs %>
     <% include includes/js-common %>
 

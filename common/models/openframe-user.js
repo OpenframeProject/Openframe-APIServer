@@ -52,7 +52,13 @@ module.exports = function(OpenframeUser) {
             allFrames;
         self.owned_frames(function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
-            self.managed_frames(function(err, _manFrames) {
+            self.managed_frames({
+                where: {
+                    ownerId: {
+                        neq: self.id
+                    }
+                }
+            }, function(err, _manFrames) {
                 var manFrames = _manFrames || [];
                 allFrames = ownFrames.concat(manFrames);
                 cb(null, allFrames);
@@ -113,6 +119,7 @@ module.exports = function(OpenframeUser) {
 
     // Post a new artwork to this user's primary collection
     OpenframeUser.prototype.primary_collection_add_artwork = function(artwork, cb) {
+        artwork.ownerId = this.id;
         this.primary_collection(function(err, collection) {
             if (collection) {
                 collection.artwork.create(artwork, function(err, artwork) {
@@ -132,7 +139,9 @@ module.exports = function(OpenframeUser) {
             accepts: {
                 arg: 'artwork',
                 type: 'Object',
-                http: { source: 'body' }
+                http: {
+                    source: 'body'
+                }
             },
             http: {
                 verb: 'post',

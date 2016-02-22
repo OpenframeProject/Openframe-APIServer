@@ -163,7 +163,6 @@ body {
     padding: 10px;
     height: 100px;
     text-align: center;
-    display: block;
     position: relative;
 }
 
@@ -245,7 +244,7 @@ div.modal-content{
     margin-top: 10px;
 }
 
-#SaveButton {    
+#SaveButton {
 }
 
 .fine-copy {
@@ -455,7 +454,7 @@ h4 {
 }
 
 .btn-push {
-    bottom: 50px;
+    // bottom: 50px;
 }
 
 .btn-push img {
