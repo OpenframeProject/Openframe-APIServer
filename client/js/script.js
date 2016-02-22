@@ -211,6 +211,29 @@ $(function() {
                 currentFrame = allFrames[0];
             }
             renderFrameDropdown();
+
+            switch (window.PATH) {
+                case '/stream':
+                    OF.fetchStream().then(function(stream) {
+                        // collections = [stream.artwork];
+                        currentCollection = stream.artwork;
+                        renderCollection(currentCollection);
+                    }).fail(function(err) {
+                        console.log(err);
+                    });
+                    break;
+                case '/' + window.USERNAME:
+                    OF.fetchCollection().then(function(data) {
+                        console.log(data);
+                        currentCollection = data.collection.artwork;
+                        renderCollection(currentCollection);
+                    }).fail(function(err) {
+                        console.log(err);
+                    });
+                    break;
+                default:
+
+            }
         }).fail(function(err) {
             console.log(err);
         });
@@ -224,28 +247,7 @@ $(function() {
         });
 
 
-        switch (window.PATH) {
-            case '/stream':
-                OF.fetchStream().then(function(stream) {
-                    // collections = [stream.artwork];
-                    currentCollection = stream.artwork;
-                    renderCollection(currentCollection);
-                }).fail(function(err) {
-                    console.log(err);
-                });
-                break;
-            case '/' + window.USERNAME:
-                OF.fetchCollection().then(function(data) {
-                    console.log(data);
-                    currentCollection = data.collection.artwork;
-                    renderCollection(currentCollection);
-                }).fail(function(err) {
-                    console.log(err);
-                });
-                break;
-            default:
 
-        }
     }
 
     init();
