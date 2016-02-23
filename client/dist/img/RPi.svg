@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="55px" height="38px" viewBox="0 0 55 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>RPi</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Landing-Copy-2" sketch:type="MSArtboardGroup" transform="translate(-612.000000, -1858.000000)">
+            <rect id="Rectangle-269" fill="#F7F7F7" sketch:type="MSShapeGroup" x="-0.245421245" y="1557.93592" width="1280" height="784.06408"></rect>
+            <g id="Group" sketch:type="MSLayerGroup" transform="translate(612.754579, 1858.000000)" stroke="#3F3E3C" stroke-width="0.7">
+                <rect id="Rectangle-23" fill="#FFFFFF" sketch:type="MSShapeGroup" x="0.110373014" y="3.40519256" width="53.5870858" height="34.251298"></rect>
+                <rect id="Rectangle-24" fill="#3F3E3C" sketch:type="MSShapeGroup" x="20.2972889" y="15.558879" width="9.17587086" height="9.20733818"></rect>
+                <rect id="Rectangle-25" fill="#3F3E3C" sketch:type="MSShapeGroup" x="37.9149609" y="15.558879" width="4.77145285" height="4.78781585"></rect>
+                <rect id="Rectangle-26" fill="#3F3E3C" sketch:type="MSShapeGroup" x="25.4357766" y="0.202804645" width="6.60662702" height="11.962963"></rect>
+                <rect id="Rectangle-27" fill="#3F3E3C" sketch:type="MSShapeGroup" x="37.9149609" y="4.0772071" width="4.77145285" height="9.20733818"></rect>
+                <rect id="Rectangle-29" fill="#3F3E3C" sketch:type="MSShapeGroup" x="43.7875183" y="14.4539984" width="9.90994053" height="10.3122188"></rect>
+                <rect id="Rectangle-31" fill="#3F3E3C" sketch:type="MSShapeGroup" x="0.110373014" y="28.8590356" width="6.60662702" height="5.15610938"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

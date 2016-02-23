@@ -17,9 +17,8 @@ module.exports = function(app) {
     });
 
     // index route redirects to user profile for the moment (requires login)
-    router.get('/', ensureLoggedIn('/login'), function(req, res, next) {
-        var user = req.user;
-        return res.redirect('/' + user.username);
+    router.get('/', function(req, res, next) {
+        return res.render('splash');
     });
 
     // Render login page
