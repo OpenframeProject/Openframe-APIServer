@@ -24,11 +24,7 @@ module.exports = function(app) {
 
     // Render login page
     app.get('/login-popup', function(req, res, next) {
-        var callback = req.query.callback || '';
-        debug(req.query);
-        return res.render('login-popup', {
-            callback: callback
-        });
+        return res.render('login-popup');
     });
 
     /**
