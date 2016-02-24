@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
+    <title>OpenFrame</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <img alt="Brand" src="/img/of-logo.svg">
+
+            </a>
+            <h2>/&nbsp;login<h2>
+        </div>
+    </nav>
+    <div class="container container-centered-form container-login">
+        <h3><span class="openframe">Login</span></h3>
+
+            <div class="row row-error hide">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+
+                    </div>
+                </div>
+            </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form>
+                    <div class="form-group">
+                        <label for="Username">Username</label>
+                        <input type="text" class="form-control" name="username" id="Username" placeholder="username" autocapitalize="off" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <input type="password" class="form-control" name="password" id="Password" autocapitalize="off" placeholder="password">
+                    </div>
+                    <div class="form-group">
+                        <button id="LoginButton" href="#" class="btn btn-default">Log In</button>
+                    </div>
+                    <div class="switch-text">
+                        <p>Don't have an account? <a href="/create-account" target="_blank">Create one here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <% include includes/js-libs %>
+    <script type="text/javascript" src='/js/ofsdk.js'></script>
+    <script type="text/javascript">
+        $('#LoginButton').on('click', function(e) {
+            console.log('clicked');
+            e.preventDefault();
+            OF.login($('#Username').val(), $('#Password').val())
+                .success(function(resp) {
+                    console.log('success', resp);
+                    window.close();
+                })
+                .fail(function(error) {
+                    console.error('error', error);
+                    $('.row-error')
+                        .removeClass('hide')
+                        .find('.alert-danger')
+                        .html('Login failed.');
+                })
+        });
+    </script>
+</body>
+
+</html>
