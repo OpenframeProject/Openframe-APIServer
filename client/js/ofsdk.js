@@ -1,6 +1,20 @@
 window.OF = (function($) {
 
     /**
+     * Login
+     * @param  {String} username
+     * @param  {String} password
+     * @return {Promise}
+     */
+    function login(username, password) {
+        var creds = {
+            username: username,
+            password: password
+        };
+        return $.post('/api/users/login', creds);
+    }
+
+    /**
      * Fetch the current user.
      * @param  {Boolean} includeCollections Should the response include the user's collections?
      * @return {Promise}
@@ -145,6 +159,7 @@ window.OF = (function($) {
     }
 
     return {
+        login: login,
         fetchFrames: fetchFrames,
         fetchStream: fetchStream,
         fetchUser: fetchUser,

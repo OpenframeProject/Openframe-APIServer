@@ -1,4 +1,5 @@
-var loopback = require('loopback');
+var loopback = require('loopback'),
+    debug = require('debug')('openframe:model:OpenframeUser');
 
 module.exports = function(OpenframeUser) {
 

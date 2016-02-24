@@ -22,6 +22,11 @@ module.exports = function(app) {
         return res.render('login');
     });
 
+    // Render login page
+    app.get('/login-popup', function(req, res, next) {
+        return res.render('login-popup');
+    });
+
     /**
      * Login success handler route
      *
@@ -29,9 +34,10 @@ module.exports = function(app) {
      */
     app.get('/login-success', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
+        debug(req.params);
         user.accessTokens(function(err, tokens) {
             // use the first access token
-            token = tokens && tokens.length ? tokens[0] : null;
+            var token = tokens && tokens.length ? tokens[0] : null;
             if (token && token.id) {
                 res.cookie('access_token', token.id, {
                     signed: req.signedCookies ? true : false,
