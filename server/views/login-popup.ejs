@@ -57,12 +57,17 @@
     <% include includes/js-libs %>
     <script type="text/javascript" src='/js/ofsdk.js'></script>
     <script type="text/javascript">
+        var callback = '<%= callback %>';
+        callback = callback.trim();
+        console.log(callback);
         $('#LoginButton').on('click', function(e) {
             console.log('clicked');
             e.preventDefault();
             OF.login($('#Username').val(), $('#Password').val())
                 .success(function(resp) {
-                    console.log('success', resp);
+                    if (callback) {
+                        window.opener[callback]();
+                    }
                     window.close();
                 })
                 .fail(function(error) {
