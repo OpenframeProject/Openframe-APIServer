@@ -5,24 +5,20 @@ var debug = require('debug')('openframe:apiserver:routes'),
     auth = require('../lib/auth');
 
 module.exports = function(app) {
-    var router = app.loopback.Router();
-
-    // this needs to be here in order to show flash messages from passport
-    router.use(flash());
 
     // add path to response locals
-    router.use(function(req, res, next) {
+    app.use(function(req, res, next) {
         res.locals.path = req.path;
         next();
     });
 
     // index route redirects to user profile for the moment (requires login)
-    router.get('/', function(req, res, next) {
+    app.get('/', function(req, res, next) {
         return res.render('splash');
     });
 
     // Render login page
-    router.get('/login', function(req, res, next) {
+    app.get('/login', function(req, res, next) {
         return res.render('login');
     });
 
@@ -31,7 +27,7 @@ module.exports = function(app) {
      *
      * Sets access_token and userId cookies then redirects to user profile.
      */
-    router.get('/login-success', ensureLoggedIn('/login'), function(req, res, next) {
+    app.get('/login-success', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
         user.accessTokens(function(err, tokens) {
             // use the first access token
@@ -51,7 +47,7 @@ module.exports = function(app) {
     });
 
     // Log out route - clear cookies, redirect to login
-    router.get('/logout', ensureLoggedIn('/login'), function(req, res, next) {
+    app.get('/logout', ensureLoggedIn('/login'), function(req, res, next) {
         var OpenframeUser = app.models.OpenframeUser;
         debug(req.accessToken);
         OpenframeUser.logout(req.accessToken.id, function(err) {
@@ -64,12 +60,12 @@ module.exports = function(app) {
     });
 
     // Render create account page
-    router.get('/create-account', function(req, res, next) {
+    app.get('/create-account', function(req, res, next) {
         return res.render('create-account');
     });
 
     // Create account form handler
-    router.post('/create-account', function(req, res, next) {
+    app.post('/create-account', function(req, res, next) {
 
         var OpenframeUser = app.models.OpenframeUser,
             Collection = app.models.Collection,
@@ -135,7 +131,7 @@ module.exports = function(app) {
 
     // Render add artwork page
     // TODO: this will become a modal
-    router.get('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
+    app.get('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
 
         return res.render('add-artwork', {
@@ -144,7 +140,7 @@ module.exports = function(app) {
     });
 
     // Add artwork form handler route
-    router.post('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
+    app.post('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user,
             newArtwork = {};
 
@@ -216,7 +212,7 @@ module.exports = function(app) {
     });
 
     // Stream route
-    router.get('/stream', ensureLoggedIn('/login'), function(req, res, next) {
+    app.get('/stream', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
 
         // For the moment, only let people view their own profile
@@ -232,7 +228,7 @@ module.exports = function(app) {
 
     // PROFILE route (i.e. 'collection' for the moment)
     // This route is handled last -- this way we can use /[username] as the route
-    router.get('/:username', ensureLoggedIn('/login'), function(req, res, next) {
+    app.get('/:username', ensureLoggedIn('/login'), function(req, res, next) {
         var user = req.user;
 
         // For the moment, only let people view their own profile
@@ -245,7 +241,5 @@ module.exports = function(app) {
         });
 
     });
-
-    app.use(router);
 };
 

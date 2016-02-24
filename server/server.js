@@ -1,5 +1,6 @@
 var loopback = require('loopback'),
     boot = require('loopback-boot'),
+    flash = require('express-flash'),
     bodyParser = require('body-parser'),
     path = require('path'),
     debug = require('debug')('openframe:apiserver'),
@@ -19,6 +20,9 @@ var passportConfigurator = new PassportConfigurator(app);
 app.set('view engine', 'ejs'); // LoopBack comes with EJS out-of-box
 app.set('json spaces', 2); // format json responses for easier viewing
 app.set('views', path.resolve(__dirname, 'views'));
+
+// Use express flash for session-based flash messages (used by passport)
+app.use(flash());
 
 app.use(loopback.token({
     cookies: ['access_token'],
@@ -65,7 +69,8 @@ for (var s in providers) {
     passportConfigurator.configureProvider(s, c);
 }
 
-// Set static file dirs here, NOT in middleware.json... that doesn't work in this case (not sure why)
+// Set static file dirs here, NOT in middleware.json...
+// that doesn't work in this case (not sure why)
 app.use(loopback.static(path.resolve(__dirname, '../client')));
 app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
 
@@ -74,8 +79,16 @@ app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
 // // that will be handled later down the chain.
 // app.use(loopback.urlNotFound());
 
-// // The ultimate error handler.
-app.use(loopback.errorHandler());
+// Catch LOGIN_FAILED error (bug in loopback-component-passport
+// see https://github.com/strongloop/loopback-component-passport/pull/112)
+app.use(function(err, req, res, next) {
+    debug(err.code);
+    if (err.code === 'LOGIN_FAILED') {
+        req.flash('error', 'Login failed.');
+        return res.redirect('back');
+    }
+    next(err);
+});
 
 app.start = function() {
     // start the web server
