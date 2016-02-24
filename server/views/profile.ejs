@@ -15,16 +15,13 @@
 		    <ul class="tabs">
                 <li><a href="/stream">Stream</a></li>
 		  		<li class="active"><a href="<%= user.username %> ">Collection</a></li>
-		  		<li><a href="/add-artwork">Add Artwork</a></li>
 			</ul>
 		</div>
 		<div class="row row-collection row-tile">
-            <div class="tile-item tile-artwork add-button-area">
-                <!--<button type="button" class="btn btn-add-artwork" data-toggle="modal" data-target="#add-artwork">Add artwork</button>-->
-                <button type="button" class="btn btn-add-artwork" data-toggle="modal" data-target="#add-artwork">
-                    <img class="add-artwork" src="../img/add.svg">
-                </button>
-            </div>
+            <button class="btn tile-item tile-artwork add-button ">
+                Add artwork
+            </button>
+            <div class="btn btn-circle btn-displaying"></div>
 		</div>
 	</div>
 
