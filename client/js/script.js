@@ -237,9 +237,16 @@ $(function() {
             }
         });
 
+
+        // when the add modal appears, reset it
+        $('#AddArtworkModal').on('show.bs.modal', function(event) {
+            var modal = $(this);
+            modal.find('form')[0].reset();
+        });
+
         $(document).on('click', '#AddButton', function(e) {
             e.preventDefault();
-            var artwork = $('#AddForm').getObject();
+            var artwork = $('#AddArtworkForm').getObject();
             OF.addArtwork(artwork).then(function(resp) {
                 currentCollection.unshift(resp.artwork);
                 renderArtwork(resp.artwork, true);
@@ -261,7 +268,8 @@ $(function() {
                     return artworkData.id === artworkId;
                 }),
                 modal = $(this);
-            console.log(artwork);
+            modal.find('.alert').html('');
+            modal.find('.row-errors').removeClass('hide');
             modal.find('form').fromObject(artwork);
         });
 
@@ -280,10 +288,10 @@ $(function() {
             console.log(artwork);
         });
 
+        // handle click on delete artwork link
         $(document).on('click', '#DeleteArtwork', function(e) {
-            console.log('delete it!');
-            var artwork = $('#EditForm').getObject();
             e.preventDefault();
+            var artwork = $('#EditForm').getObject();
             if(confirm('Are you sure you want to delete this artwork? This action cannot be undone.')) {
                 OF.deleteArtwork(artwork.id).then(function() {
                     $('#EditArtworkModal').modal('hide');
@@ -293,6 +301,13 @@ $(function() {
                     $('#EditArtworkModal .row-errors').removeClass('hide');
                 });
             }
+        });
+
+        // whenever a modal opens, clear errors
+        $('.modal').on('show.bs.modal', function() {
+            var modal = $(this);
+            modal.find('.alert').html('');
+            modal.find('.row-errors').addClass('hide');
         });
     }
 
