@@ -158,6 +158,53 @@ window.OF = (function($) {
         });
     }
 
+    /**
+     * Update an frame object
+     * @param  {String} frameId
+     * @param  {Object} frameData
+     * @return {Promise}
+     */
+    function updateFrame(frameId, frameData) {
+        console.log(frameData);
+        return $.ajax({
+            url: '/api/frames/' + frameId,
+            method: 'PUT',
+            dataType   : 'json',
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify(frameData)
+        });
+    }
+
+    /**
+     * Add managers to the frame
+     * @param  {[type]} frameId  [description]
+     * @param  {[type]} managers [description]
+     * @return {[type]}          [description]
+     */
+    function updateFrameManagers(frameId, managers) {
+        console.log('updateFrameManagers', managers);
+        return $.ajax({
+            url: '/api/frames/' + frameId + '/managers/by_username',
+            method: 'PUT',
+            dataType   : 'json',
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify(managers)
+        });
+    }
+
+    /**
+     * Delete a frame
+     * @param  {String} frameId
+     * @return {Promise}
+     */
+    function deleteFrame(frameId) {
+        var url = '/api/frames/' + frameId;
+        return $.ajax({
+            url: url,
+            method: 'DELETE'
+        });
+    }
+
     return {
         login: login,
         fetchFrames: fetchFrames,
@@ -168,7 +215,10 @@ window.OF = (function($) {
         addArtwork: addArtwork,
         updateArtwork: updateArtwork,
         addArtworkToCollection: addArtworkToCollection,
-        deleteArtwork: deleteArtwork
+        deleteArtwork: deleteArtwork,
+        updateFrame: updateFrame,
+        updateFrameManagers: updateFrameManagers,
+        deleteFrame: deleteFrame
     };
 
 })(jQuery);

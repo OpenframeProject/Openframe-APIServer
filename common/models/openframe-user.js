@@ -51,7 +51,7 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
             allFrames;
-        self.owned_frames(function(err, _ownFrames) {
+        self.owned_frames({include: 'managers'},function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
             self.managed_frames({
                 where: {

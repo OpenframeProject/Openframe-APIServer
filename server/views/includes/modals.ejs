@@ -63,9 +63,8 @@
     </div>
 </div>
 
-
 <!-- Frame Settings Modal -->
-<div id="frame-settings" class="modal fade" role="dialog">
+<div id="FrameSettingsModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -73,12 +72,19 @@
                 <h3 class="modal-title">Frame settings</h3>
             </div>
             <div class="modal-body container container-centered-form">
+                <div class="row row-errors hide">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert">
+
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="/auth/local" method="POST">
+                        <form id="FrameSettingsForm">
                             <div class="form-group">
-                                <label for="Username">Frame name</label>
-                                <input type="text" class="form-control" name="framename" id="Framename" placeholder="framename" autocapitalize="off">
+                                <label for="name">Frame name</label>
+                                <input type="text" class="form-control" name="name" id="Framename" placeholder="name" autocapitalize="off">
                             </div>
                             <div class="form-group">
                                 <label class="with-fine-copy" for="Managers">Frame managers</label>
@@ -87,9 +93,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="Extensions">Extensions installed in this frame</label>
-                                <input type="text" class="form-control" name="extensions" id="Extensions" placeholder="no extensions" autocapitalize="off" readonly="readonly">
+                                <input type="text" class="form-control" name="plugins" id="Extensions" placeholder="no extensions" autocapitalize="off" readonly="readonly">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="sel1">Display rotation</label>
                                 <select class="form-control" id="rotation">
                                     <option>0&#176;</option>
@@ -97,18 +103,14 @@
                                     <option>180&#176;</option>
                                     <option>270&#176;</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
-                                <button type="submit" id="SaveButton" href="#" class="btn btn-default" data="dismiss-modal">Save Changes</button>
+                                <button type="submit" id="SaveFrameButton" href="#" class="btn btn-default" data="dismiss-modal">Save Changes</button>
                             </div>
                             <div class="switch-text">
-                                <p><a href="/create-account" class="red">Click here</a> to delete this frame</p>
+                                <p><a href="#" class="red" id="DeleteFrame">Click here</a> to delete this frame</p>
                             </div>
-                            <!--
-                            <div class="form-group">
-                                <button type="submit" id="DeleteFrame" href="#" class="btn btn-default btn-red" data="dismiss-modal">Delete frame</button>
-                            </div>
-                            -->
+                            <input type="hidden" name="id">
                         </form>
                     </div>
                 </div>

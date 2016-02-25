@@ -86,6 +86,13 @@
       "property": "__update__current_artwork"
     },
     {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "update_managers_by_username"
+    },
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "admin",
