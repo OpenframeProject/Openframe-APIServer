@@ -61,7 +61,7 @@ module.exports = function(app) {
             req.logout();
             res.clearCookie('access_token');
             res.clearCookie('userId');
-            res.redirect('/');
+            res.redirect('/login');
         });
     });
 

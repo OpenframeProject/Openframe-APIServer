@@ -17,6 +17,24 @@ $(function() {
         renderFrameDropdown();
     }
 
+    function removeFrame(frameId) {
+        console.log(frameId);
+        var index = _.findIndex(allFrames, function(frame) {
+            console.log(frame.id, frameId);
+            return frame.id.toString() === frameId.toString();
+        });
+        console.log(index);
+        if (index !== -1) {
+            allFrames.splice(index, 1);
+        }
+        if (allFrames.length > 0) {
+            currentFrame = allFrames[0];
+        } else {
+            currentFrame = null;
+        }
+        renderFrameDropdown();
+    }
+
     // render artworks to screen
     function renderCollection(artworks) {
         console.log('renderCollection', artworks);
@@ -58,10 +76,29 @@ $(function() {
         $('*[data-artworkid="' + artwork.id + '"]').replaceWith(artworkTemplate(artwork));
     }
 
+    function hideFrameSettings() {
+        $('.btn-frame-settings').addClass('hide');
+    }
+
+    function showFrameSettings() {
+        $('.btn-frame-settings').removeClass('hide');
+    }
+
     // render frame list to screen
     function renderFrameDropdown() {
         console.log('renderFrameDropdown');
-        if (!currentFrame || !allFrames.length) return;
+        if (!currentFrame || !allFrames.length) {
+            $frameDropdown.empty();
+            hideFrameSettings();
+            return;
+        }
+        console.log(currentFrame.ownerId, window.USER_ID);
+        if (currentFrame.ownerId.toString() === window.USER_ID.toString()) {
+            console.log('show');
+            showFrameSettings();
+        } else {
+            hideFrameSettings();
+        }
         var data = {
             currentFrame: currentFrame,
             frames: allFrames
@@ -89,6 +126,7 @@ $(function() {
     // zip through and setup event handlers
     function bindEvents() {
         console.log('bindEvents');
+
         $(document).on('click', '.btn-like', function(e) {
             e.preventDefault();
             console.log(currentCollection);
@@ -98,6 +136,7 @@ $(function() {
                 console.log(err);
             });
         });
+
         $(document).on('click', '.btn-push--enabled', function(e) {
             var artworkId = $(this).data('artworkid'),
                 // get the artwork data from the collection
@@ -136,6 +175,65 @@ $(function() {
 
             if (frameId) {
                 selectFrame(frameId);
+            }
+        });
+
+        // when the edit modal appears, populate with artwork
+        $('#FrameSettingsModal').on('show.bs.modal', function(event) {
+            console.log('currentFrame', currentFrame);
+            var modal = $(this),
+                frameForForm = Object.assign({}, currentFrame, {
+                    name: currentFrame.name,
+                    plugins: Object.keys(currentFrame.plugins).join(', '),
+                    managers: currentFrame.managers ? currentFrame.managers.map(function(manager) { return manager.username; }).join(', ') : ''
+                });
+            modal.find('form').fromObject(frameForForm);
+        });
+
+        $(document).on('click', '#SaveFrameButton', function(e) {
+            e.preventDefault();
+            var frame = $('#FrameSettingsForm').getObject(),
+                managers = frame.managers.replace(/ /g,'').split(','),
+                frameToUpdate = Object.assign(frame, {
+                    managers: frame.managers.replace(/ /g,'').split(',')
+                });
+
+            OF.updateFrame(frame.id, {name: frame.name})
+                .success(function() {
+                    OF.updateFrameManagers(frame.id, managers).success(function(resp) {
+                        console.log(resp);
+                        currentFrame = resp.frame;
+                        $('#FrameSettingsModal').modal('hide');
+                        renderFrameDropdown();
+                    }).error(function(err) {
+                        console.log(err);
+                    });
+                }).error(function(err) {
+                    console.log(err);
+                });
+
+
+            // OF.updateFrame(frame.id, frame).then(function(resp) {
+            //     $('#FrameSettingsForm').modal('hide');
+            // }).fail(function(err) {
+            //     $('#FrameSettingsModal .alert').html(err.responseJSON.error.message);
+            //     $('#FrameSettingsModal .row-errors').removeClass('hide');
+            //     console.log(err);
+            // });
+        });
+
+        $(document).on('click', '#DeleteFrame', function(e) {
+            var frame = $('#FrameSettingsForm').getObject();
+            console.log('delete frame!', frame);
+            e.preventDefault();
+            if(confirm('Are you sure you want to delete this frame? This action cannot be undone.')) {
+                OF.deleteFrame(frame.id).then(function() {
+                    $('#FrameSettingsModal').modal('hide');
+                    removeFrame(frame.id);
+                }).fail(function(err) {
+                    $('#FrameSettingsModal .alert').html(err.responseJSON.error.message);
+                    $('#FrameSettingsModal .row-errors').removeClass('hide');
+                });
             }
         });
 
