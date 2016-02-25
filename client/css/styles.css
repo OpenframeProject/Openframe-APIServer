@@ -17,7 +17,10 @@
     width: 100%;
 }
 
-.tile-artwork {}
+.tile-artwork {
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
 
 .tile-well {
     position: relative;
@@ -329,7 +332,7 @@ a:hover {
 .artist-label {
     height: 24px;
     display: table;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     padding-left: 10px;
     padding-right: 10px;
@@ -340,7 +343,7 @@ a:hover {
 .artwork-label {
     height: 24px;
     display: table;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     opacity: 1;
     padding-left: 10px;
