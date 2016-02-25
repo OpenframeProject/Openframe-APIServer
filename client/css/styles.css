@@ -56,12 +56,22 @@ body {
     font-size: 14px;
 }
 
+.navbar-default {
+    border: none;
+}
+
 .btn-logout {
     color: #DEDEDE;
 }
 
 .navbar-default .navbar-collapse {
     border-top: 0;
+}
+
+.navbar-fixed-bottom {
+    height: 50px;
+    background-color: black;
+    color: white;
 }
 
 .dropdown-frames {
@@ -298,6 +308,32 @@ a:hover {
     color: black;
 }
 
+.tabs-bottom {
+    width: 100%;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-left: 0px;
+    text-align: center;
+}
+
+.tabs-bottom li {
+    display: inline;
+    margin-right: 25px;
+}
+
+.tabs-bottom a {
+    color: #565656;
+    font-weight: normal;
+}
+
+.bottom-active a {
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+}
+
 
 /* Artwork Collection Tile View */
 
@@ -430,7 +466,7 @@ h4 {
     background-repeat: no-repeat;
     background-position: center;
     background-image: url(../img/arrow.svg);
-    background-size: 17px;
+    background-size: 16px;
 }
 
 .btn-displaying {

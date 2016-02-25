@@ -11,7 +11,7 @@
     <% include includes/header-nav %>
 
     <div class="container container-centered-artwork">
-        <div class="row row-navigation">
+        <div class="row row-navigation hidden-xs">
 		    <ul class="tabs">
                 <li><a href="/stream">Stream</a></li>
 		  		<li class="active"><a href="<%= user.username %> ">Collection</a></li>
@@ -23,7 +23,16 @@
                 Add artwork
             </button>
 		</div>
-	</div>
+    </div>
+    <nav class="navbar navbar-default navbar-fixed-bottom visible-xs-*">
+        <div class="container">
+            <ul class="tabs-bottom">
+                <li><a href="/stream">Stream</a></li>
+                <li class="bottom-active"><a href="<%= user.username %> ">Collection</a></li>
+            </ul>
+        </div>
+    </nav>
+	
 
     <% include includes/modals %>
     <% include includes/js-templates %>
