@@ -28,7 +28,7 @@
 }
 
 body {
-    padding-top: 70px;
+    padding-top: 50px;
     font-family: "Lato", sans-serif;
     color: black;
 }
@@ -314,13 +314,15 @@ a:hover {
     font-size: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
-    padding-left: 0px;
     text-align: center;
+    margin-top: 14px;
+    padding-left: 0px;
 }
 
 .tabs-bottom li {
     display: inline;
-    margin-right: 25px;
+    margin-right: 35px;
+    margin-left: 35px;
 }
 
 .tabs-bottom a {
@@ -334,18 +336,19 @@ a:hover {
     color: white;
 }
 
+.row-collection {
+    margin-top: 40px;
+    padding: 0px;
+}
 
 /* Artwork Collection Tile View */
 
 .container-centered-artwork {
     max-width: 970px;
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
-.row-collection {
-    margin-top: 40px;
-    padding: 0px;
-}
+
 
 .bg-image {
     position: relative;
@@ -726,3 +729,57 @@ input.cmn-toggle-round-flat:checked + label:after {
     background-color: transparent;
     color: #CB554D;
 }
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+
+.navbar {
+    height: 50px;
+    margin-bottom: 0px;
+}
+
+.modal {
+    text-align: center;
+}
+
+.modal-dialog {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container-centered-artwork {
+    max-width: 970px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+}
+
+.row-collection {
+    margin-top: 20px;
+    padding: 0px;
+}
+
+.btn-circle {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.42;
+    border-radius: 50px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    float: right;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+}  
+
+/* End of mobile */

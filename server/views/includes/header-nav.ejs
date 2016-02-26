@@ -8,13 +8,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand hidden-xs" href="/">
                 <img alt="Brand" src="/img/of-logo.svg">
             </a>
-            <h2>/&nbsp;<%= user.username %><h2>
+            <h2 class="hidden-xs">/&nbsp;<%= user.username %><h2>
         </div>
         <!-- This items get collected inside the hamburger for mobile -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown dropdown-frames"></li>
 
@@ -47,6 +47,6 @@
 
                 <li class="btn-logout"><a href="/logout">Log out</a></li>
             </ul>
-        </div>
+        <!--<</div>-->
     </div>
 </nav>
