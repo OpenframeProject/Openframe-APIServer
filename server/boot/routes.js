@@ -1,6 +1,5 @@
 var debug = require('debug')('openframe:apiserver:routes'),
     ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn,
-    flash = require('express-flash'),
     auth = require('../lib/auth');
 
 module.exports = function(app) {

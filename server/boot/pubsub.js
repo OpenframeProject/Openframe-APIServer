@@ -9,11 +9,11 @@ module.exports = function(app) {
         ps_host = app.get('pubsub_host'),
         ps_port = app.get('pubsub_port'),
         ps_path = app.get('pubsub_path'),
-        ps_token = app.get('pubsub_token'),
+        ps_token = app.get('pubsub_api_token'),
         ps_url = ps_protocol + '://' + ps_host + ':' + ps_port + ps_path,
         clientAuth = {
             outgoing: function(message, callback) {
-                // Again, leave non-subscribe messages alone
+                // leave non-subscribe messages alone
                 if (message.channel !== '/meta/subscribe') {
                     return callback(message);
                 }

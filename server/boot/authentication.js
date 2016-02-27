@@ -6,7 +6,7 @@ module.exports = function enableAuthentication(app) {
     //
     // Because the API's token-based auth doesn't automatically sync up with passport,
     // if a user logs in via the API we need to manually handle the passport (i.e. session / cookie)
-    // login stuff.
+    // login/logout stuff.
     app.models.OpenframeUser.afterRemote('login', function(ctx, accessToken, next) {
         var res = ctx.res,
             req = ctx.req;
