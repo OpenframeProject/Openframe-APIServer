@@ -117,6 +117,7 @@ body {
 .frame-list-item__status {
     font-style: italic;
     font-size: 14px;
+    font-weight: 200;
     color: #B2B2B2;
 }
 
@@ -306,34 +307,6 @@ a:hover {
     padding-bottom: 6px;
     border-bottom: 3px solid black;
     color: black;
-}
-
-.tabs-bottom {
-    width: 100%;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-top: 14px;
-    padding-left: 0px;
-}
-
-.tabs-bottom li {
-    display: inline;
-    margin-right: 35px;
-    margin-left: 35px;
-}
-
-.tabs-bottom a {
-    color: #565656;
-    font-weight: normal;
-}
-
-.bottom-active a {
-    font-weight: 600;
-    text-decoration: none;
-    color: white;
 }
 
 .row-collection {
@@ -736,6 +709,15 @@ input.cmn-toggle-round-flat:checked + label:after {
 .navbar {
     height: 50px;
     margin-bottom: 0px;
+    box-shadow: 0px 0px 3px #888888;
+}
+
+.navbar-collapse {
+    background-color: white;
+}
+
+.navbar-nav li {
+    border-bottom: 1px solid #D2D2D2;
 }
 
 .modal {
@@ -753,10 +735,11 @@ input.cmn-toggle-round-flat:checked + label:after {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 0px;
+    margin-bottom: 50px;
 }
 
 .row-collection {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 0px;
 }
 
@@ -776,8 +759,52 @@ input.cmn-toggle-round-flat:checked + label:after {
     float: right;
 }
 
+.tile-artwork {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
 h4 {
     font-size: 16px;
+}
+
+.add-button {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.tabs-bottom {
+    width: 100%;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 14px;
+    padding-left: 0px;
+}
+
+.tabs-bottom li {
+    display: inline;
+}
+
+.tabs-bottom a {
+    color: #565656;
+    font-weight: normal;
+}
+
+.bottom-active a {
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+}
+
+.stream-btn {
+    padding-right: 8%;
+}
+
+.collection-btn {
+    padding-left: 8%;
 }
 
 }  
