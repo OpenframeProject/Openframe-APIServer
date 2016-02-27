@@ -1,12 +1,23 @@
 <script type="text/template" id="ArtworkTemplate">
-    <div class="tile-item tile-artwork">
+    <div class="tile-item tile-artwork" data-artworkid="{{- id }}">
         <div class="bg-image">
-            <img src="{{- thumb_url }}">
+            <img src="{{- thumb_url }}" class="artwork__preview-image" onerror="this.onerror=null;this.src='/img/preview-missing.png'">
             <div class="artwork-interface">
+                {{ if (ownerId == window.USER_ID) { }}
+                <div class="btn btn-artwork-settings" data-artworkid="{{- id }}" data-toggle="modal" data-target="#EditArtworkModal">
+                    <img src="../img/artwork-settings.svg">
+                </div>
+                {{ } }}
                 <div class="artist-label"><h4>{{- author_name }}</h4></div>
                 <div class="artwork-label"><h4>{{- title }} <span class="artwork-format">{{- formatDisplayName }}</span></h4></div>
                 <div class="btn btn-circle btn-push {{- disabled }}" data-artworkid="{{- id }}">
-                    <img src="../img/arrow.svg">
+                </div>
+                <!--
+                <div class="btn btn-circle btn-like" data-artworkid="{{- id }}">
+                    <img src="../img/heart.svg">
+                </div>
+                <div class="btn btn-circle btn-like" data-artworkid="{{- id }}">
+                -->
                 </div>
             </div>
         </div>
@@ -16,12 +27,15 @@
 <script type="text/template" id="FramesDropdownTemplate">
     <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <div class="frame-list-item {{= currentFrame.connected ? 'frame-list-item--connected' : '' }}">
-            <div class="frame-list-item__name">{{- currentFrame.name }} <span class="caret frame-list-item--caret"></span></div>
+            <div class="frame-list-item__name">{{- currentFrame.name }} {{ if (frames.length > 1) { }}<span class="caret frame-list-item--caret"></span>{{ } }}</div>
             {{ if (currentFrame._current_artwork) { }}
                 <div class="frame-list-item__status">{{- currentFrame._current_artwork.author_name }}: {{- currentFrame._current_artwork.title }}</div>
+            {{ } else { }}
+                <div class="frame-list-item__status">No Artwork Displayed</div>
             {{ } }}
         </div>
     </a>
+    {{ if (frames.length > 1) { }}
     <ul class="dropdown-menu">
         {{ frames.forEach(function(frame) { }}
             {{ if (frame.id !== currentFrame.id) { }}
@@ -31,6 +45,8 @@
                         <div class="frame-list-item__name">{{- frame.name }}</div>
                         {{ if (frame._current_artwork) { }}
                             <div class="frame-list-item__status">{{- frame._current_artwork.author_name }}: {{- frame._current_artwork.title }}</div>
+                        {{ } else { }}
+                            <div class="frame-list-item__status">No Artwork Displayed</div>
                         {{ } }}
                     </div>
                 </a>
@@ -38,4 +54,13 @@
             {{ } }}
         {{ }); }}
     </ul>
+    {{ } }}
+</script>
+
+<script type="text/template" id="FrameSettings">
+    <a href="#" data-toggle="modal" data-target="#FrameSettingsModal">
+        <button class="btn-transparent"  >
+            <img class="icon-topbar" src="../img/settings.svg">
+        </button>
+    </a>
 </script>

@@ -11,22 +11,31 @@
     <% include includes/header-nav %>
 
     <div class="container container-centered-artwork">
-        <div class="row row-navigation">
+        <div class="row row-navigation hidden-xs">
 		    <ul class="tabs">
                 <li><a href="/stream">Stream</a></li>
 		  		<li class="active"><a href="<%= user.username %> ">Collection</a></li>
-		  		<li><a href="/add-artwork">Add Artwork</a></li>
 			</ul>
 		</div>
-
 		<div class="row row-collection row-tile">
 
+            <button class="btn tile-item tile-artwork add-button" data-toggle="modal" data-target="#AddArtworkModal">
+                Add artwork
+            </button>
 		</div>
-	</div>
+    </div>
+    <nav class="navbar navbar-default navbar-fixed-bottom visible-xs">
+        <div class="container">
+            <ul class="tabs-bottom">
+                <li class="stream-btn"><a href="/stream">Stream</a></li>
+                <li class="collection-btn bottom-active"><a href="<%= user.username %> ">Collection</a></li>
+            </ul>
+        </div>
+    </nav>
+	
 
+    <% include includes/modals %>
     <% include includes/js-templates %>
-
-
     <% include includes/js-libs %>
     <% include includes/js-common %>
 

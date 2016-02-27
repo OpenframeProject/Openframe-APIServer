@@ -33,7 +33,8 @@
       "required": true,
       "default": {
         "openframe-image": "^0.1.0",
-        "openframe-glslviewer": "^0.1.0"
+        "openframe-glslviewer": "^0.1.0",
+        "openframe-website": "^0.1.0"
       }
     },
     "formats": {
@@ -84,6 +85,19 @@
       "principalId": "$frameManager",
       "permission": "ALLOW",
       "property": "__update__current_artwork"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "update_managers_by_username"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

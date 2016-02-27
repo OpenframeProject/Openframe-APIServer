@@ -1,4 +1,5 @@
-var loopback = require('loopback');
+var loopback = require('loopback'),
+    debug = require('debug')('openframe:model:OpenframeUser');
 
 module.exports = function(OpenframeUser) {
 
@@ -74,9 +75,15 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
             allFrames;
-        self.owned_frames(function(err, _ownFrames) {
+        self.owned_frames({include: 'managers'},function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
-            self.managed_frames(function(err, _manFrames) {
+            self.managed_frames({
+                where: {
+                    ownerId: {
+                        neq: self.id
+                    }
+                }
+            }, function(err, _manFrames) {
                 var manFrames = _manFrames || [];
                 allFrames = ownFrames.concat(manFrames);
                 cb(null, allFrames);
@@ -113,7 +120,7 @@ module.exports = function(OpenframeUser) {
                 }
             }
         }, function(err, cols) {
-            collection = cols && cols.length ? cols[0] : [];
+            collection = cols && cols.length ? cols[0] : null;
             cb(null, collection);
         });
     };
@@ -131,6 +138,44 @@ module.exports = function(OpenframeUser) {
             returns: {
                 arg: 'collection',
                 type: 'Array'
+            }
+        }
+    );
+
+    // Post a new artwork to this user's primary collection
+    OpenframeUser.prototype.primary_collection_add_artwork = function(artwork, cb) {
+        artwork.ownerId = this.id;
+        this.primary_collection(function(err, collection) {
+            if (collection) {
+                collection.artwork.create(artwork, function(err, artwork) {
+                    if (err) {
+                        return cb(err);
+                    }
+                    cb(null, artwork);
+                });
+            }
+        });
+    };
+
+    // Expose primary_collection remote method
+    OpenframeUser.remoteMethod(
+        'primary_collection_add_artwork', {
+            description: 'Add a new artwork to the user\'s primary collection',
+            accepts: {
+                arg: 'artwork',
+                type: 'Object',
+                http: {
+                    source: 'body'
+                }
+            },
+            http: {
+                verb: 'post',
+                path: '/collections/primary/artwork'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'artwork',
+                type: 'Object'
             }
         }
     );
