@@ -37,6 +37,10 @@ module.exports = function(app) {
                     debug(err);
                     return;
                 }
+                if (frame === null) {
+                    debug('Unknown frame connected.');
+                    return;
+                }
                 frame.connected = true;
                 frame.save();
             });
@@ -49,6 +53,10 @@ module.exports = function(app) {
             app.models.Frame.findById(frame_id, function(err, frame) {
                 if (err) {
                     debug(err);
+                    return;
+                }
+                if (frame === null) {
+                    debug('Unknown frame disconnected.');
                     return;
                 }
                 frame.connected = false;
