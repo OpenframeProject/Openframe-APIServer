@@ -1,7 +1,7 @@
 <script type="text/template" id="ArtworkTemplate">
     <div class="tile-item tile-artwork" data-artworkid="{{- id }}">
         <div class="bg-image">
-            <img src="{{- thumb_url }}" class="artwork__preview-image" onerror="this.onerror=null;this.src='/img/thumb-missing.png'">
+            <img src="{{- thumb_url }}" class="artwork__preview-image" onerror="this.onerror=null;this.src='/img/preview-missing.png'">
             <div class="artwork-interface">
                 {{ if (ownerId == window.USER_ID) { }}
                 <div class="btn btn-artwork-settings" data-artworkid="{{- id }}" data-toggle="modal" data-target="#EditArtworkModal">

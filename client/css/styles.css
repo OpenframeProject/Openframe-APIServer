@@ -20,6 +20,7 @@
 .tile-artwork {
     margin-top: 0px;
     margin-bottom: 15px;
+    min-height: 140px;
 }
 
 .tile-well {
