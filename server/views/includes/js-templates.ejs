@@ -1,7 +1,11 @@
 <script type="text/template" id="ArtworkTemplate">
     <div class="tile-item tile-artwork hover-actions" data-artworkid="{{- id }}">
         <div class="bg-image">
-            <img src="{{- thumb_url }}" class="artwork__preview-image" onerror="this.onerror=null;this.src='/img/preview-missing.png'">
+            <img
+                src="{{- thumb_url }}"
+                class="artwork__preview-image"
+                onerror="this.onerror=null;this.src='/img/preview-missing.png'"
+                data-zoom-padding='20' data-zoom-url="{{- thumb_url }}" data-zoom-overlay='true' >
             <div class="artwork-interface">
 
                 <!-- if owner, settings -->
