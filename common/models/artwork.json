@@ -7,12 +7,7 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {},
-    "Computed": {
-      "properties": {
-        "liked": "computedLiked"
-      }
-    }
+    "Timestamp": {}
   },
   "properties": {
     "title": {

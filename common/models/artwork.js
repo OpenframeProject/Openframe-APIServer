@@ -5,33 +5,32 @@ module.exports = function(Artwork) {
     Artwork.disableRemoteMethod('createChangeStream', true);
     Artwork.disableRemoteMethod('create', true);
 
-    // Add a dynamic 'liked' value to the artwork object based on logged in user's liked_artwork
-    // relationship
-    Artwork.computedLiked = function(artwork) {
-        // TODO: this seems fragile...
-        var ctx = loopback.getCurrentContext(),
-            req = ctx && ctx.active ? ctx.active.http.req : null,
+
+    // Add a computed 'liked' value to each artwork object at runtime
+    Artwork.observe('loaded', function(ctx, next) {
+        debug('loaded observed');
+        // We don't act on new instances
+        if (!ctx.instance) {
+            return next();
+        }
+
+        var context = loopback.getCurrentContext(),
+            req = context && context.active ? context.active.http.req : null,
             user = req ? req.user : null;
 
-        return new Promise((resolve, reject) => {
-            if (user) {
-                artwork.likers(function(err, likers) {
-                    if (err || likers === null) {
-                        return resolve(false);
-                    }
-                    // zip through the likers... if this user is one, resolve with true
-                    likers.forEach(function(liker) {
-                        if (liker.id === user.id) {
-                            return resolve(true);
-                        }
-                    });
-                    return resolve(false);
-                });
-            } else {
-                return resolve(false);
-            }
-        });
-    };
+        ctx.instance.liked = false;
+
+        if (user) {
+            user.liked_artwork.exists(ctx.instance.id, function(err, exists) {
+                if (exists) {
+                    ctx.instance.liked = true;
+                }
+                next();
+            });
+        } else {
+            next();
+        }
+    });
 
     Artwork.stream = function(filter, cb) {
         filter = filter || {};
