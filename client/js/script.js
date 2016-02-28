@@ -8,6 +8,10 @@ $(function() {
         $rowCollection = $('.row-collection'),
         $frameDropdown = $('.dropdown-frames'),
         artworkTemplate = _.template($('#ArtworkTemplate').text()),
+        pagination = {
+            skip: 0,
+            limit: 25
+        },
         framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text());
 
     function selectFrame(_frameId) {
@@ -202,7 +206,9 @@ $(function() {
                 frameForForm = Object.assign({}, currentFrame, {
                     name: currentFrame.name,
                     plugins: Object.keys(currentFrame.plugins).join(', '),
-                    managers: currentFrame.managers ? currentFrame.managers.map(function(manager) { return manager.username; }).join(', ') : ''
+                    managers: currentFrame.managers ? currentFrame.managers.map(function(manager) {
+                        return manager.username;
+                    }).join(', ') : ''
                 });
             modal.find('form').fromObject(frameForForm);
         });
@@ -210,40 +216,33 @@ $(function() {
         $(document).on('click', '#SaveFrameButton', function(e) {
             e.preventDefault();
             var frame = $('#FrameSettingsForm').getObject(),
-                managers = frame.managers.replace(/ /g,'').split(','),
+                managers = frame.managers.replace(/ /g, '').split(','),
                 frameToUpdate = Object.assign(frame, {
-                    managers: frame.managers.replace(/ /g,'').split(',')
+                    managers: frame.managers.replace(/ /g, '').split(',')
                 });
 
-            OF.updateFrame(frame.id, {name: frame.name})
-                .success(function() {
-                    OF.updateFrameManagers(frame.id, managers).success(function(resp) {
-                        console.log(resp);
-                        currentFrame = resp.frame;
-                        $('#FrameSettingsModal').modal('hide');
-                        renderFrameDropdown();
-                    }).error(function(err) {
-                        console.log(err);
-                    });
+            OF.updateFrame(frame.id, {
+                name: frame.name
+            }).success(function() {
+                OF.updateFrameManagers(frame.id, managers).success(function(resp) {
+                    console.log(resp);
+                    currentFrame = resp.frame;
+                    $('#FrameSettingsModal').modal('hide');
+                    renderFrameDropdown();
                 }).error(function(err) {
                     console.log(err);
                 });
+            }).error(function(err) {
+                console.log(err);
+            });
 
-
-            // OF.updateFrame(frame.id, frame).then(function(resp) {
-            //     $('#FrameSettingsForm').modal('hide');
-            // }).fail(function(err) {
-            //     $('#FrameSettingsModal .alert').html(err.responseJSON.error.message);
-            //     $('#FrameSettingsModal .row-errors').removeClass('hide');
-            //     console.log(err);
-            // });
         });
 
         $(document).on('click', '#DeleteFrame', function(e) {
             var frame = $('#FrameSettingsForm').getObject();
             console.log('delete frame!', frame);
             e.preventDefault();
-            if(confirm('Are you sure you want to delete this frame? This action cannot be undone.')) {
+            if (confirm('Are you sure you want to delete this frame? This action cannot be undone.')) {
                 OF.deleteFrame(frame.id).then(function() {
                     $('#FrameSettingsModal').modal('hide');
                     removeFrame(frame.id);
@@ -253,7 +252,6 @@ $(function() {
                 });
             }
         });
-
 
         // when the add modal appears, reset it
         $('#AddArtworkModal').on('show.bs.modal', function(event) {
@@ -308,7 +306,7 @@ $(function() {
         $(document).on('click', '#DeleteArtwork', function(e) {
             e.preventDefault();
             var artwork = $('#EditForm').getObject();
-            if(confirm('Are you sure you want to delete this artwork? This action cannot be undone.')) {
+            if (confirm('Are you sure you want to delete this artwork? This action cannot be undone.')) {
                 OF.deleteArtwork(artwork.id).then(function() {
                     $('#EditArtworkModal').modal('hide');
                     removeArtwork(artwork);
@@ -325,6 +323,39 @@ $(function() {
             modal.find('.alert').html('');
             modal.find('.row-errors').addClass('hide');
         });
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() === $(document).height() - $(window).height()) {
+                pagination.skip += pagination.limit;
+                loadArtwork(pagination.skip);
+            }
+        });
+    }
+
+    function loadArtwork(skip) {
+        skip = skip || 0;
+        switch (window.PATH) {
+            case '/stream':
+                OF.fetchStream(skip, pagination.limit).then(function(stream) {
+                    // collections = [stream.artwork];
+                    currentCollection = stream.artwork;
+                    renderCollection(currentCollection);
+                }).fail(function(err) {
+                    console.log(err);
+                });
+                break;
+            case '/' + window.USERNAME:
+                OF.fetchCollection(skip, pagination.limit).then(function(data) {
+                    console.log(data);
+                    currentCollection = data.collection.artwork;
+                    renderCollection(currentCollection);
+                }).fail(function(err) {
+                    console.log(err);
+                });
+                break;
+            default:
+
+        }
     }
 
     function init() {
@@ -341,28 +372,8 @@ $(function() {
             }
             renderFrameDropdown();
 
-            switch (window.PATH) {
-                case '/stream':
-                    OF.fetchStream().then(function(stream) {
-                        // collections = [stream.artwork];
-                        currentCollection = stream.artwork;
-                        renderCollection(currentCollection);
-                    }).fail(function(err) {
-                        console.log(err);
-                    });
-                    break;
-                case '/' + window.USERNAME:
-                    OF.fetchCollection().then(function(data) {
-                        console.log(data);
-                        currentCollection = data.collection.artwork;
-                        renderCollection(currentCollection);
-                    }).fail(function(err) {
-                        console.log(err);
-                    });
-                    break;
-                default:
+            loadArtwork();
 
-            }
         }).fail(function(err) {
             console.log(err);
         });
