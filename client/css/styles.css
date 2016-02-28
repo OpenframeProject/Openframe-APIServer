@@ -135,7 +135,7 @@ body {
     letter-spacing: 0.3px;
     font-size: 14px;
     font-weight: 400;
-    transition: all .1s ease;
+    transition: all .2s ease;
     outline: none;
 }
 
@@ -387,14 +387,19 @@ h4 {
     letter-spacing: 1px;
 }
 
-.btn-circle {
+.artwork__actions {
     position: absolute;
     bottom: 10px;
     right: 10px;
+    width: 40px;
+}
+
+.btn-circle {
     width: 36px;
     height: 36px;
     text-align: center;
     padding: 6px 0;
+    margin-top: 5px;
     font-size: 12px;
     line-height: 1.42;
     border-radius: 50px;
@@ -403,34 +408,37 @@ h4 {
     float: right;
 }
 
+.btn-hover-action {
+    -webkit-transition: opacity .2s ease, background-color .2s ease;
+    -moz-transition: opacity .2s ease, background-color .2s ease;
+    -o-transition: opacity .2s ease, background-color .2s ease;
+    -ms-transition: opacity .2s ease, background-color .2s ease;
+    transition: opacity .2s ease, background-color .2s ease;
+    opacity: 0;
+}
+
+.hover-actions:hover .btn-hover-action {
+    opacity: 1;
+}
+
+.btn-hover-action:hover {
+
+}
+
 .btn-push--disabled {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
 .btn-push--enabled {
-    -webkit-transition: all .1s ease;
-    /* Safari and Chrome */
-    -moz-transition: all .1s ease;
-    /* Firefox */
-    -o-transition: all .1s ease;
-    /* IE 9 */
-    -ms-transition: all .1s ease;
-    /* Opera */
-    transition: all .1s ease;
+
 }
 
 .btn-push--enabled:hover {
     background-color: black;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -webkit-transform: translateZ(0) scale(1.05);
-    /* Safari and Chrome */
     -moz-transform: scale(1.05);
-    /* Firefox */
     -ms-transform: scale(1.05);
-    /* IE 9 */
     -o-transform: translatZ(0) scale(1.05);
-    /* Opera */
     transform: translatZ(0) scale(1.05);
 }
 
@@ -439,7 +447,6 @@ h4 {
 }
 
 .btn-push {
-    /*bottom: 50px;*/
     background-repeat: no-repeat;
     background-position: center;
     background-image: url(../img/arrow.svg);
@@ -454,11 +461,27 @@ h4 {
     background-size: 19px;
 }
 
-.btn-like {
+.btn-like, .btn-unlike {
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
+    background-size: 18px;
+}
+
+.btn-like {
     background-image: url(../img/heart.svg);
-    background-size: 19px;
+}
+
+.btn-unlike {
+    background-image: url(../img/heart-filled.svg);
+}
+
+.btn-like:hover, .btn-unlike:hover {
+    background-color: black;
+    -webkit-transform: translateZ(0) scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: translatZ(0) scale(1.05);
+    transform: translatZ(0) scale(1.05);
 }
 
 .btn-artwork-settings {
@@ -808,6 +831,6 @@ h4 {
     padding-left: 8%;
 }
 
-}  
+}
 
 /* End of mobile */

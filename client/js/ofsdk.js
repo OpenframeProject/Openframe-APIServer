@@ -117,7 +117,7 @@ window.OF = (function($) {
      * @param  {Object} artworkData An artwork description object
      */
     function addArtwork(artwork) {
-        return $.post('/api/users/current/collections/primary/artwork', artwork);
+        return $.post('/api/users/current/owned_artwork', artwork);
     }
 
     /**
@@ -140,8 +140,28 @@ window.OF = (function($) {
         });
     }
 
-    function addArtworkToCollection(artworkId, collectionId) {
-        var url = '/api/artwork/' + artworkId + '/collections/rel/' + collectionId;
+    function addArtworkToCollection(artworkId) {
+        var url = '/api/users/current/collections/primary/artwork/' + artworkId;
+        return $.ajax({
+            url: url,
+            method: 'PUT',
+            dataType   : 'json',
+            contentType: 'application/json; charset=UTF-8'
+        });
+    }
+
+    function likeArtwork(artworkId) {
+        var url = '/api/users/current/artwork/like/' + artworkId;
+        return $.ajax({
+            url: url,
+            method: 'PUT',
+            dataType   : 'json',
+            contentType: 'application/json; charset=UTF-8'
+        });
+    }
+
+    function unlikeArtwork(artworkId) {
+        var url = '/api/users/current/artwork/unlike/' + artworkId;
         return $.ajax({
             url: url,
             method: 'PUT',
@@ -211,11 +231,15 @@ window.OF = (function($) {
         fetchStream: fetchStream,
         fetchUser: fetchUser,
         fetchCollection: fetchCollection,
+
         pushArtwork: pushArtwork,
         addArtwork: addArtwork,
         updateArtwork: updateArtwork,
         addArtworkToCollection: addArtworkToCollection,
         deleteArtwork: deleteArtwork,
+        likeArtwork: likeArtwork,
+        unlikeArtwork: unlikeArtwork,
+
         updateFrame: updateFrame,
         updateFrameManagers: updateFrameManagers,
         deleteFrame: deleteFrame

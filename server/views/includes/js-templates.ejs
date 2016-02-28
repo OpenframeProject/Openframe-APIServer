@@ -1,23 +1,31 @@
 <script type="text/template" id="ArtworkTemplate">
-    <div class="tile-item tile-artwork" data-artworkid="{{- id }}">
+    <div class="tile-item tile-artwork hover-actions" data-artworkid="{{- id }}">
         <div class="bg-image">
             <img src="{{- thumb_url }}" class="artwork__preview-image" onerror="this.onerror=null;this.src='/img/preview-missing.png'">
             <div class="artwork-interface">
+
+                <!-- if owner, settings -->
                 {{ if (ownerId == window.USER_ID) { }}
-                <div class="btn btn-artwork-settings" data-artworkid="{{- id }}" data-toggle="modal" data-target="#EditArtworkModal">
+                <div class="btn btn-artwork-settings btn-hover-action" data-artworkid="{{- id }}" data-toggle="modal" data-target="#EditArtworkModal">
                     <img src="../img/artwork-settings.svg">
                 </div>
                 {{ } }}
+
+                <!-- author / title -->
                 <div class="artist-label"><h4>{{- author_name }}</h4></div>
                 <div class="artwork-label"><h4>{{- title }} <span class="artwork-format">{{- formatDisplayName }}</span></h4></div>
-                <div class="btn btn-circle btn-push {{- disabled }}" data-artworkid="{{- id }}">
-                </div>
-                <!--
-                <div class="btn btn-circle btn-like" data-artworkid="{{- id }}">
-                    <img src="../img/heart.svg">
-                </div>
-                <div class="btn btn-circle btn-like" data-artworkid="{{- id }}">
-                -->
+
+                <!-- actions -->
+                <div class="artwork__actions">
+                    <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
+
+                    {{ if (ownerId != window.USER_ID) { }}
+                        {{ if (liked) { }}
+                            <div class="btn btn-circle btn-unlike btn-hover-action" data-artworkid="{{- id }}"></div>
+                        {{ } else { }}
+                            <div class="btn btn-circle btn-like btn-hover-action" data-artworkid="{{- id }}"></div>
+                        {{ } }}
+                    {{ } }}
                 </div>
             </div>
         </div>

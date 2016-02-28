@@ -69,6 +69,11 @@
       "model": "Artwork",
       "foreignKey": "authorId"
     },
+    "liked_artwork": {
+      "type": "hasAndBelongsToMany",
+      "model": "Artwork",
+      "foreignKey": ""
+    },
     "identities": {
       "type": "hasMany",
       "model": "OpenframeUserIdentity",
@@ -118,7 +123,10 @@
       "permission": "ALLOW",
       "property": [
         "all_frames",
-        "primary_collection_add_artwork"
+        "primary_collection_new_artwork",
+        "primary_collection_add_artwork",
+        "like_artwork",
+        "unlike_artwork"
       ]
     },
     {

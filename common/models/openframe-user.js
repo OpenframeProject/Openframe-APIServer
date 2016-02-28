@@ -43,9 +43,45 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.disableRemoteMethod('__get__identities', false);
     OpenframeUser.disableRemoteMethod('__updateById__identities', false);
 
+
+    /**
+     * On artwork create, add to the current user's primary collection.
+     */
+    OpenframeUser.afterRemote('prototype.__create__owned_artwork', function(ctx, modelInstance, next) {
+        debug('afterRemote prototype.__create__owned_artwork', modelInstance);
+        var req = ctx.req,
+            user = req.user,
+            artwork = ctx.result;
+
+        // this shouldn't happen since auth is required to create artwork
+        if (!user) {
+            return next();
+        }
+
+        if (artwork) {
+            user.primary_collection(function(err, collection) {
+                if (collection) {
+                    collection.artwork.add(artwork, function(err) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            next();
+                        }
+                    });
+                } else {
+                    next();
+                }
+            });
+        } else {
+            next();
+        }
+    });
+
+
     /**
      * CUSTOM remote methods
      */
+
 
     // Get configuration via REST endpoint
     OpenframeUser.config = function(cb) {
@@ -71,6 +107,10 @@ module.exports = function(OpenframeUser) {
         }
     );
 
+
+
+
+
     // Get all frames, owned and managed
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
@@ -90,8 +130,6 @@ module.exports = function(OpenframeUser) {
             });
         });
     };
-
-    // Expose all_frames remote method
     OpenframeUser.remoteMethod(
         'all_frames', {
             description: 'Get all frames (owned and managed) by this user.',
@@ -108,7 +146,11 @@ module.exports = function(OpenframeUser) {
         }
     );
 
-    // Get the first collection for this user -- this will be the 'primary' user
+
+
+
+
+    // Get the first collection for this user -- this will be the 'primary' collection
     OpenframeUser.prototype.primary_collection = function(cb) {
         var collection;
 
@@ -124,8 +166,6 @@ module.exports = function(OpenframeUser) {
             cb(null, collection);
         });
     };
-
-    // Expose primary_collection remote method
     OpenframeUser.remoteMethod(
         'primary_collection', {
             description: 'Get the first collection for this user.',
@@ -142,8 +182,12 @@ module.exports = function(OpenframeUser) {
         }
     );
 
+
+
+
+
     // Post a new artwork to this user's primary collection
-    OpenframeUser.prototype.primary_collection_add_artwork = function(artwork, cb) {
+    OpenframeUser.prototype.primary_collection_new_artwork = function(artwork, cb) {
         artwork.ownerId = this.id;
         this.primary_collection(function(err, collection) {
             if (collection) {
@@ -156,10 +200,8 @@ module.exports = function(OpenframeUser) {
             }
         });
     };
-
-    // Expose primary_collection remote method
     OpenframeUser.remoteMethod(
-        'primary_collection_add_artwork', {
+        'primary_collection_new_artwork', {
             description: 'Add a new artwork to the user\'s primary collection',
             accepts: {
                 arg: 'artwork',
@@ -179,6 +221,182 @@ module.exports = function(OpenframeUser) {
             }
         }
     );
+
+
+
+
+
+    // Add an existing artwork to this user's primary collection
+    OpenframeUser.prototype.primary_collection_add_artwork = function(artworkId, cb) {
+        var Artwork = OpenframeUser.app.models.Artwork,
+            self = this;
+        Artwork.findById(artworkId, function(err, artwork) {
+            if (err) {
+                return cb(err);
+            }
+            self.primary_collection(function(err, collection) {
+                if (collection) {
+                    collection.artwork.add(artwork, function(err, artwork) {
+                        if (err) {
+                            return cb(err);
+                        }
+                        cb(null, artwork);
+                    });
+                }
+            });
+        });
+    };
+    OpenframeUser.remoteMethod(
+        'primary_collection_add_artwork', {
+            description: 'Add an existing artwork to the user\'s primary collection',
+            accepts: {
+                arg: 'artwork',
+                type: 'Object',
+                http: {
+                    source: 'body'
+                }
+            },
+            http: {
+                verb: 'put',
+                path: '/collections/primary/artwork/:artworkId'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'artwork',
+                type: 'Object'
+            }
+        }
+    );
+
+
+
+
+
+    // Add an existing artwork to this user's liked_artwork and primary collection
+    OpenframeUser.prototype.like_artwork = function(artworkId, cb) {
+        var Artwork = OpenframeUser.app.models.Artwork,
+            self = this;
+
+        Artwork.findById(artworkId, function(err, artwork) {
+            if (err) {
+                return cb(err);
+            }
+
+            artwork.likers.add(self, function(err, relation) {
+                if (err) {
+                    debug(err);
+                    cb(err);
+                } else {
+                    debug(relation);
+                    self.primary_collection(function(err, collection) {
+                        if (err || !collection) {
+                            debug(err);
+                            cb(err);
+                        }
+                        if (collection) {
+                            collection.artwork.add(artwork, function(err, artwork) {
+                                if (err) {
+                                    return cb(err);
+                                }
+                                cb(null, relation);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    };
+    OpenframeUser.remoteMethod(
+        'like_artwork', {
+            description: 'Add an existing artwork to the user\'s liked_artwork and primary collection',
+            accepts: {
+                arg: 'artworkId',
+                type: 'String',
+                required: true,
+                http: {
+                    source: 'path'
+                }
+            },
+            http: {
+                verb: 'put',
+                path: '/artwork/like/:artworkId'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'relation',
+                type: 'Object'
+            }
+        }
+    );
+
+
+
+
+
+    // Remove an existing artwork from this user's liked_artwork and primary collection
+    OpenframeUser.prototype.unlike_artwork = function(artworkId, cb) {
+        var Artwork = OpenframeUser.app.models.Artwork,
+            self = this;
+
+        Artwork.findById(artworkId, function(err, artwork) {
+            if (err) {
+                return cb(err);
+            }
+
+            artwork.likers.remove(self, function(err) {
+                if (err) {
+                    debug(err);
+                    cb(err);
+                } else {
+                    // if this user is the owner, can't remove from primary collection.
+                    debug(artwork.ownerId, self.id);
+                    if (artwork.ownerId === self.id) {
+                        return cb(null);
+                    }
+                    self.primary_collection(function(err, collection) {
+                        if (err || !collection) {
+                            debug(err);
+                            cb(err);
+                        }
+                        if (collection) {
+                            collection.artwork.remove(artwork, function(err) {
+                                if (err) {
+                                    return cb(err);
+                                }
+                                cb(null);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    };
+    OpenframeUser.remoteMethod(
+        'unlike_artwork', {
+            description: 'Remove an existing artwork from this user\'s liked_artwork and primary collection',
+            accepts: {
+                arg: 'artworkId',
+                type: 'String',
+                required: true,
+                http: {
+                    source: 'path'
+                }
+            },
+            http: {
+                verb: 'put',
+                path: '/artwork/unlike/:artworkId'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'relation',
+                type: 'Object'
+            }
+        }
+    );
+
+
+
+
 
     /**
      * Override toJSON in order to remove inclusion of email address for users that are

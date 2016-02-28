@@ -7,7 +7,12 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {}
+    "Timestamp": {},
+    "Computed": {
+      "properties": {
+        "liked": "computedLiked"
+      }
+    }
   },
   "properties": {
     "title": {
@@ -40,6 +45,9 @@
     "format": {
       "type": "string",
       "required": true
+    },
+    "liked": {
+      "type": "boolean"
     }
   },
   "validations": [],
@@ -57,6 +65,11 @@
     "collections": {
       "type": "hasAndBelongsToMany",
       "model": "Collection",
+      "foreignKey": ""
+    },
+    "likers": {
+      "type": "hasAndBelongsToMany",
+      "model": "OpenframeUser",
       "foreignKey": ""
     }
   },

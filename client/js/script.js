@@ -47,6 +47,7 @@ $(function() {
     function renderArtwork(artwork, top) {
         addFormatDisplayName(artwork);
         artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        artwork.liked = artwork.liked || false;
         if (top) {
             $('.tile-item').first().after(artworkTemplate(artwork));
         } else {
@@ -127,15 +128,31 @@ $(function() {
     function bindEvents() {
         console.log('bindEvents');
 
+        // handle like button click
         $(document).on('click', '.btn-like', function(e) {
             e.preventDefault();
+            var $btn = $(this);
             console.log(currentCollection);
-            OF.addArtworkToCollection($(this).data('artworkid'), _currentCollectionId).then(function(resp) {
-                console.log(resp);
+            OF.likeArtwork($(this).data('artworkid')).then(function(resp) {
+                $btn.removeClass('btn-like').addClass('btn-unlike');
             }).fail(function(err) {
                 console.log(err);
             });
         });
+
+        // handle unlike button click
+        $(document).on('click', '.btn-unlike', function(e) {
+            e.preventDefault();
+            var $btn = $(this);
+            console.log(currentCollection);
+            OF.unlikeArtwork($(this).data('artworkid')).then(function(resp) {
+                $btn.removeClass('btn-unlike').addClass('btn-like');
+            }).fail(function(err) {
+                console.log(err);
+            });
+        });
+
+
 
         $(document).on('click', '.btn-push--enabled', function(e) {
             var artworkId = $(this).data('artworkid'),
@@ -248,8 +265,8 @@ $(function() {
             e.preventDefault();
             var artwork = $('#AddArtworkForm').getObject();
             OF.addArtwork(artwork).then(function(resp) {
-                currentCollection.unshift(resp.artwork);
-                renderArtwork(resp.artwork, true);
+                currentCollection.unshift(resp);
+                renderArtwork(resp, true);
                 $('#AddArtworkModal').modal('hide');
             }).fail(function(err) {
                 $('#AddArtworkModal .alert').html(err.responseJSON.error.message);
@@ -278,7 +295,6 @@ $(function() {
             var artwork = $('#EditForm').getObject();
             OF.updateArtwork(artwork.id, artwork).then(function(resp) {
                 replaceArtwork(resp);
-                // renderArtwork(resp.artwork, true);
                 $('#EditArtworkModal').modal('hide');
             }).fail(function(err) {
                 $('#EditArtworkModal .alert').html(err.responseJSON.error.message);
