@@ -1,6 +1,7 @@
 var loopback = require('loopback'),
     _ = require('lodash'),
-    debug = require('debug')('openframe:model:Artwork');
+    debug = require('debug')('openframe:model:Artwork'),
+    addLikedToReq = require('../../helpers').addLikedToReq;
 
 module.exports = function(Artwork) {
     Artwork.disableRemoteMethod('createChangeStream', true);
@@ -13,11 +14,14 @@ module.exports = function(Artwork) {
         if (!ctx.instance) {
             return next();
         }
+        debug('loaded', ctx.instance.id);
 
         var context = loopback.getCurrentContext(),
             req = context && context.active ? context.active.http.req : null,
             user = req ? req.user : null,
             liked_artwork = req.liked_artwork || null;
+
+        debug('liked_artwork', req.liked_artwork);
 
         ctx.instance.liked = false;
 
@@ -36,26 +40,7 @@ module.exports = function(Artwork) {
     // Add this user's liked_artwork to the request object
     // so that we can check it in the 'loaded' hook without making a god damn database call
     // (the db call f's up sort order, loopback issue submitted)
-    Artwork.beforeRemote('stream', function(ctx, something, next) {
-        debug('something', something);
-
-        var context = loopback.getCurrentContext(),
-            req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
-
-        if (user) {
-            user.liked_artwork({fields: { id: true}}, function(err, artwork) {
-                if (artwork) {
-                    req.liked_artwork = artwork.map(function(art) {
-                        return art.id.toString();
-                    });
-                }
-                next();
-            });
-        } else {
-            next();
-        }
-    });
+    Artwork.beforeRemote('stream', addLikedToReq);
 
     Artwork.stream = function(filter, cb) {
         filter = filter || {};

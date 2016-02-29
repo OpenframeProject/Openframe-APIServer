@@ -1,5 +1,6 @@
 var loopback = require('loopback'),
-    debug = require('debug')('openframe:model:OpenframeUser');
+    debug = require('debug')('openframe:model:OpenframeUser'),
+    addLikedToReq = require('../../helpers').addLikedToReq;
 
 module.exports = function(OpenframeUser) {
 
@@ -43,6 +44,10 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.disableRemoteMethod('__get__identities', false);
     OpenframeUser.disableRemoteMethod('__updateById__identities', false);
 
+
+    // HACK: add array of liked artworks to request so that it's available in the 'loaded' hook
+    // for artwork objects.
+    OpenframeUser.beforeRemote('prototype.primary_collection', addLikedToReq);
 
     /**
      * On artwork create, add to the current user's primary collection.
