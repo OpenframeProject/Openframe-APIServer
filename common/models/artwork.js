@@ -1,4 +1,5 @@
 var loopback = require('loopback'),
+    _ = require('lodash'),
     debug = require('debug')('openframe:model:Artwork');
 
 module.exports = function(Artwork) {
@@ -8,7 +9,6 @@ module.exports = function(Artwork) {
 
     // Add a computed 'liked' value to each artwork object at runtime
     Artwork.observe('loaded', function(ctx, next) {
-        debug('loaded observed');
         // We don't act on new instances
         if (!ctx.instance) {
             return next();
@@ -16,14 +16,39 @@ module.exports = function(Artwork) {
 
         var context = loopback.getCurrentContext(),
             req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
+            user = req ? req.user : null,
+            liked_artwork = req.liked_artwork || null;
 
         ctx.instance.liked = false;
 
+        if (user && liked_artwork) {
+            if (liked_artwork.indexOf(ctx.instance.id.toString()) !== -1) {
+                ctx.instance.liked = true;
+            }
+            next();
+        } else {
+            next();
+        }
+    });
+
+    // Another ugly hack...
+    //
+    // Add this user's liked_artwork to the request object
+    // so that we can check it in the 'loaded' hook without making a god damn database call
+    // (the db call f's up sort order, loopback issue submitted)
+    Artwork.beforeRemote('stream', function(ctx, something, next) {
+        debug('something', something);
+
+        var context = loopback.getCurrentContext(),
+            req = context && context.active ? context.active.http.req : null,
+            user = req ? req.user : null;
+
         if (user) {
-            user.liked_artwork.exists(ctx.instance.id, function(err, exists) {
-                if (exists) {
-                    ctx.instance.liked = true;
+            user.liked_artwork({fields: { id: true}}, function(err, artwork) {
+                if (artwork) {
+                    req.liked_artwork = artwork.map(function(art) {
+                        return art.id.toString();
+                    });
                 }
                 next();
             });
@@ -34,6 +59,14 @@ module.exports = function(Artwork) {
 
     Artwork.stream = function(filter, cb) {
         filter = filter || {};
+
+        var context = loopback.getCurrentContext(),
+            req = context && context.active ? context.active.http.req : null,
+            user = req ? req.user : null,
+            liked_artwork = req.liked_artwork || null;
+
+        debug('LIKED ART:', req.liked_artwork);
+
         var _filter = Object.assign({
             order: 'created DESC',
             limit: 25,
@@ -41,7 +74,20 @@ module.exports = function(Artwork) {
                 is_public: true
             }
         }, filter);
+        debug('_filter', _filter);
         Artwork.find(_filter, function(err, artwork) {
+            // XXX: it seems like the combo of beforeRemote and observe('loaded') will get us
+            // a computed 'liked' property and preserve sort order. Mother of GOD!
+            //
+            // if (liked_artwork && liked_artwork.length) {
+            //     artwork.forEach(function(art) {
+            //         if (liked_artwork.indexOf(art.id.toString()) !== -1) {
+            //             art.liked = true;
+            //         } else {
+            //             art.liked = false;
+            //         }
+            //     });
+            // }
             cb(null, artwork);
         });
     };
