@@ -37,7 +37,7 @@ body {
     position: relative;
     width: 100%;
     text-align: center;
-    padding: 40px 0px 60px 0px;
+    padding: 20px 0px 60px;
     font-size: 1.1em;
 }
 
@@ -73,7 +73,13 @@ body {
 
 a {
     text-decoration: none;
+    color: #3a3a3a;
     border-bottom: 1px solid #3a3a3a;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #999;
 }
 
 h3,
@@ -95,6 +101,10 @@ h6 {
     text-align: center;
 }
 
+.top-nav-wrap {
+    padding-right: 20px;
+}
+
 ul.top-nav {
     text-align: right;
 }
@@ -102,10 +112,18 @@ ul.top-nav {
 ul.top-nav li {
     display: inline-block;
     padding: 15px 15px;
+    
 }
 
 ul.top-nav li a {
     display: block;
+    text-decoration: none;
+    border-bottom: none;
+    font-weight: 400;
+}
+
+ul.top-nav li a:hover {
+    color: #999;
 }
 
 .openframe {
@@ -144,6 +162,43 @@ section.intro2 {
 
 section.intro p {
     margin: 0 0 20px;
+}
+.get-started {
+    text-align: center;
+}
+
+.btn-get-started {
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    height: 40px;
+    width: 180px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    background-color: black;
+    border: none;
+    color: white;
+    letter-spacing: 1.4px;
+    font-weight: 600;
+}
+.btn-get-started {
+    padding-top: 10px;
+}
+
+.btn-get-started:hover {
+    background: #333;
+    color: white;
+}
+
+.btn-get-started:active {
+    background: #333;
+    color: white;
+}
+
+.btn-get-started:focus {
+    background: #333;
+    color: white;
 }
 
 ul.features {
@@ -224,7 +279,7 @@ ul.features li.see-more a {
 }
 
 .q-a {
-    background-color: #333333;
+    background-color: #3f3e3c;
     color: #FFF;
 }
 
@@ -244,7 +299,8 @@ ul.features li.see-more a {
 }
 
 .q-a h4.footer-heading {
-    margin-bottom: 80px;
+    margin-top: 40px;
+    margin-bottom: 60px;
 }
 
 .q-a section {
@@ -263,24 +319,30 @@ ul.features li.see-more a {
     text-align: center;
 }
 
-.footer .footer-contact-us {
-    margin-top: 80px;
+.footer-contact-us {
     font-size: 1.2em;
     margin-top: 10px;
+    margin-bottom: 15px;
+    margin-top: 18px;
 }
 
-.footer .footer-contact-us a {
+.footer-contact-us a {
     text-decoration: none;
     border-bottom: 1px solid #898989;
 }
 
 .footer h6 {
-    color: #898989;
     text-align: center;
 }
 
 .footer h6 a {
     color: #898989;
+    border-bottom: none;
+}
+
+.footer h6 a:hover {
+    color: #999;
+    border-bottom: 1px solid #898989;
 }
 
 
@@ -300,5 +362,45 @@ ul.features li.see-more a {
 @media (min-width: 992px) {
     html#Website body .container {
         width: 700px;
+    }
+}
+
+@media (max-width: 767px) {
+    .row {
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-bottom: 20px;
+    }
+
+    .col-md-12 {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .splash-header {
+        padding: 0px 0px 0px 0px;
+        margin-top: 0px;
+        border: none;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .container-wide {
+        padding-bottom: 20px;
+    }
+
+    .q-a h5 {
+        line-height: 1.4;
+        font-weight: 500;
+    }
+
+    .footer-contact-us {
+        margin-bottom: 30px;
+    }
+
+    .container-wide.footer {
+        padding-bottom: 0px;
     }
 }
