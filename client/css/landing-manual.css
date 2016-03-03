@@ -1,0 +1,304 @@
+/**
+@zindex-navbar:            1000;
+@zindex-dropdown:          1000;
+@zindex-popover:           1060;
+@zindex-tooltip:           1070;
+@zindex-navbar-fixed:      1030;
+@zindex-modal-background:  1040;
+@zindex-modal:             1050;
+ */
+
+
+/*
+
+MOBILE FIRST:
+
+Here should go all of the base styles — that is, all styles that are for all screens, including smallest screens.
+
+Styles that need to be overridden or are for larger screens only should be added to the appropriate
+less file. These files are imported at the bottom of this file.
+
+ */
+
+html {
+    height: auto;
+    overflow: auto;
+}
+
+body {
+    height: auto;
+    overflow: auto;
+    letter-spacing: normal;
+    font-weight: 300;
+    font-family: "Lato", sans-serif;
+}
+
+.container-wide {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding: 40px 0px 60px 0px;
+    font-size: 1.1em;
+}
+
+.container-wide.setup {
+    background-color: #F7F7F7;
+}
+
+.container-wide.footer {
+    padding-bottom: 40px;
+}
+
+.container-mid {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.container {
+    text-align: left;
+    width: 90%;
+}
+
+.splash-header {
+    padding: 0px 0px 40px 0px;
+    margin-top: 0px;
+    border: none;
+}
+
+.preview img {
+    width: 100%;
+    max-width: 1280px;
+}
+
+a {
+    text-decoration: none;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+h3,
+h4,
+h5 {
+    font-weight: 300;
+    text-transform: none;
+}
+
+h4 {
+    font-size: 1.5em;
+}
+
+h6 {
+    font-size: 0.8em;
+    font-weight: 300;
+    text-transform: none;
+    color: #898989;
+    text-align: center;
+}
+
+ul.top-nav {
+    text-align: right;
+}
+
+ul.top-nav li {
+    display: inline-block;
+    padding: 15px 15px;
+}
+
+ul.top-nav li a {
+    display: block;
+}
+
+.openframe {
+    line-height: 1.4em;
+}
+
+.openframe span {
+    position: relative;
+}
+
+.openframe .alpha {
+    position: absolute;
+    bottom: -20px;
+    right: 7px;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+strong {
+    font-weight: 400;
+}
+
+section.intro {
+    font-size: 1.3em;
+    line-height: 1.3em;
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+section.intro2 {
+    font-size: 1.3em;
+    line-height: 1.3em;
+    margin-bottom: 20px;
+}
+
+section.intro p {
+    margin: 0 0 20px;
+}
+
+ul.features {
+    position: relative;
+    width: 500px;
+    max-height: 400px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+ul.features.more {
+    display: none;
+}
+
+ul.features li {
+    position: relative;
+    padding-left: 25px;
+    background-position: 0px 3px, center;
+    background-repeat: no-repeat;
+    margin-top: 10px;
+    font-weight: 400;
+    font-size: 1.1em;
+}
+
+ul.features li.done {
+    background-image: url('../img/DoneCheck.svg');
+}
+
+ul.features li.not-done {
+    background-image: url('../img/NotDone.svg');
+}
+
+ul.features li.see-more a {
+    color: #eeeeee;
+    font-weight: 300;
+    text-decoration: none;
+    border-bottom: 1px solid #B2B2B2;
+}
+
+.fine-print {
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #eeeeee;
+}
+
+.row-step {
+    margin-top: 50px;
+}
+
+.row-step h5 {
+    margin-top: 20px;
+    font-weight: 400;
+    font-size: 1.1em;
+}
+
+.row-step img {
+    margin-bottom: 10px;
+}
+
+.for-whom {
+    background-color: #F7F7F7;
+    padding-top: 0px;
+}
+
+.for-whom h4 {
+    font-weight: 400;
+    margin-top: 60px;
+}
+
+.for-whom h5 {
+    margin-top: 40px;
+    font-weight: 400;
+    font-size: 1.1em;
+}
+
+.for-whom div[class^="col-"] {
+    padding: 0px 20px;
+}
+
+.q-a {
+    background-color: #333333;
+    color: #FFF;
+}
+
+.q-a h3,
+.q-a h4,
+.q-a h6,
+.q-a a {
+    color: #FFF;
+    text-align: center;
+}
+
+.q-a h5 {
+    color: #50E3C2;
+    font-size: 1.1em;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.q-a h4.footer-heading {
+    margin-bottom: 80px;
+}
+
+.q-a section {
+    margin-top: 40px;
+}
+
+.footer {
+    background-color: #363533;
+    color: #FFF;
+}
+
+.footer h3,
+.footer h4,
+.footer a {
+    color: #B2B2B2;
+    text-align: center;
+}
+
+.footer .footer-contact-us {
+    margin-top: 80px;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.footer .footer-contact-us a {
+    text-decoration: none;
+    border-bottom: 1px solid #898989;
+}
+
+.footer h6 {
+    color: #898989;
+    text-align: center;
+}
+
+.footer h6 a {
+    color: #898989;
+}
+
+
+/**
+ * Import styles for larger sreens.
+ */
+
+@media (min-width: 768px) {
+    .navbar {
+        border-bottom: 1px solid #777777;
+    }
+    html#Website body .container {
+        width: 700px;
+    }
+}
+
+@media (min-width: 992px) {
+    html#Website body .container {
+        width: 700px;
+    }
+}
