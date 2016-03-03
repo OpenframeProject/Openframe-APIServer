@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top hidden-xs">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
                 <img alt="Brand" src="/img/of-logo.svg">
@@ -21,6 +21,11 @@
             <h2>/&nbsp;create-account<h2>
         </div>
     </nav>
+    <div class="container container-centered-well">
+        <div class="well well-lg">
+            <strong>Friendly disclaimer:</strong> This project is under active development; we cannot promise that everything will work 100%. We encourage you to try it out! Feedback and <a href="https://github.com/OpenframeProject">pull requests</a> are welcome :)
+        </div>
+    </div>
     <div class="container container-centered-form container-create-account">
         <h3><span class="openframe">Create new account</span></h3>
         <% if (messages.error) { %>

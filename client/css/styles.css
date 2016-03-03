@@ -284,6 +284,15 @@ a:hover {
     color: black;
 }
 
+.container-centered-well {
+    max-width: 600px;
+    margin-top: 70px;
+}
+
+.container-centered-well a {
+    text-decoration: underline;
+}
+
 
 /* User page navigation */
 
@@ -520,10 +529,6 @@ h4 {
     margin-top: 50px;
 }
 
-.container-create-account {
-    margin-top: 50px;
-}
-
 .form-control {
     font-weight: normal;
     font-size: 16px;
@@ -737,6 +742,17 @@ input.cmn-toggle-round-flat:checked + label:after {
     color: #CB554D;
 }
 
+.row-notice .well {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.row-notice .well a {
+    font-weight: 800;
+}
+.row-notice .well a:hover {
+    text-decoration: underline;
+}
 
 /* Landscape phones and portrait tablets */
 
@@ -772,19 +788,21 @@ input.cmn-toggle-round-flat:checked + label:after {
         padding: 0px;
     }
     .btn-circle {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        width: 42px;
-        height: 42px;
+        width: 36px;
+        height: 36px;
         text-align: center;
         padding: 6px 0;
+        margin-top: 5px;
         font-size: 12px;
         line-height: 1.42;
         border-radius: 50px;
         background-color: rgba(0, 0, 0, 0.7);
         color: white;
         float: right;
+    }
+    .btn-circle {
+        width: 42px;
+        height: 42px;
     }
     .tile-artwork {
         margin-top: 0px;
@@ -824,6 +842,12 @@ input.cmn-toggle-round-flat:checked + label:after {
     }
     .collection-btn {
         padding-left: 8%;
+    }
+    .container-centered-well {
+        margin-top: 0px;
+    }
+    .btn-hover-action {
+        opacity: 1;
     }
 }
 

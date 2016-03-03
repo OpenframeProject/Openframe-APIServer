@@ -362,7 +362,12 @@ $(function() {
         bindEvents();
 
         OF.fetchFrames().then(function(data) {
+            console.log('data', data);
             allFrames = data.frames;
+            if (allFrames.length < 1) {
+                // user has no frames! show notice
+                $('.row-notice').removeClass('hide');
+            }
             if (currentFrame) {
                 currentFrame = _.find(allFrames, function(frame) {
                     return currentFrame.id === frame.id;
