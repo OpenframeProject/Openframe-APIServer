@@ -54,13 +54,15 @@ $(function() {
     }
 
     function renderArtwork(artwork, top) {
-        addFormatDisplayName(artwork);
-        artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
-        artwork.liked = artwork.liked || false;
+        var art = _.extend({}, artwork);
+        addFormatDisplayName(art);
+        art.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(art.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        art.liked = art.liked || false;
+        art.currentArtworkId = currentFrame && currentFrame._current_artwork ? currentFrame._current_artwork.id : null;
         if (top) {
-            $('.tile-item').first().after(artworkTemplate(artwork));
+            $('.tile-item').first().after(artworkTemplate(art));
         } else {
-            $rowCollection.append(artworkTemplate(artwork));
+            $rowCollection.append(artworkTemplate(art));
         }
     }
 

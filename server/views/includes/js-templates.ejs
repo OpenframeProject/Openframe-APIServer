@@ -21,7 +21,11 @@
 
                 <!-- actions -->
                 <div class="artwork__actions">
-                    <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
+                    {{ if (id == currentArtworkId) { }}
+                        <div class="btn btn-circle btn-displaying"></div>
+                    {{ } else { }}
+                        <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
+                    {{ } }}
 
                     {{ if (ownerId != window.USER_ID) { }}
                         {{ if (liked) { }}
