@@ -190,7 +190,13 @@ $(function() {
                             } else {
                                 currentFrame = allFrames[0];
                             }
-                            $('.btn-displaying').remove();
+                            var artId = $('.btn-displaying').data('artworkid');
+                            console.log('artId', artId);
+                            // get the artwork data from the collection
+                            var art = _.find(currentCollection, function(artworkData) {
+                                return artworkData.id === artId;
+                            });
+                            replaceArtwork(art);
                             replaceArtwork(artwork);
                             renderFrameDropdown();
                         }).fail(function(err) {
