@@ -60,6 +60,11 @@ body {
     padding-bottom: 15px;
 }
 
+.of-logo {
+    width: 28px;
+    padding-top: 4px;
+}
+
 .navbar-nav ul {
     background-color: #f8f8f8;
 }
@@ -72,6 +77,20 @@ body {
 
 .navbar-default {
     border: none;
+}
+
+.menu {
+    height: 27px;
+    width: 35px;
+    border: 1px solid #DEDEDE;
+    text-align: center;
+    float: left;
+    margin-left: 40px;
+    margin-top: 18px;
+}
+
+.icon-menu {
+    padding-top: 2px;
 }
 
 .btn-logout {
@@ -752,6 +771,136 @@ input.cmn-toggle-round-flat:checked + label:after {
 }
 .row-notice .well a:hover {
     text-decoration: underline;
+}
+
+/* Sidebar */
+
+.sidebar {
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    z-index: 1040;
+    box-shadow: -2px 0px 6px rgba(0,0,0,0.15)
+}
+
+.sidebar-header {
+    height: 40px;
+}
+
+.cross {
+    float: right;
+    background-repeat: no-repeat;
+    padding-right: 15px;
+    padding-top: 15px;
+}
+
+.row-frames {
+    background-color: blue;
+}
+
+.frames-list {
+    list-style: none;
+    padding-left: 0px;
+}
+
+
+
+.sidebar-row {
+    height: 60px;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.list-title {
+    font-size: 12px;
+    font-weight: 400;
+    color: #9B9B9B;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+    padding-top: 36px;
+}
+
+.frame-item {
+    padding-top: 19px;
+    padding-left: 15px;
+}
+
+.row-frame-active {
+    background: #F6F6F6;
+}
+
+.frame-name {
+    float: left;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: black;
+}
+
+.mark-frame-active {
+    float: left;
+    width: 13px;
+    margin-top: 3px;
+    margin-right: 6px;
+}
+
+.icon-settings {
+    width: 18px;
+}
+
+.btn-frame-settings {
+    float: right;
+    padding-right: 15px;
+
+}
+
+.btn-frame-settings a:hover {
+}
+
+.frame-status {
+    float: right;
+    font-size: 14px;
+    margin-right: 20px;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.2px;
+}
+
+.displaying {
+    color: #37CFAD;
+}
+
+.not-displaying {
+    color: #B2B2B2;
+}
+
+.btn-logout {
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding-top: 36px;
+}
+
+.btn-logout a {
+    color: #B2B2B2;
+    text-decoration: none;
+}
+
+.btn-logout a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.row-logout {
+    position: fixed;
+    bottom: 0px;
+    height: 60px;
+    text-align: center;
 }
 
 /* Landscape phones and portrait tablets */
