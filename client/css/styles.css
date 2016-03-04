@@ -849,6 +849,9 @@ input.cmn-toggle-round-flat:checked + label:after {
     .btn-hover-action {
         opacity: 1;
     }
+    .row-notice .well {
+       margin-top: 50px
+    }
 }
 
 
