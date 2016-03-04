@@ -21,9 +21,7 @@
 
                 <!-- actions -->
                 <div class="artwork__actions">
-                    {{ if (id == currentArtworkId) { }}
-                        <div class="btn btn-circle btn-displaying"></div>
-                    {{ } else { }}
+                    {{ if (id != currentArtworkId) { }}
                         <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
                     {{ } }}
 
@@ -33,6 +31,10 @@
                         {{ } else { }}
                             <div class="btn btn-circle btn-like btn-hover-action" data-artworkid="{{- id }}"></div>
                         {{ } }}
+                    {{ } }}
+
+                    {{ if (id == currentArtworkId) { }}
+                        <div class="btn btn-circle btn-displaying"></div>
                     {{ } }}
                 </div>
             </div>
