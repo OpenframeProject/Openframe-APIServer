@@ -7,6 +7,8 @@ module.exports = function(app) {
     // add path to response locals
     app.use(function(req, res, next) {
         res.locals.path = req.path;
+        res.locals.ps_url = app.get('ps_url');
+        res.locals.access_token = req.accessToken ? req.accessToken.id : '';
         next();
     });
 

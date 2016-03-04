@@ -12,13 +12,18 @@ $(function() {
             skip: 0,
             limit: 25
         },
-        framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text());
+        framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text()),
+        pubsub = window.PubSub;
 
     function selectFrame(_frameId) {
         currentFrame = _.find(allFrames, function(frame) {
             return frame.id === _frameId;
         });
         renderFrameDropdown();
+    }
+
+    function updateFrame(frameId) {
+
     }
 
     function removeFrame(frameId) {
@@ -332,6 +337,10 @@ $(function() {
         });
     }
 
+    /**
+     * Load a page of Artwork objects from the server and render them.
+     * @param  {Number} skip
+     */
     function loadArtwork(skip) {
         skip = skip || 0;
         switch (window.PATH) {
@@ -358,6 +367,27 @@ $(function() {
         }
     }
 
+    function setupPubSubEvents() {
+        console.log('setupPubSubEvents');
+        allFrames.forEach(function(frame) {
+            console.log(frame.id);
+            pubsub.subscribe('/frame/' + frame.id + '/connected', function(data) {
+                console.log('frame connected!', data);
+
+            });
+            pubsub.subscribe('/frame/' + frame.id + '/disconnected', function(data) {
+                console.log('frame disconnected!', data);
+            });
+            pubsub.subscribe('/frame/' + frame.id + '/updated', function(data) {
+                console.log('frame updated!', data);
+            });
+            pubsub.subscribe('/frame/' + frame.id + '/updating', function(data) {
+                console.log('frame updating!', data);
+            });
+        });
+    }
+
+
     function init() {
         bindEvents();
 
@@ -378,6 +408,8 @@ $(function() {
             renderFrameDropdown();
 
             loadArtwork();
+
+            setupPubSubEvents();
 
         }).fail(function(err) {
             console.log(err);

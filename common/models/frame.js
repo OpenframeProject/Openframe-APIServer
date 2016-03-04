@@ -8,7 +8,7 @@ module.exports = function(Frame) {
         if (ctx.instance) {
             debug('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
             if (Frame.app.pubsub) {
-                Frame.app.pubsub.publish('/frame/' + ctx.instance.id + '/updated', ctx.instance);
+                Frame.app.pubsub.publish('/frame/' + ctx.instance.id + '/db_updated', ctx.instance);
             }
         }
         next();

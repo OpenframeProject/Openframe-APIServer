@@ -19,9 +19,9 @@ module.exports = function(Artwork) {
         var context = loopback.getCurrentContext(),
             req = context && context.active ? context.active.http.req : null,
             user = req ? req.user : null,
-            liked_artwork = req.liked_artwork || null;
+            liked_artwork = req ? req.liked_artwork : null;
 
-        debug('liked_artwork', req.liked_artwork);
+        debug('liked_artwork', liked_artwork);
 
         ctx.instance.liked = false;
 

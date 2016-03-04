@@ -80,4 +80,5 @@ env:
 
 globals:
   _: true
-  OF: true
+  OF: true,
+  Faye: true
