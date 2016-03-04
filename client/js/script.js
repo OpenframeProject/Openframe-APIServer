@@ -83,9 +83,12 @@ $(function() {
         if (index !== -1) {
             currentCollection[index] = artwork;
         }
-        addFormatDisplayName(artwork);
-        artwork.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(artwork.format) ? 'btn-push--enabled' : 'btn-push--disabled';
-        $('*[data-artworkid="' + artwork.id + '"]').replaceWith(artworkTemplate(artwork));
+        var art = _.extend({}, artwork);
+        addFormatDisplayName(art);
+        art.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(art.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        art.liked = art.liked || false;
+        art.currentArtworkId = currentFrame && currentFrame._current_artwork ? currentFrame._current_artwork.id : null;
+        $('*[data-artworkid="' + artwork.id + '"]').replaceWith(artworkTemplate(art));
     }
 
     function hideFrameSettings() {
@@ -187,6 +190,8 @@ $(function() {
                             } else {
                                 currentFrame = allFrames[0];
                             }
+                            $('.btn-displaying').remove();
+                            replaceArtwork(artwork);
                             renderFrameDropdown();
                         }).fail(function(err) {
                             console.log(err);
