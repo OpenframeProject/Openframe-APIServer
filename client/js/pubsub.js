@@ -1,7 +1,7 @@
 window.PubSub = (function() {
     var client = new Faye.Client(window.PS_URL, {
-            timeout: 5,
-            retry: 5
+            timeout: 60,
+            retry: 10
         }),
         clientAuth = {
             outgoing: function(message, callback) {

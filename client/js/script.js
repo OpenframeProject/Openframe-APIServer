@@ -23,7 +23,7 @@ $(function() {
     }
 
     function updateFrame(frameId) {
-
+        console.log('updateFrame', frameId);
     }
 
     function removeFrame(frameId) {
