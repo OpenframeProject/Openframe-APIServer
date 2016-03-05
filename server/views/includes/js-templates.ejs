@@ -21,9 +21,6 @@
 
                 <!-- actions -->
                 <div class="artwork__actions">
-                    {{ if (id != currentArtworkId) { }}
-                        <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
-                    {{ } }}
 
                     {{ if (ownerId != window.USER_ID) { }}
                         {{ if (liked) { }}
@@ -33,7 +30,9 @@
                         {{ } }}
                     {{ } }}
 
-                    {{ if (id == currentArtworkId) { }}
+                    {{ if (id != currentArtworkId) { }}
+                        <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
+                    {{ } else { }}
                         <div class="btn btn-circle btn-displaying" data-artworkid="{{- id }}"></div>
                     {{ } }}
                 </div>
@@ -75,10 +74,10 @@
     {{ } }}
 </script>
 
-<script type="text/template" id="FrameSettings">
-    <a href="#" data-toggle="modal" data-target="#FrameSettingsModal">
-        <button class="btn-transparent"  >
-            <img class="icon-topbar" src="../img/settings.svg">
-        </button>
-    </a>
+<script type="text/template" id="CurrentFrameTemplate">
+    TODO...
+</script>
+
+<script type="text/template" id="MenuTemplate">
+    TODO...
 </script>

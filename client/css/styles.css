@@ -1,3 +1,5 @@
+@import "./animation.css";
+
 *,
 *:before,
 *:after {
@@ -475,6 +477,13 @@ h4 {
     background-repeat: no-repeat;
     background-position: center;
     background-image: url(../img/checkmark.svg);
+    background-size: 19px;
+}
+
+.btn-pushing {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(../img/pushing.png);
     background-size: 19px;
 }
 

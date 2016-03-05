@@ -1,8 +1,5 @@
 $(function() {
-    var _user = {},
-        _currentCollectionId,
-        collections = [],
-        allFrames = [],
+    var allFrames = [],
         currentFrame,
         currentCollection,
         $rowCollection = $('.row-collection'),
@@ -14,6 +11,26 @@ $(function() {
         },
         framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text()),
         pubsub = window.PubSub;
+
+    /**
+     * Find an artwork in the current collection by artworkId
+     * @param  {String} artworkId
+     * @return {Object}
+     */
+    function findArtworkById(artworkId) {
+        return _.find(currentCollection, function(artworkData) {
+            return artworkData.id === artworkId;
+        });
+    }
+
+    function getArtworkViewModel(artwork) {
+        var art = _.extend({}, artwork);
+        addFormatDisplayName(art);
+        art.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(art.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        art.liked = art.liked || false;
+        art.currentArtworkId = currentFrame && currentFrame._current_artwork ? currentFrame._current_artwork.id : null;
+        return art;
+    }
 
     function selectFrame(_frameId) {
         currentFrame = _.find(allFrames, function(frame) {
@@ -83,11 +100,7 @@ $(function() {
         if (index !== -1) {
             currentCollection[index] = artwork;
         }
-        var art = _.extend({}, artwork);
-        addFormatDisplayName(art);
-        art.disabled = currentFrame && currentFrame.plugins.hasOwnProperty(art.format) ? 'btn-push--enabled' : 'btn-push--disabled';
-        art.liked = art.liked || false;
-        art.currentArtworkId = currentFrame && currentFrame._current_artwork ? currentFrame._current_artwork.id : null;
+        var art = getArtworkViewModel(artwork);
         $('*[data-artworkid="' + artwork.id + '"]').replaceWith(artworkTemplate(art));
     }
 
@@ -167,19 +180,28 @@ $(function() {
         });
 
 
-
         $(document).on('click', '.btn-push--enabled', function(e) {
             var artworkId = $(this).data('artworkid'),
                 // get the artwork data from the collection
-                artwork = _.find(currentCollection, function(artworkData) {
-                    return artworkData.id === artworkId;
-                });
+                artwork = findArtworkById(artworkId);
+
+            // Set button to 'pushing' state (spinner)
+            $(this).removeClass('btn-push').addClass('btn-pushing rotating');
 
             if (artwork && currentFrame) {
-                console.log(artwork, currentFrame);
                 OF.pushArtwork(currentFrame.id, artwork)
                     .then(function(resp) {
-                        console.log(resp);
+                        // replace the artwork being pushed
+                        replaceArtwork(artwork);
+
+                        // if there's already an artwork in 'displaying' status, update it
+                        var artId = $('.btn-displaying').first().data('artworkid');
+                        if (artId) {
+                            // get the artwork data from the collection
+                            var art = findArtworkById(artId);
+                            replaceArtwork(art);
+                        }
+
                         OF.fetchFrames().then(function(data) {
                             console.log(data);
                             allFrames = data.frames;
@@ -190,14 +212,9 @@ $(function() {
                             } else {
                                 currentFrame = allFrames[0];
                             }
-                            var artId = $('.btn-displaying').data('artworkid');
-                            console.log('artId', artId);
-                            // get the artwork data from the collection
-                            var art = _.find(currentCollection, function(artworkData) {
-                                return artworkData.id === artId;
-                            });
-                            replaceArtwork(art);
-                            replaceArtwork(artwork);
+
+
+
                             renderFrameDropdown();
                         }).fail(function(err) {
                             console.log(err);
@@ -393,6 +410,7 @@ $(function() {
             });
             pubsub.subscribe('/frame/' + frame.id + '/updated', function(data) {
                 console.log('frame updated!', data);
+                $('.btn-pushing').removeClass('btn-pushing').addClass('btn-displaying');
             });
             pubsub.subscribe('/frame/' + frame.id + '/updating', function(data) {
                 console.log('frame updating!', data);
