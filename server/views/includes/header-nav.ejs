@@ -2,33 +2,34 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand hidden-xs" href="/">
                 <img class="of-logo" alt="Brand" src="/img/of-logo.svg">
             </a>
             <h2 class="hidden-xs">/&nbsp;<%= user.username %></h2>
-            <div class="menu">
-                <img class="icon-menu" src="../img/menu.svg">
-            </div>
         </div>
         <!-- This items get collected inside the hamburger for mobile -->
+
+        <div class="current-frame">
+
+            <div class="current-frame-name">Home</div>
+            <div class="current-frame-status displaying hidden-xs">TeamLab - Flowers</div>
+        </div>
+
+        <div class="btn-menu navbar-right">
+            <img class="icon-topbar" src="../img/threedots.svg">
+        </div>
+<!--
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-center">
                 <li class="dropdown dropdown-frames"></li>
-
-
-                <li class="btn-frame-settings hide">
-                    <a href="#" data-toggle="modal" data-target="#FrameSettingsModal">
-                        <button class="btn-transparent"  >
-                            <img class="icon-topbar" src="../img/settings.svg">
-                        </button>
-                    </a>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="btn-menu">
+                    <img class="icon-topbar" src="../img/threedots.svg">
                 </li>
+            </ul>
+-->
+
 
                 <!-- <li class="switch">
                     <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
@@ -46,9 +47,6 @@
                     </a>
                 </li>
  -->
-                <li class="divider-vertical hidden-xs"></li>
-
-                <li class="btn-logout"><a href="/logout">Log out</a></li>
             </ul>
         </div>
     </div>

@@ -4,9 +4,9 @@
     <title>pushing</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="phone-copy-57" transform="translate(-224.000000, -421.000000)" stroke="" stroke-width="2">
-            <path d="M233,438 C237.418278,438 241,434.418278 241,430 C241,425.581722 237.418278,422 233,422 C228.581722,422 225,425.581722 225,430" id="pushing"></path>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Landing-Copy-25" transform="translate(-982.000000, -531.000000)" fill="">
+            <path d="M991,549 C995.970563,549 1000,544.970563 1000,540 C1000,535.029437 995.970563,531 991,531 C986.029437,531 982,535.029437 982,540 C982,540.552285 982.447715,541 983,541 C983.552285,541 984,540.552285 984,540 C984,536.134007 987.134007,533 991,533 C994.865993,533 998,536.134007 998,540 C998,543.865993 994.865993,547 991,547 C990.447715,547 990,547.447715 990,548 C990,548.552285 990.447715,549 991,549 L991,549 Z" id="pushing"></path>
         </g>
     </g>
 </svg>
