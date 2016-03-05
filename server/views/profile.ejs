@@ -23,7 +23,7 @@
 		</div>
 		<div class="row row-collection row-tile">
 
-            <button class="btn tile-item tile-artwork add-button" data-toggle="modal" data-target="#AddArtworkModal">
+            <button class="btn tile-item add-button" data-toggle="modal" data-target="#AddArtworkModal">
                 Add artwork
             </button>
 		</div>
@@ -51,7 +51,11 @@
                 <a class="btn-frame-settings" href="#" data-toggle="modal" data-target="#FrameSettingsModal">
                     <img class="icon-settings" src="../img/settings.svg">
                 </a>
-                <div class="frame-status displaying">displaying</div>                
+                <div class="switch">
+                    <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" checked>
+                    <label class="toggle-label" for="cmn-toggle-4"></label>
+                </div>
+                <div class="frame-status displaying">TeamLab - Flowers</div>                
             </li>
 
             <li class="sidebar-row frame-item">
@@ -59,7 +63,11 @@
                 <a class="btn-frame-settings" href="#" data-toggle="modal" data-target="#FrameSettingsModal">
                     <img class="icon-settings" src="../img/settings.svg">
                 </a>
-                <div class="frame-status not-displaying">off</div> 
+                <div class="switch">
+                    <input id="cmn-toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+                    <label class="toggle-label" for="cmn-toggle-4"></label>
+                </div>
+                <div class="frame-status not-displaying">-</div> 
             </li>
 
             <li class="sidebar-row frame-item">
@@ -67,7 +75,11 @@
                 <a class="btn-frame-settings" href="#" data-toggle="modal" data-target="#FrameSettingsModal">
                     <img class="icon-settings" src="../img/settings.svg">
                 </a>
-                <div class="frame-status not-displaying">not connected</div> 
+                <div class="switch">
+                    <input id="cmn-toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+                    <label class="toggle-label" for="cmn-toggle-4"></label>
+                </div>
+                <div class="frame-status not-displaying">Not connected</div> 
             </li>
             <li class="btn-logout">
                 <a href="/logout">Log out</a>
