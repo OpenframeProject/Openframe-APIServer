@@ -787,11 +787,11 @@ input.cmn-toggle-round-flat:checked + label:after {
     padding-top: 16px;
     padding-left: 15px;
     text-align: left;
+    cursor: pointer;
 }
 
 .sidebar__row--frame:hover, .sidebar_row--frame-active {
     background: white;
-    cursor: pointer;
 }
 
 .sidebar__row--logout {
@@ -895,7 +895,7 @@ input.cmn-toggle-round-flat:checked + label:after {
 
     .navbar-btn-item {
         height: 50px;
-        padding: 15px 0px;
+        padding: 14px 0px;
     }
 
     .btn-menu {

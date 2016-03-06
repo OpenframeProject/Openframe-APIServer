@@ -41,39 +41,6 @@
     </div>
 </script>
 
-<script type="text/template" id="FramesDropdownTemplate">
-    <a href="#" class="dropdown-toggle frames-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-        <div class="frame-list-item {{= currentFrame.connected ? 'frame-list-item--connected' : '' }}">
-            <div class="frame-list-item__name">{{- currentFrame.name }} {{ if (frames.length > 1) { }}<span class="caret frame-list-item--caret"></span>{{ } }}</div>
-            {{ if (currentFrame._current_artwork) { }}
-                <div class="frame-list-item__status">{{- currentFrame._current_artwork.author_name }}: {{- currentFrame._current_artwork.title }}</div>
-            {{ } else { }}
-                <div class="frame-list-item__status">No Artwork Displayed</div>
-            {{ } }}
-        </div>
-    </a>
-    {{ if (frames.length > 1) { }}
-    <ul class="dropdown-menu">
-        {{ frames.forEach(function(frame) { }}
-            {{ if (frame.id !== currentFrame.id) { }}
-            <li>
-                <a href="#/frame/{{- frame.id }}" class="frame-select-link" data-frameid="{{- frame.id }}">
-                    <div class="frame-list-item {{= frame.connected ? 'frame-list-item--connected' : '' }}" >
-                        <div class="frame-list-item__name">{{- frame.name }}</div>
-                        {{ if (frame._current_artwork) { }}
-                            <div class="frame-list-item__status">{{- frame._current_artwork.author_name }}: {{- frame._current_artwork.title }}</div>
-                        {{ } else { }}
-                            <div class="frame-list-item__status">No Artwork Displayed</div>
-                        {{ } }}
-                    </div>
-                </a>
-            </li>
-            {{ } }}
-        {{ }); }}
-    </ul>
-    {{ } }}
-</script>
-
 <script type="text/template" id="CurrentFrameTemplate">
     <div class="current-frame-name">
         {{ if (connected) { }}
