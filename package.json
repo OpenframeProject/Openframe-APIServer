@@ -42,6 +42,7 @@
     "ejs": "^2.4.1",
     "express-flash": "0.0.2",
     "express-session": "^1.13.0",
+    "fastclick": "^1.0.6",
     "faye": "^1.1.2",
     "image-zoom": "^1.1.1",
     "jquery": "^2.2.0",

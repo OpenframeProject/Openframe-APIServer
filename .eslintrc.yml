@@ -81,4 +81,5 @@ env:
 globals:
   _: true
   OF: true,
-  Faye: true
+  Faye: true,
+  FastClick: true

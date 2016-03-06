@@ -2,6 +2,9 @@ window.OF = (function() {
     function init() {
         console.log('OF.init()');
 
+
+        FastClick.attach(document.body);
+
         // Start by fetching the user's frames
         OF.API.fetchFrames().then(function(data) {
             var frames = OF.Frames.setFramesList(data.frames);
