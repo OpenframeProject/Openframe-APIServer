@@ -1,5 +1,5 @@
 <script type="text/template" id="ArtworkTemplate">
-    <div class="tile-item tile-artwork hover-actions" data-artworkid="{{- id }}">
+    <div class="tile-item tile-artwork hover-actions {{ if (isCurrent) { }} tile-artwork--current {{ } }}" data-artworkid="{{- id }}">
         <div class="bg-image">
             <img
                 src="{{- thumb_url }}"
@@ -21,9 +21,6 @@
 
                 <!-- actions -->
                 <div class="artwork__actions">
-                    {{ if (id != currentArtworkId) { }}
-                        <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
-                    {{ } }}
 
                     {{ if (ownerId != window.USER_ID) { }}
                         {{ if (liked) { }}
@@ -33,7 +30,9 @@
                         {{ } }}
                     {{ } }}
 
-                    {{ if (id == currentArtworkId) { }}
+                    {{ if (!isCurrent) { }}
+                        <div class="btn btn-circle btn-push {{- disabled }} btn-hover-action" data-artworkid="{{- id }}"></div>
+                    {{ } else { }}
                         <div class="btn btn-circle btn-displaying" data-artworkid="{{- id }}"></div>
                     {{ } }}
                 </div>
@@ -75,10 +74,44 @@
     {{ } }}
 </script>
 
-<script type="text/template" id="FrameSettings">
-    <a href="#" data-toggle="modal" data-target="#FrameSettingsModal">
-        <button class="btn-transparent"  >
-            <img class="icon-topbar" src="../img/settings.svg">
-        </button>
-    </a>
+<script type="text/template" id="CurrentFrameTemplate">
+    <div class="current-frame-name">
+        {{ if (connected) { }}
+            <span class="current-frame-indicator current-frame-indicator--connected">&bull;</span>
+        {{ } else { }}
+            <span class="current-frame-indicator current-frame-indicator--disconnected">&bull;</span>
+        {{ } }}
+
+        {{- name }}
+    </div>
+    <div class="current-frame-status displaying hidden-xs">
+        {{ if (_current_artwork) { }}
+            {{- _current_artwork.author_name }} - {{- _current_artwork.title }}
+        {{ } else { }}
+            No Artwork Displayed
+        {{ } }}
+    </div>
+</script>
+
+<script type="text/template" id="FrameMenuItem">
+    <li class="sidebar__row sidebar__row--frame {{ if (isCurrent) { }}sidebar_row--frame-active {{ } }}" data-frameid="{{- id }}">
+        {{ if (isCurrent) { }}
+            <img class="mark-frame-active" src="../img/frame-checkmark.svg">
+        {{ } }}
+        <div class="frame-name">{{- name }}</div>
+        {{ if (isOwner) { }}
+        <a class="btn-frame-settings" href="#" data-toggle="modal" data-target="#FrameSettingsModal" data-frameid="{{- id }}">
+            <img class="icon-settings" src="../img/settings.svg">
+        </a>
+        {{ } }}
+        <!-- <div class="switch">
+            <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" checked>
+            <label class="toggle-label" for="cmn-toggle-4"></label>
+        </div> -->
+        {{ if (_current_artwork) { }}
+            <div class="frame-status displaying">{{- _current_artwork.author_name }} - {{- _current_artwork.title }}</div>
+        {{ } else { }}
+            <div class="frame-status displaying">No Artwork Displayed</div>
+        {{ } }}
+    </li>
 </script>

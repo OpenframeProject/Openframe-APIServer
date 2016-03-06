@@ -1,4 +1,4 @@
-window.OF = (function($) {
+window.OF.API = (function(OF, $) {
 
     /**
      * Login
@@ -245,4 +245,4 @@ window.OF = (function($) {
         deleteFrame: deleteFrame
     };
 
-})(jQuery);
+})(OF, jQuery);

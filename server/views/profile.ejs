@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
     <% include includes/header-nav %>
 
     <div class="container container-centered-artwork">
@@ -22,11 +23,12 @@
 		</div>
 		<div class="row row-collection row-tile">
 
-            <button class="btn tile-item tile-artwork add-button" data-toggle="modal" data-target="#AddArtworkModal">
+            <button class="btn tile-item add-button" data-toggle="modal" data-target="#AddArtworkModal">
                 Add artwork
             </button>
 		</div>
     </div>
+
     <nav class="navbar navbar-default navbar-fixed-bottom visible-xs">
         <div class="container">
             <ul class="tabs-bottom">
@@ -35,7 +37,9 @@
             </ul>
         </div>
     </nav>
-
+    <div class="sidebar-wrap">
+        <% include includes/sidebar %>
+    </div>
 
     <% include includes/modals %>
     <% include includes/js-templates %>

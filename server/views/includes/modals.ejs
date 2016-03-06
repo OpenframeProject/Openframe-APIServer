@@ -45,8 +45,8 @@
                                 <input type="text" class="form-control" name="thumb_url" id="ThumbURL" autocapitalize="off" placeholder="http://server.com/thumbnail.jpg">
                             </div>
                             <div class="form-group">
-                                <label class="radio-inline"><input type="radio" name="is_public" value="true">Publish to Stream</label>
                                 <label class="radio-inline"><input type="radio" name="is_public" value="false">Keep private</label>
+                                <label class="radio-inline"><input type="radio" name="is_public" value="true">Publish to Stream</label>
                             </div>
                             <div class="form-group">
                                 <button id="EditButton" href="#" class="btn btn-default">Save changes</button>
@@ -179,11 +179,15 @@
                                 "http://server.com/thumbnail.jpg" type="text">
                             </div>
                             <div class="form-group">
-                                <label class="radio-inline"><input name=
-                                "is_public" value="true" type="radio" checked>Publish to
-                                Stream</label> <label class=
-                                "radio-inline"><input name="is_public" value="false" type=
-                                "radio">Keep private</label>
+                                <label class="radio-inline">
+                                    <input name="is_public" value="false" type="radio" checked>
+                                    Keep private
+                                </label>
+
+                                <label class="radio-inline">
+                                    <input name="is_public" value="true" type="radio">
+                                    Publish toStream
+                                </label>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-default" id=

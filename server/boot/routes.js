@@ -19,6 +19,12 @@ module.exports = function(app) {
 
     // Render login page
     app.get('/login', function(req, res, next) {
+        var user = req.user;
+
+        if (user) {
+            return res.redirect('/' + user.username);
+        }
+
         return res.render('login');
     });
 
