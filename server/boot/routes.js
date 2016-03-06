@@ -14,7 +14,7 @@ module.exports = function(app) {
 
     // index route redirects to user profile for the moment (requires login)
     app.get('/', function(req, res, next) {
-        return res.render('splash');
+        return res.redirect('/login');
     });
 
     // Render login page
