@@ -3,11 +3,12 @@ window.OF.DOM = (function(OF, $) {
         // container elements
         $rowCollection = $('.row-collection'),
         $currentFrame = $('.current-frame'),
+        $frameMenuList = $('#MenuFrameList'),
 
         // js templates
-        artworkTemplate = _.template($('#ArtworkTemplate').text());
-        // menuTemplate = _.template($('#MenuTemplate').text()),
-        // currentFrameTemplate = _.template($('#CurrentFrameTemplate')).text(),
+        artworkTpl = _.template($('#ArtworkTemplate').text()),
+        frameMenuItemTpl = _.template($('#FrameMenuItem').text()),
+        currentFrameTpl = _.template($('#CurrentFrameTemplate').text());
         // framesDropdownTemplate = _.template($('#FramesDropdownTemplate').text());
 
 
@@ -52,15 +53,27 @@ window.OF.DOM = (function(OF, $) {
     }
 
     function renderArtwork(artwork, opts) {
+        if (!artwork || !artwork.id) {
+            return;
+        }
         opts = opts || {};
         var art = OF.Artwork.getArtworkViewModel(artwork),
-            rendered = artworkTemplate(art);
+            rendered = artworkTpl(art);
+
         if (opts.top) {
             $('.tile-item').first().after(rendered);
         } else if (opts.replace) {
             $('*[data-artworkid="' + artwork.id + '"]').replaceWith(rendered);
         } else {
-            $rowCollection.append(artworkTemplate(art));
+            $rowCollection.append(artworkTpl(art));
+        }
+    }
+
+    function clearCurrentArtwork() {
+        var artworkId = $('.tile-artwork--current').data('artworkid'),
+            artwork = OF.Artwork.findArtworkById(artworkId);
+        if (artwork) {
+            renderArtwork(artwork, {replace: true});
         }
     }
 
@@ -101,15 +114,18 @@ window.OF.DOM = (function(OF, $) {
 
             if (artwork && currentFrame) {
                 OF.API.pushArtwork(currentFrame.id, artwork)
-                    .then(function(resp) {
-                        // OF.API.fetchFrames().then(function(data) {
-                        //     OF.Frames.framesList = data.frames;
-                        // }).fail(function(err) {
-                        //     console.log(err);
-                        // });
-                    })
-                    .fail(function(err) {
-                        console.log(err);
+                    .then(function(pushedArtwork) {
+                        // db updated... reload frames
+                        console.log(pushedArtwork);
+                        OF.API.fetchFrames().then(function(data) {
+                            var frames = OF.Frames.setFramesList(data.frames);
+                            renderCurrentFrame();
+                            renderMenu();
+                            if (currentArtwork) {
+                                renderArtwork(currentArtwork, {replace: true});
+                            }
+                            renderArtwork(pushedArtwork, {replace: true});
+                        });
                     });
             }
         });
@@ -147,6 +163,7 @@ window.OF.DOM = (function(OF, $) {
             var artwork = $('#EditForm').getObject();
             OF.API.updateArtwork(artwork.id, artwork).then(function(resp) {
                 $('#EditArtworkModal').modal('hide');
+                OF.Artwork.updateArtworkById(artwork.id, resp);
                 renderArtwork(resp, {replace: true});
             }).fail(function(err) {
                 displayErrors($('#EditArtworkModal'), err);
@@ -177,22 +194,45 @@ window.OF.DOM = (function(OF, $) {
     //
 
     function renderCurrentFrame() {
-
+        if (!OF.Frames.getCurrentFrame()) return;
+        var curFrameVM = OF.Frames.getCurrentFrameViewModel();
+        $currentFrame.html(currentFrameTpl(curFrameVM));
     }
 
     function bindFrameEvents() {
-        // when the edit modal appears, populate with artwork
+        $(document).on('click', '.sidebar__row--frame', function(e) {
+            var frameId = $(this).data('frameid'),
+                currentArtwork;
+
+            // set current frame
+            OF.Frames.setCurrentFrameById(frameId);
+
+            clearCurrentArtwork();
+
+            // update frame UIs
+            renderCurrentFrame();
+            renderMenu();
+            hideMenu();
+
+            // update artwork UIs
+            currentArtwork = OF.Frames.getCurrentArtwork();
+            renderArtwork(currentArtwork, {replace: true});
+        });
+
+        // when the settings modal appears, populate with frame info
         $('#FrameSettingsModal').on('show.bs.modal', function(event) {
-            var currentFrame = OF.Frames.getCurrentFrame(),
-                modal = $(this),
-                frameForForm = Object.assign({}, currentFrame, {
-                    name: currentFrame.name,
-                    plugins: Object.keys(currentFrame.plugins).join(', '),
-                    managers: currentFrame.managers ? currentFrame.managers.map(function(manager) {
+            var button = $(event.relatedTarget),
+                frameId = button.data('frameid'),
+                frame = OF.Frames.findFrameById(frameId),
+                $modal = $(this),
+                frameForForm = Object.assign({}, frame, {
+                    name: frame.name,
+                    plugins: Object.keys(frame.plugins).join(', '),
+                    managers: frame.managers ? frame.managers.map(function(manager) {
                         return manager.username;
                     }).join(', ') : ''
                 });
-            modal.find('form').fromObject(frameForForm);
+            $modal.find('form').fromObject(frameForForm);
         });
 
         // Save the frame settings
@@ -204,14 +244,13 @@ window.OF.DOM = (function(OF, $) {
             OF.API.updateFrame(frame.id, {
                 name: frame.name
             }).success(function() {
-                OF.API.updateFrameManagers(frame.id, managers).success(function(resp) {
+                OF.API.updateFrameManagers(frame.id, managers).then(function(resp) {
+                    OF.Frames.updateFrameById(frame.id, resp.frame);
                     $('#FrameSettingsModal').modal('hide');
                 });
             }).fail(function(err) {
-                $('#FrameSettingsModal .alert').html(err.responseJSON.error.message);
-                $('#FrameSettingsModal .row-errors').removeClass('hide');
+                displayErrors($('#FrameSettingsModal'), err);
             });
-
         });
 
         $(document).on('click', '#DeleteFrame', function(e) {
@@ -219,7 +258,10 @@ window.OF.DOM = (function(OF, $) {
             var frame = $('#FrameSettingsForm').getObject();
             if (confirm('Are you sure you want to delete this frame? This action cannot be undone.')) {
                 OF.API.deleteFrame(frame.id).then(function() {
+                    OF.Frames.removeFrameById(frame.id);
                     $('#FrameSettingsModal').modal('hide');
+                    renderMenu();
+                    renderCurrentFrame();
                 }).fail(function(err) {
                     $('#FrameSettingsModal .alert').html(err.responseJSON.error.message);
                     $('#FrameSettingsModal .row-errors').removeClass('hide');
@@ -237,19 +279,35 @@ window.OF.DOM = (function(OF, $) {
     //
 
     function showMenu() {
-
+        console.log('showMenu');
+        $('.sidebar').addClass('sidebar--open');
     }
 
     function hideMenu() {
-
+        console.log('hideMenu');
+        $('.sidebar').removeClass('sidebar--open');
     }
 
     function renderMenu() {
-
+        var frames = OF.Frames.getFramesList();
+        // empty the list
+        $frameMenuList.empty();
+        // render each frame list item
+        frames.forEach(function(frame) {
+            var frameVM = OF.Frames.getFrameViewModel(frame);
+            $frameMenuList.append(frameMenuItemTpl(frameVM));
+        });
     }
 
     function bindMenuEvents() {
+        $('.navbar-btn-item--menu').on('click', function() {
+            console.log('clicked menu button');
+            showMenu();
+        });
 
+        $(document).on('click', '.btn-menu-close', function() {
+            hideMenu();
+        });
     }
 
     //
@@ -262,6 +320,11 @@ window.OF.DOM = (function(OF, $) {
         bindFrameEvents();
         bindArtworkEvents();
         bindMenuEvents();
+
+        // frames have already loaded in OF.init(), render them now
+        renderCurrentFrame();
+
+        renderMenu();
 
         OF.Artwork.loadArtwork().then(function(artwork) {
             renderArtworks(artwork);

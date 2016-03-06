@@ -19,10 +19,12 @@ window.OF.Frames = (function(OF) {
      */
     function setFramesList(frames) {
         _framesList = frames;
+
         // if no current frame is set, set the first frame as current
-        if (!_currentFrameId && frames.length) {
-            setCurrentFrameById(frames[0].id);
+        if (!getCurrentFrame() && _framesList.length) {
+            setCurrentFrameById(_framesList[0].id);
         }
+
         return _framesList;
     }
 
@@ -33,8 +35,49 @@ window.OF.Frames = (function(OF) {
      */
     function findFrameById(frameId) {
         return _.find(_framesList, function(frame) {
-            return frame.id === frameId;
+            return frame.id.toString() === frameId.toString();
         });
+    }
+
+    /**
+     * Update a frame model by id. Replaces the in-memory frame with
+     * the object passed in data param.
+     * @param  {String} frameId
+     * @param  {Object} data
+     * @return {Boolean} true if updated, false if not found
+     */
+    function updateFrameById(frameId, data) {
+        var idx = _.findIndex(_framesList, function(frame) {
+            return frame.id.toString() === frameId.toString();
+        });
+        if (idx !== -1) {
+            _framesList[idx] = data;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Remove a frame from frame list by id.
+     *
+     * @param  {String} frameId
+     * @return {Boolean} true if removed, false if not found
+     */
+    function removeFrameById(frameId) {
+        var idx = _.findIndex(_framesList, function(frame) {
+            return frame.id.toString() === frameId.toString();
+        });
+        if (idx !== -1) {
+            _framesList.splice(idx, 1);
+            if (frameId.toString() === _currentFrameId.toString()) {
+                // frame was current frame, promote the next top frame in list
+                if (_framesList.length) {
+                    setCurrentFrameById(_framesList[0].id);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -64,12 +107,35 @@ window.OF.Frames = (function(OF) {
         return currentFrame._current_artwork;
     }
 
+    /**
+     * Get a presentation-ready copy of the model data for a frame.
+     * @param  {Object} frame
+     * @return {Object} Modified frame ready for template
+     */
+    function getFrameViewModel(frame) {
+        var theFrame = _.extend({}, frame);
+        theFrame._current_artwork = theFrame._current_artwork || null;
+        theFrame.isCurrent = theFrame.id.toString() === _currentFrameId.toString();
+        theFrame.isOwner = theFrame.ownerId && theFrame.ownerId.toString() === window.USER_ID.toString();
+        theFrame.connected = theFrame.connected || false;
+        return theFrame;
+    }
+
+    function getCurrentFrameViewModel() {
+        var frame = getCurrentFrame();
+        return getFrameViewModel(frame);
+    }
+
     return {
         getFramesList: getFramesList,
         setFramesList: setFramesList,
         findFrameById: findFrameById,
         setCurrentFrameById: setCurrentFrameById,
         getCurrentFrame: getCurrentFrame,
-        getCurrentArtwork: getCurrentArtwork
+        getCurrentArtwork: getCurrentArtwork,
+        getCurrentFrameViewModel: getCurrentFrameViewModel,
+        getFrameViewModel: getFrameViewModel,
+        updateFrameById: updateFrameById,
+        removeFrameById: removeFrameById
     };
 })(OF);

@@ -93,8 +93,21 @@ body {
     margin-top: 13px;
     text-align: center;
     position: absolute;
-    width: 100%;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.current-frame-indicator {
+    position: relative;
+    top: -1px;
+    left: -5px;
+}
+.current-frame-indicator--connected {
+    color: #37CFAD;
+}
+
+.current-frame-indicator--disconnected {
+    color: #ccc;
 }
 
 .current-frame-name {
@@ -116,75 +129,29 @@ body {
     color: #DEDEDE;
 }
 
+.navbar-right {
+    float: right;
+    margin: 0;
+}
+.navbar-btn-item {
+    height: 66px;
+    padding: 23px 3px;
+}
+
 .btn-menu {
-    border: 1px solid #DEDEDE;
+    border: 1px solid black;
     height: 18px;
     width: 30px;
-    margin-top: 23px;
-    margin-right: 10px;
-    text-align: center;
     border-radius: 2px;
-    transition: all 0.1s;
-    float: right;
-}
-
-
-.icon-topbar {
-    padding-bottom: 7px;
+    transition: opacity 0.1s;
+    background: url('../img/threedots.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
     opacity: 0.3;
-    transition: all 0.1s;
 }
 
-.btn-menu:hover {
-    border: 1px solid black;
-}
-
-.btn-menu:hover .icon-topbar{
+.navbar-btn-item:hover .btn-menu {
     opacity: 1;
-}
-
-.frame-list-item {
-    position: relative;
-    top: -9px;
-    padding: 0px 20px;
-    float: left;
-}
-
-.frame-list-item::before {
-    content: "\2022";
-    color: #DEDEDE;
-    position: absolute;
-    left: 4px;
-    top: -2px;
-    font-size: 18px;
-}
-
-.frame-list-item--connected::before {
-    color: #0a0;
-}
-
-.frame-list-item--caret {
-    position: relative;
-    top: -2px;
-    left: 10px;
-}
-
-.frame-list-item__name {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: black;
-}
-
-.frame-list-item__name--current {}
-
-.frame-list-item__status {
-    color: #B2B2B2;
-    font-size: 14px;
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: 0.2px;
 }
 
 .add-button {
@@ -519,11 +486,11 @@ h4 {
 }
 
 .btn-displaying {
-    background-color: #27BD9B;
+    background-color: #37CFAD;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url(../img/checkmark.svg);
-    background-size: 19px;
+    background-size: 17px;
 }
 
 .btn-pushing {
@@ -753,17 +720,28 @@ input.cmn-toggle-round-flat:checked + label:after {
     text-decoration: underline;
 }
 
+
+
 /* Sidebar */
 
 .sidebar {
     position: fixed;
-    right: 0px;
+    right: -310px;
     top: 0px;
     width: 300px;
     height: 100%;
     background-color: #F6F6F6;
     z-index: 1040;
-    box-shadow: -2px 0px 6px rgba(0,0,0,0.15)
+    box-shadow: -2px 0px 6px rgba(0,0,0,0.15);
+    -webkit-transition: right .25s ease;
+    -moz-transition: right .25s ease;
+    -o-transition: right .25s ease;
+    -ms-transition: right .25s ease;
+    transition: right .25s ease;
+}
+
+.sidebar--open {
+    right: 0;
 }
 
 .sidebar-header {
@@ -781,36 +759,45 @@ input.cmn-toggle-round-flat:checked + label:after {
     background-color: blue;
 }
 
-.frames-list {
+.sidebar__frames-list {
     list-style: none;
     padding-left: 0px;
 }
 
-
-
-.sidebar-row {
+.sidebar__row {
     height: 70px;
     border-bottom: 1px solid #DEDEDE;
 }
 
-.list-title {
+.sidebar__row {
     font-size: 12px;
-    font-weight: 400;
     color: #9B9B9B;
-    text-transform: uppercase;
     text-align: center;
+    padding: 10px;
+}
+
+.sidebar__row--title {
+    font-weight: 400;
+    text-transform: uppercase;
     letter-spacing: 1px;
     padding-top: 36px;
 }
 
-.frame-item {
+.sidebar__row--frame {
     padding-top: 16px;
     padding-left: 15px;
+    text-align: left;
 }
 
-.row-frame-active {
+.sidebar__row--frame:hover, .sidebar_row--frame-active {
     background: white;
+    cursor: pointer;
 }
+
+.sidebar__row--logout {
+    border: 0;
+}
+
 
 .frame-name {
     float: left;
@@ -906,11 +893,14 @@ input.cmn-toggle-round-flat:checked + label:after {
         color: white;
     }
 
+    .navbar-btn-item {
+        height: 50px;
+        padding: 15px 0px;
+    }
+
     .btn-menu {
         height: 22px;
         width: 34px;
-        margin-top: 13px;
-        margin-right: 0px;
     }
 
     .icon-topbar {
@@ -922,8 +912,9 @@ input.cmn-toggle-round-flat:checked + label:after {
     }
 
     .modal {
-        text-align: center;
+        // text-align: center;
     }
+
     .modal-dialog {
         width: 96%;
         margin-left: auto;
@@ -944,7 +935,7 @@ input.cmn-toggle-round-flat:checked + label:after {
     .add-button{
         margin-bottom: 10px;
         font-size: 16px;
-    }  
+    }
 
     .btn-circle {
         width: 36px;

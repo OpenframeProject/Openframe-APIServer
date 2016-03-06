@@ -33,15 +33,37 @@ window.OF.Artwork = (function(OF) {
      * Add artworks to the _artworkList
      * @param  {Array|Object} artwork array or object to add
      */
-    function _prependToArtworkList(artwork) {
+    function prependToArtworkList(artwork) {
         if (_.isArray(artwork)) {
             _artworkList = artwork.concat(_artworkList);
-        } else if (_.isPlainObject(artwork)) {
+        } else {
             _artworkList.unshift(artwork);
         }
         return _artworkList;
     }
 
+    /**
+     * Update a artwork model by id. Replaces the in-memory artwork with
+     * the object passed in data param.
+     * @param  {String} artworkId
+     * @param  {Object} data
+     * @return {Boolean} true if updated, false if not found
+     */
+    function updateArtworkById(artworkId, data) {
+        var idx = _.findIndex(_artworkList, function(artwork) {
+            return artwork.id.toString() === artworkId.toString();
+        });
+        if (idx !== -1) {
+            _artworkList[idx] = data;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Load the next page of artwork
+     * @return {Promise}
+     */
     function loadNextPage() {
         _pagination.skip += _pagination.limit;
         return loadArtwork(_pagination.skip);
@@ -90,9 +112,9 @@ window.OF.Artwork = (function(OF) {
             currentFrame = OF.Frames.getCurrentFrame(),
             currentArtwork = OF.Frames.getCurrentArtwork();
         _addFormatDisplayName(art);
-        art.disabled = currentFrame && currentFrame.plugins && plugins.hasOwnProperty(art.format) ? 'btn-push--enabled' : 'btn-push--disabled';
+        art.disabled = currentFrame && currentFrame.plugins && currentFrame.plugins.hasOwnProperty(art.format) ? 'btn-push--enabled' : 'btn-push--disabled';
         art.liked = art.liked || false;
-        art.currentArtworkId = currentArtwork ? currentArtwork.id : null;
+        art.isCurrent = currentArtwork ? currentArtwork.id.toString() === art.id.toString() : false;
         return art;
     }
 
@@ -121,6 +143,8 @@ window.OF.Artwork = (function(OF) {
         findArtworkById: findArtworkById,
         getArtworkViewModel: getArtworkViewModel,
         loadNextPage: loadNextPage,
-        loadArtwork: loadArtwork
+        loadArtwork: loadArtwork,
+        prependToArtworkList: prependToArtworkList,
+        updateArtworkById: updateArtworkById
     };
 })(OF);
