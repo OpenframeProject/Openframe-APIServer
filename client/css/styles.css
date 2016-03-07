@@ -938,19 +938,6 @@ input.cmn-toggle-round-flat:checked + label:after {
     }
 
     .btn-circle {
-        width: 36px;
-        height: 36px;
-        text-align: center;
-        padding: 6px 0;
-        margin-top: 5px;
-        font-size: 12px;
-        line-height: 1.42;
-        border-radius: 50px;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        float: right;
-    }
-    .btn-circle {
         width: 42px;
         height: 42px;
     }
