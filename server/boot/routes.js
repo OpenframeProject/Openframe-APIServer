@@ -118,7 +118,8 @@ module.exports = function(app) {
                 // order to create the user session.
                 OpenframeUser.login({
                     email: newUser.email,
-                    password: newUser.password
+                    password: newUser.password,
+                    ttl: app.get('session_duration')
                 }, function(err, token) {
                     if (err) {
                         debug(err);
