@@ -177,7 +177,7 @@ window.OF.DOM = (function(OF, $) {
             if (confirm('Are you sure you want to delete this artwork? This action cannot be undone.')) {
                 OF.API.deleteArtwork(artwork.id).then(function() {
                     $('#EditArtworkModal').modal('hide');
-                    removeArtwork(artwork);
+                    removeArtwork(artwork.id);
                 }).fail(function(err) {
                     displayErrors($('#EditArtworkModal'), err);
                 });
@@ -247,6 +247,8 @@ window.OF.DOM = (function(OF, $) {
                 OF.API.updateFrameManagers(frame.id, managers).then(function(resp) {
                     OF.Frames.updateFrameById(frame.id, resp.frame);
                     $('#FrameSettingsModal').modal('hide');
+                    renderMenu();
+                    renderCurrentFrame();
                 });
             }).fail(function(err) {
                 displayErrors($('#FrameSettingsModal'), err);
