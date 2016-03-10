@@ -143,11 +143,11 @@ body {
     height: 18px;
     width: 30px;
     border-radius: 2px;
+    opacity: 0.3;
     transition: opacity 0.1s;
     background: url('../img/threedots.svg');
     background-position: center center;
     background-repeat: no-repeat;
-    opacity: 0.3;
 }
 
 .navbar-btn-item:hover .btn-menu {
@@ -751,8 +751,14 @@ input.cmn-toggle-round-flat:checked + label:after {
 .cross {
     float: right;
     background-repeat: no-repeat;
-    padding-right: 15px;
-    padding-top: 15px;
+    padding-right: 25px;
+    padding-top: 25px;
+    opacity: 0.3;
+    transition: opacity 0.1s;
+}
+
+.cross:hover {
+    opacity: 1;
 }
 
 .row-frames {
@@ -780,7 +786,7 @@ input.cmn-toggle-round-flat:checked + label:after {
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding-top: 36px;
+    padding-top: 40px;
 }
 
 .sidebar__row--frame {
@@ -798,6 +804,13 @@ input.cmn-toggle-round-flat:checked + label:after {
     border: 0;
 }
 
+.sidebar__row--logout a {
+    color: #B2B2B2;
+}
+
+.sidebar__row--logout a:hover {
+    color: black;
+}
 
 .frame-name {
     float: left;
