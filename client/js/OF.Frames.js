@@ -126,6 +126,28 @@ window.OF.Frames = (function(OF) {
         return getFrameViewModel(frame);
     }
 
+    function setupFrameSubscriptions(frameId) {
+        console.log(frameId);
+        OF.PubSub.client.subscribe('/frame/' + frameId + '/connected', function(data) {
+            console.log('frame connected!', data);
+            OF.DOM.updateFrames();
+        });
+        OF.PubSub.client.subscribe('/frame/' + frameId + '/disconnected', function(data) {
+            console.log('frame disconnected!', data);
+            OF.DOM.updateFrames();
+        });
+        OF.PubSub.client.subscribe('/frame/' + frameId + '/db_updated', function(data) {
+            console.log('frame db_updated!', data);
+            OF.DOM.updateFrames();
+        });
+        OF.PubSub.client.subscribe('/frame/' + frameId + '/updated', function(data) {
+            console.log('frame updated!', data);
+        });
+        OF.PubSub.client.subscribe('/frame/' + frameId + '/updating', function(data) {
+            console.log('frame updating!', data);
+        });
+    }
+
     return {
         getFramesList: getFramesList,
         setFramesList: setFramesList,
@@ -136,6 +158,7 @@ window.OF.Frames = (function(OF) {
         getCurrentFrameViewModel: getCurrentFrameViewModel,
         getFrameViewModel: getFrameViewModel,
         updateFrameById: updateFrameById,
-        removeFrameById: removeFrameById
+        removeFrameById: removeFrameById,
+        setupFrameSubscriptions: setupFrameSubscriptions
     };
 })(OF);

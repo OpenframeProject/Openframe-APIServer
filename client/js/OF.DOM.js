@@ -272,6 +272,23 @@ window.OF.DOM = (function(OF, $) {
         });
     }
 
+    function updateFrames(currentId) {
+        OF.API.fetchFrames().then(function(data) {
+            var frames = OF.Frames.setFramesList(data.frames);
+            if (currentId) {
+                OF.Frames.setCurrentFrameById(currentId);
+            }
+
+            // TODO - refactor this into a 'handleFrameUpdate' method for better reuse
+            clearCurrentArtwork();
+            renderCurrentFrame();
+            renderMenu();
+            // update artwork UIs
+            var currentArtwork = OF.Frames.getCurrentArtwork();
+            renderArtwork(currentArtwork, {replace: true});
+        });
+    }
+
     //
     //== END FRAMES
     //
@@ -334,7 +351,8 @@ window.OF.DOM = (function(OF, $) {
     }
 
     return {
-        init: init
+        init: init,
+        updateFrames: updateFrames
     };
 
 })(OF, jQuery);

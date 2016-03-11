@@ -1,13 +1,18 @@
-var debug = require('debug')('openframe:apiserver:model:Frame');
+var debug = require('debug')('openframe:apiserver:model:Frame'),
+    loopback = require('loopback');
 
 module.exports = function(Frame) {
     Frame.disableRemoteMethod('createChangeStream', true);
 
     // whenever a Frame model is saved, broadcast an update event
     Frame.observe('after save', function(ctx, next) {
-        if (ctx.instance) {
+        if (ctx.instance && Frame.app.pubsub) {
             debug('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
-            if (Frame.app.pubsub) {
+            if (ctx.isNewInstance) {
+                debug('New Frame, publishing: /user/' + ctx.instance.ownerId + '/frame/new');
+                Frame.app.pubsub.publish('/user/' + ctx.instance.ownerId + '/frame/new', ctx.instance.id);
+            } else {
+                debug('Existing Frame, publishing: /frame/' + ctx.instance.id + '/db_updated');
                 Frame.app.pubsub.publish('/frame/' + ctx.instance.id + '/db_updated', ctx.instance);
             }
         }

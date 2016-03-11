@@ -27,24 +27,22 @@ window.OF.PubSub = (function(OF) {
 
     function init() {
         console.log('OF.PubSub.init()');
+        // setup frame-related subscriptions for initial frames
         var frames = OF.Frames.getFramesList();
         frames.forEach(function(frame) {
-            console.log(frame.id);
-            _client.subscribe('/frame/' + frame.id + '/connected', function(data) {
-                console.log('frame connected!', data);
-
-            });
-            _client.subscribe('/frame/' + frame.id + '/disconnected', function(data) {
-                console.log('frame disconnected!', data);
-            });
-            _client.subscribe('/frame/' + frame.id + '/updated', function(data) {
-                console.log('frame updated!', data);
-                $('.btn-pushing').removeClass('btn-pushing').addClass('btn-displaying');
-            });
-            _client.subscribe('/frame/' + frame.id + '/updating', function(data) {
-                console.log('frame updating!', data);
-            });
+            OF.Frames.setupFrameSubscriptions(frame.id);
         });
+
+        // when a new frame is added, setup frame-related subscriptions
+        _client.subscribe('/user/' + window.USER_ID + '/frame/new', function(data) {
+            console.log('new frame added!', data);
+            // immediately add frame and make it current
+            OF.DOM.updateFrames(data);
+            // setup subscriptions
+            OF.Frames.setupFrameSubscriptions(data);
+        });
+
+        // TODO - clear frame subscriptions when a frame is deleted? Not sure it's necessary.
     }
 
     return {

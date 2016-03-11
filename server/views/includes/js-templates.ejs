@@ -65,6 +65,12 @@
         {{ if (isCurrent) { }}
             <img class="mark-frame-active" src="../img/frame-checkmark.svg">
         {{ } }}
+        {{ if (connected) { }}
+            <span class="current-frame-indicator current-frame-indicator--connected">&bull;</span>
+        {{ } else { }}
+            <span class="current-frame-indicator current-frame-indicator--disconnected">&bull;</span>
+        {{ } }}
+
         <div class="frame-name">{{- name }}</div>
         {{ if (isOwner) { }}
         <a class="btn-frame-settings" href="#" data-toggle="modal" data-target="#FrameSettingsModal" data-frameid="{{- id }}">

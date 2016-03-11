@@ -812,6 +812,11 @@ input.cmn-toggle-round-flat:checked + label:after {
     color: black;
 }
 
+.sidebar__row .current-frame-indicator {
+    float: left;
+    left: 0;
+    padding: 0 5px;
+}
 .frame-name {
     float: left;
     font-size: 14px;
@@ -825,7 +830,6 @@ input.cmn-toggle-round-flat:checked + label:after {
     float: left;
     width: 13px;
     margin-top: 3px;
-    margin-right: 6px;
 }
 
 .icon-settings {
