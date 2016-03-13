@@ -417,7 +417,7 @@ module.exports = function(OpenframeUser) {
             obj = this.toObject(false, true, false);
 
         // if this isn't the currently logged in user, don't display email address
-        if (!user || this.id !== user.id) {
+        if (!user || this.id.toString() !== user.id.toString()) {
             delete obj.email;
         }
 
