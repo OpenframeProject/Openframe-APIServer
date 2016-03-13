@@ -265,8 +265,7 @@ window.OF.DOM = (function(OF, $) {
                     renderMenu();
                     renderCurrentFrame();
                 }).fail(function(err) {
-                    $('#FrameSettingsModal .alert').html(err.responseJSON.error.message);
-                    $('#FrameSettingsModal .row-errors').removeClass('hide');
+                    displayErrors($('#FrameSettingsModal'), err);
                 });
             }
         });
@@ -292,6 +291,59 @@ window.OF.DOM = (function(OF, $) {
     //
     //== END FRAMES
     //
+
+
+    //
+    //== PROFILE
+    //
+
+    $(document).on('click', '.btn-edit-profile', function(e) {
+        e.preventDefault();
+        var $modal = $('#EditProfileModal');
+        OF.API.fetchUser().then(function(user) {
+            var userForForm = Object.assign({}, user);
+            $modal.find('form').fromObject(userForForm);
+            $modal.modal('show');
+        }).fail(function(err) {
+            console.log(err);
+        });
+    });
+
+    // Save the frame settings
+    $(document).on('click', '#SaveProfileButton', function(e) {
+        e.preventDefault();
+        var user = $('#EditProfileForm').getObject(),
+            $modal = $('#EditProfileModal');
+
+        // password and email can't be blank
+        if (!user.password) {
+            delete user.password;
+        }
+        if (!user.email) {
+            delete user.email;
+        }
+
+        OF.API.updateUser(user.id, user).success(function(user) {
+            window.USER = user;
+            $modal.modal('hide');
+        }).fail(function(err) {
+            displayErrors($modal, err);
+        });
+    });
+
+    $(document).on('click', '#DeleteAccount', function(e) {
+        e.preventDefault();
+        var user = $('#EditProfileForm').getObject(),
+            $modal = $('#EditProfileModal');
+
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            OF.API.deleteUser(user.id).then(function() {
+                window.location.href = '/login';
+            }).fail(function(err) {
+                displayErrors($modal, err);
+            });
+        }
+    });
 
     //
     //== MENU

@@ -22,22 +22,6 @@ window.OF.API = (function(OF, $) {
     function fetchUser(includeCollections) {
         console.log('fetchUser', includeCollections);
         var filter = {};
-        // if (includeCollections) {
-        //     filter = {
-        //         'filter': {
-        //             'include': [
-        //                 {
-        //                     collections: {
-        //                         relation: 'artwork',
-        //                         scope: {
-        //                             order: 'created DESC'
-        //                         }
-        //                     }
-        //                 }
-        //             ]
-        //         }
-        //     };
-        // }
         if (includeCollections) {
             filter = {
                 'filter': {
@@ -46,6 +30,36 @@ window.OF.API = (function(OF, $) {
             };
         }
         return $.get('/api/users/current', filter);
+    }
+
+    /**
+     * Update a user
+     * @param  {String} userId
+     * @param  {Object} userData
+     * @return {Promise}
+     */
+    function updateUser(userId, userData) {
+        console.log(userData);
+        return $.ajax({
+            url: '/api/users/' + userId,
+            method: 'PUT',
+            dataType   : 'json',
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify(userData)
+        });
+    }
+
+    /**
+     * Delete a userframe
+     * @param  {String} userId
+     * @return {Promise}
+     */
+    function deleteUser(userId) {
+        var url = '/api/users/' + userId;
+        return $.ajax({
+            url: url,
+            method: 'DELETE'
+        });
     }
 
     /**
@@ -230,6 +244,9 @@ window.OF.API = (function(OF, $) {
         fetchFrames: fetchFrames,
         fetchStream: fetchStream,
         fetchUser: fetchUser,
+        updateUser: updateUser,
+        deleteUser: deleteUser,
+
         fetchCollection: fetchCollection,
 
         pushArtwork: pushArtwork,
