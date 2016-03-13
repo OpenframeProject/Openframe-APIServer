@@ -90,6 +90,8 @@ module.exports = function(app) {
 
         newUser.email = req.body.email.toLowerCase();
         newUser.username = req.body.username.trim();
+        newUser.website = req.body.website.trim();
+        newUser.twitter = req.body.twitter.replace('@', '').trim();
         newUser.password = req.body.password;
 
         if (auth.blacklist.indexOf(newUser.username) !== -1) {
