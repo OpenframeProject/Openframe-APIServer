@@ -21,7 +21,13 @@ window.OF.API = (function(OF, $) {
      */
     function fetchUser(includeCollections) {
         console.log('fetchUser', includeCollections);
-        var filter = {};
+        var filter = {
+            'fields': {
+                email: true,
+                website: true,
+                twitter: true
+            }
+        };
         if (includeCollections) {
             filter = {
                 'filter': {
