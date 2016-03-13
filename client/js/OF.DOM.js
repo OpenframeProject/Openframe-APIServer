@@ -105,7 +105,7 @@ window.OF.DOM = (function(OF, $) {
         });
 
         // handle push click
-        $(document).on('click', '.btn-push--enabled', function(e) {
+        $(document).on('click', '.btn-push--enabled, .btn-displaying', function(e) {
             var artworkId = $(this).data('artworkid'),
                 // get the artwork data from the collection
                 artwork = OF.Artwork.findArtworkById(artworkId),

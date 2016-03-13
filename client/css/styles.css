@@ -125,6 +125,14 @@ body {
     letter-spacing: 0.2px;
 }
 
+.current-frame-status span {
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
 .btn-logout {
     color: #DEDEDE;
 }

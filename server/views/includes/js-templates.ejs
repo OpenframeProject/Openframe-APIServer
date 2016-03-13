@@ -53,7 +53,9 @@
     </div>
     <div class="current-frame-status displaying hidden-xs">
         {{ if (_current_artwork) { }}
-            {{- _current_artwork.author_name }} - {{- _current_artwork.title }}
+            <span>{{- _current_artwork.author_name }}</span>
+            <span>-</span>
+            <span>{{- _current_artwork.title }}</span>
         {{ } else { }}
             No Artwork Displayed
         {{ } }}

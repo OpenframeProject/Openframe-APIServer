@@ -22,6 +22,9 @@
     "website": {
       "type": "string"
     },
+    "twitter": {
+      "type": "string"
+    },
     "full_name": {
       "type": "string"
     }
