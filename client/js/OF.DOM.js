@@ -323,6 +323,9 @@ window.OF.DOM = (function(OF, $) {
             delete user.email;
         }
 
+        // remove @
+        user.twitter = user.twitter.replace('@', '');
+
         OF.API.updateUser(user.id, user).success(function(user) {
             window.USER = user;
             $modal.modal('hide');
