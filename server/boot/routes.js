@@ -62,13 +62,17 @@ module.exports = function(app) {
     app.get('/logout', ensureLoggedIn('/login'), function(req, res, next) {
         var OpenframeUser = app.models.OpenframeUser;
         debug(req.accessToken);
-        OpenframeUser.logout(req.accessToken.id, function(err) {
+        req.logout();
+        res.clearCookie('access_token');
+        res.clearCookie('userId');
+        if (req.accessToken) {
             debug(err || 'logged out');
-            req.logout();
-            res.clearCookie('access_token');
-            res.clearCookie('userId');
+            OpenframeUser.logout(req.accessToken.id, function(err) {
+                res.redirect('/login');
+            });
+        } else {
             res.redirect('/login');
-        });
+        }
     });
 
     // Render create account page
