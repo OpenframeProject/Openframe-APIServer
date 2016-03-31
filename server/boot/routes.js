@@ -66,7 +66,7 @@ module.exports = function(app) {
         res.clearCookie('access_token');
         res.clearCookie('userId');
         if (req.accessToken) {
-            debug(err || 'logged out');
+            debug('logging out');
             OpenframeUser.logout(req.accessToken.id, function(err) {
                 res.redirect('/login');
             });
