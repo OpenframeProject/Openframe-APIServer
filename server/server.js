@@ -21,8 +21,8 @@ app.set('view engine', 'ejs'); // LoopBack comes with EJS out-of-box
 app.set('json spaces', 2); // format json responses for easier viewing
 app.set('views', path.resolve(__dirname, 'views'));
 
-var oneMonthInMillis = 2592000000;
-app.set('session_duration', oneMonthInMillis);
+// var oneMonthInMillis = 2592000000;
+// app.set('session_duration', oneMonthInMillis);
 
 // Use express flash for session-based flash messages (used by passport)
 app.use(flash());
@@ -54,8 +54,7 @@ app.middleware('session:before', loopback.cookieParser(app.get('cookieSecret')))
 app.middleware('session', loopback.session({
     secret: app.get('cookieSecret'),
     saveUninitialized: true,
-    resave: true,
-    maxAge: oneMonthInMillis
+    resave: true
 }));
 
 passportConfigurator.init();
