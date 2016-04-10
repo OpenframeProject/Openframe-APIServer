@@ -15,6 +15,10 @@
     "created",
     "modified"
   ],
+  "scope": {
+    "order": "created",
+    "limit": 100
+  },
   "properties": {
     "bio": {
       "type": "string"
