@@ -139,6 +139,12 @@ window.OF.DOM = (function(OF, $) {
         $(document).on('click', '#AddButton', function(e) {
             e.preventDefault();
             var artwork = $('#AddArtworkForm').getObject();
+            if (artwork.format === 'other') {
+                artwork.format = artwork.format_other;
+                delete artwork.format_other;
+            }
+            artwork.format.toLowerCase();
+            console.log('artwork', artwork);
             OF.API.addArtwork(artwork).then(function(resp) {
                 OF.Artwork.prependToArtworkList(resp);
                 renderArtwork(resp, {top: true});
@@ -148,12 +154,32 @@ window.OF.DOM = (function(OF, $) {
             });
         });
 
+
+        $(document).on('change', '#FormatSelect', function(e) {
+            var val = $(e.target).val();
+            if (val === 'other') {
+                console.log('other selected');
+                $('#FormatOtherWrap').removeClass('hide').focus();
+            } else {
+                $('#FormatOtherWrap').addClass('hide');
+            }
+        });
+
         // when the edit modal appears, populate with artwork
         $('#EditArtworkModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget),
                 artworkId = button.data('artworkid'),
                 artwork = OF.Artwork.findArtworkById(artworkId),
                 $modal = $(this);
+            console.log(OF.Artwork.defaultFormats, artwork.format);
+            if (OF.Artwork.defaultFormats.indexOf(artwork.format) === -1) {
+                // custom format
+                artwork.format_other = artwork.format;
+                artwork.format = 'other';
+                $('#FormatOtherWrap').removeClass('hide');
+            } else {
+                $('#FormatOtherWrap').addClass('hide');
+            }
             clearErrors($modal);
             $modal.find('form').fromObject(artwork);
         });
@@ -161,6 +187,12 @@ window.OF.DOM = (function(OF, $) {
         $(document).on('click', '#EditButton', function(e) {
             e.preventDefault();
             var artwork = $('#EditForm').getObject();
+            if (artwork.format === 'other') {
+                artwork.format = artwork.format_other;
+                delete artwork.format_other;
+            }
+            artwork.format.toLowerCase();
+            console.log('artwork', artwork);
             OF.API.updateArtwork(artwork.id, artwork).then(function(resp) {
                 $('#EditArtworkModal').modal('hide');
                 OF.Artwork.updateArtworkById(artwork.id, resp);
