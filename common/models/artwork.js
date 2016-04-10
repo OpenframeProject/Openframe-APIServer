@@ -7,6 +7,23 @@ module.exports = function(Artwork) {
     Artwork.disableRemoteMethod('createChangeStream', true);
     Artwork.disableRemoteMethod('create', true);
 
+    /**
+     * Ensure that only artworks that are public or are owned by the current user can be accessed.
+     */
+    Artwork.observe('access', function(ctx, next) {
+        var context = loopback.getCurrentContext(),
+            req = context && context.active ? context.active.http.req : null,
+            user = req ? req.user : null;
+
+        if (user) {
+            ctx.query.where = ctx.query.where || {};
+            ctx.query.where.or = [
+                {is_public: true},
+                {ownerId: user.id}
+            ];
+        }
+        next();
+    });
 
     // Add a computed 'liked' value to each artwork object at runtime
     Artwork.observe('loaded', function(ctx, next) {

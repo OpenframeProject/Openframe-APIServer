@@ -9,6 +9,10 @@
   "mixins": {
     "Timestamp": {}
   },
+  "scope": {
+    "order": "created",
+    "limit": 100
+  },
   "properties": {
     "title": {
       "type": "string",
