@@ -6,7 +6,12 @@ window.OF.Artwork = (function(OF) {
         _pagination = {
             skip: 0,
             limit: 25
-        };
+        },
+        _defaultFormats = [
+            'openframe-glslviewer',
+            'openframe-image',
+            'openframe-website'
+        ];
 
     /**
      * Get the artwork list.
@@ -134,7 +139,7 @@ window.OF.Artwork = (function(OF) {
                 artwork.formatDisplayName = 'website';
                 break;
             default:
-                artwork.formatDisplayName = artwork.format;
+                artwork.formatDisplayName = artwork.format.replace('openframe-', '');
         }
     }
 
@@ -145,6 +150,7 @@ window.OF.Artwork = (function(OF) {
         loadNextPage: loadNextPage,
         loadArtwork: loadArtwork,
         prependToArtworkList: prependToArtworkList,
-        updateArtworkById: updateArtworkById
+        updateArtworkById: updateArtworkById,
+        defaultFormats: _defaultFormats
     };
 })(OF);

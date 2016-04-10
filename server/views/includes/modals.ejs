@@ -28,11 +28,17 @@
 
                             <div class="form-group">
                                 <label for="Format">Artwork format</label>
-                                <select class="form-control" name="format">
+                                <select class="form-control" name="format" id="FormatSelect">
                                     <option value="openframe-image">Image (JPG, JPEG, PNG)</option>
                                     <option value="openframe-website">Website</option>
                                     <option value="openframe-glslviewer">Shader</option>
+                                    <option value="other">Other</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group hide" id="FormatOtherWrap">
+                                <label for="FormatOther">Specify format (name of the extension's NPM package)</label>
+                                <input type="text" class="form-control" name="format_other" id="FormatOther" placeholder="Other format..." autocapitalize="off">
                             </div>
 
                             <div class="form-group">
@@ -154,17 +160,16 @@
                             </div>
                             <div class="form-group">
                                 <label for="Format">Artwork format</label>
-                                <select class="form-control" name="format">
-                                    <option value="openframe-image">
-                                        Image (JPG, JPEG, PNG)
-                                    </option>
-                                    <option value="openframe-website">
-                                        Website
-                                    </option>
-                                    <option value="openframe-glslviewer">
-                                        Shader
-                                    </option>
+                                <select class="form-control" name="format" id="FormatSelect">
+                                    <option value="openframe-image">Image (JPG, JPEG, PNG)</option>
+                                    <option value="openframe-website">Website</option>
+                                    <option value="openframe-glslviewer">Shader</option>
+                                    <option value="other">Other</option>
                                 </select>
+                            </div>
+                            <div class="form-group hide" id="FormatOtherWrap">
+                                <label for="FormatOther">Specify format (name of the extension's NPM package)</label>
+                                <input type="text" class="form-control" name="format_other" id="FormatOther" placeholder="Other format..." autocapitalize="off">
                             </div>
                             <div class="form-group">
                                 <label for="url">URL where the artwork is
