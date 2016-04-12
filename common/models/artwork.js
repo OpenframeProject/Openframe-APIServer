@@ -15,13 +15,17 @@ module.exports = function(Artwork) {
             req = context && context.active ? context.active.http.req : null,
             user = req ? req.user : null;
 
+        ctx.query.where = ctx.query.where || {};
+
         if (user) {
-            ctx.query.where = ctx.query.where || {};
             ctx.query.where.or = [
                 {is_public: true},
                 {ownerId: user.id}
             ];
+        } else {
+            ctx.query.where.is_public = true;
         }
+
         next();
     });
 
