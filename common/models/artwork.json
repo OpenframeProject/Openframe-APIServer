@@ -10,7 +10,7 @@
     "Timestamp": {}
   },
   "scope": {
-    "order": "created",
+    "order": "created DESC",
     "limit": 100
   },
   "properties": {
