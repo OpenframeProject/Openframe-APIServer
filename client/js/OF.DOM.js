@@ -159,9 +159,9 @@ window.OF.DOM = (function(OF, $) {
             var val = $(e.target).val();
             if (val === 'other') {
                 console.log('other selected');
-                $('#FormatOtherWrap').removeClass('hide').focus();
+                $('.format-other-wrap').removeClass('hide').focus();
             } else {
-                $('#FormatOtherWrap').addClass('hide');
+                $('.format-other-wrap').addClass('hide');
             }
         });
 
@@ -176,9 +176,9 @@ window.OF.DOM = (function(OF, $) {
                 // custom format
                 artwork.format_other = artwork.format;
                 artwork.format = 'other';
-                $('#FormatOtherWrap').removeClass('hide');
+                $('.format-other-wrap').removeClass('hide');
             } else {
-                $('#FormatOtherWrap').addClass('hide');
+                $('.format-other-wrap').addClass('hide');
             }
             clearErrors($modal);
             $modal.find('form').fromObject(artwork);
