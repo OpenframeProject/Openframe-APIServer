@@ -134,6 +134,7 @@ window.OF.DOM = (function(OF, $) {
         $('#AddArtworkModal').on('show.bs.modal', function(event) {
             var modal = $(this);
             modal.find('form')[0].reset();
+            $('.format-other-wrap').addClass('hide');
         });
 
         $(document).on('click', '#AddButton', function(e) {
