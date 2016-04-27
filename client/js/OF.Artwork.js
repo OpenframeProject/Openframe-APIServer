@@ -10,7 +10,8 @@ window.OF.Artwork = (function(OF) {
         _defaultFormats = [
             'openframe-glslviewer',
             'openframe-image',
-            'openframe-website'
+            'openframe-website',
+            'openframe-video'
         ];
 
     /**
@@ -131,12 +132,6 @@ window.OF.Artwork = (function(OF) {
         switch (artwork.format) {
             case 'openframe-glslviewer':
                 artwork.formatDisplayName = 'shader';
-                break;
-            case 'openframe-image':
-                artwork.formatDisplayName = 'image';
-                break;
-            case 'openframe-website':
-                artwork.formatDisplayName = 'website';
                 break;
             default:
                 artwork.formatDisplayName = artwork.format.replace('openframe-', '');

@@ -32,6 +32,7 @@
                                     <option value="openframe-image">Image (JPG, JPEG, PNG)</option>
                                     <option value="openframe-website">Website</option>
                                     <option value="openframe-glslviewer">Shader</option>
+                                    <option value="openframe-video">Video</option>
                                     <option value="other">Other</option>
                                 </select>
                             </div>
@@ -39,6 +40,14 @@
                             <div class="form-group format-other-wrap hide">
                                 <label for="FormatOther">Specify format (name of the extension's NPM package)</label>
                                 <input type="text" class="form-control" name="format_other" id="FormatOther" placeholder="Other format..." autocapitalize="off">
+                            </div>
+
+                            <div class="form-group aspect-mode-wrap hide">
+                                <label for="AspectMode">Select artwork display mode</label>
+                                <select class="form-control" name="aspect_mode" id="AspectMode">
+                                    <option value="fill">fill (default)</option>
+                                    <option value="fit">fit</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -164,12 +173,20 @@
                                     <option value="openframe-image">Image (JPG, JPEG, PNG)</option>
                                     <option value="openframe-website">Website</option>
                                     <option value="openframe-glslviewer">Shader</option>
+                                    <option value="openframe-video">Video</option>
                                     <option value="other">Other</option>
                                 </select>
                             </div>
                             <div class="form-group format-other-wrap hide">
                                 <label for="FormatOther">Specify format (name of the extension's NPM package)</label>
                                 <input type="text" class="form-control" name="format_other" id="FormatOther" placeholder="Other format..." autocapitalize="off">
+                            </div>
+                            <div class="form-group aspect-mode-wrap hide">
+                                <label for="AspectMode">Select artwork display mode</label>
+                                <select class="form-control" name="aspect_mode" id="AspectMode">
+                                    <option value="fill">fill (default)</option>
+                                    <option value="fit">fit</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="url">URL where the artwork is
