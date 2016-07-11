@@ -48,7 +48,7 @@ module.exports = {
     },
     'Collection': {
         'dataSource': process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb',
-        'public': false
+        'public': true
     },
     'OpenframeUserIdentity': {
         'dataSource': process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb',
@@ -64,6 +64,6 @@ module.exports = {
     },
     'Channel': {
         'dataSource': process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb',
-        'public': false
+        'public': true
     }
 };

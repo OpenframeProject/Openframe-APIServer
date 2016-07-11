@@ -66,6 +66,12 @@
       "model": "Collection",
       "foreignKey": "ownerId"
     },
+    "subscribed_collections": {
+      "type": "hasAndBelongsToMany",
+      "model": "Collection",
+      "foreignKey": "subscribersId",
+      "through": "CollectionSubscriber"
+    },
     "owned_artwork": {
       "type": "hasMany",
       "model": "Artwork",

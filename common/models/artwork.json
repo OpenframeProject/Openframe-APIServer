@@ -7,7 +7,8 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {}
+    "Timestamp": {},
+    "IsPublicOrOwner": {}
   },
   "scope": {
     "order": "created DESC",
@@ -24,7 +25,7 @@
     "is_public": {
       "type": "boolean",
       "required": true,
-      "default": true
+      "default": false
     },
     "url": {
       "type": "string",
@@ -45,8 +46,9 @@
       "type": "string",
       "required": true
     },
-    "liked": {
-      "type": "boolean"
+    "options": {
+      "type": "object",
+      "require": false
     }
   },
   "validations": [],
@@ -55,6 +57,11 @@
       "type": "belongsTo",
       "model": "OpenframeUser",
       "foreignKey": "ownerId"
+    },
+    "added_by": {
+      "type": "belongsTo",
+      "model": "OpenframeUser",
+      "foreignKey": "addedById"
     },
     "author_user": {
       "type": "belongsTo",
