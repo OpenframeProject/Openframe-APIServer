@@ -73,7 +73,7 @@
       "model": "Collection",
       "foreignKey": ""
     },
-    "likers": {
+    "liked_by": {
       "type": "hasAndBelongsToMany",
       "model": "OpenframeUser",
       "foreignKey": ""

@@ -160,12 +160,13 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.toJSON = function() {
         // TODO: this seems awfully fragile... not very clear when context is available
         var ctx = loopback.getCurrentContext(),
-            req = ctx && ctx.active ? ctx.active.http.req : null,
-            user = req ? req.user : null,
+            token = ctx.active.http.req.accessToken,
+            userId = token ? token.userId : null,
             obj = this.toObject(false, true, false);
 
+        debug('USER toJSON', userId, obj);
         // if this isn't the currently logged in user, don't display email address
-        if (!user || this.id.toString() !== user.id.toString()) {
+        if (!userId || this.id.toString() !== userId.toString()) {
             delete obj.email;
         }
 
