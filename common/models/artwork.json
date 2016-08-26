@@ -77,6 +77,10 @@
       "type": "hasAndBelongsToMany",
       "model": "OpenframeUser",
       "foreignKey": ""
+    },
+    "currently_in": {
+      "type": "hasMany",
+      "model": "Frame"
     }
   },
   "acls": [

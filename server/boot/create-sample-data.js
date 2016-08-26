@@ -107,20 +107,7 @@ module.exports = function(app) {
                     "ownerId": 2,
                     "created": "2016-02-17T14:12:10.694Z",
                     "modified": "2016-02-17T14:12:10.694Z",
-                    "_current_artwork": {
-                      "title": "Generative Example",
-                      "is_public": true,
-                      "url": "http://wohllabs.com/GenerativeExample",
-                      "thumb_url": "http://wohllabs.com/generative-example.png",
-                      "author_name": "Andreas Müller",
-                      "plugins": {},
-                      "format": "openframe-of",
-                      "ownerId": "1",
-                      "created": "2016-06-30T23:36:08.677Z",
-                      "modified": "2016-06-30T23:36:08.677Z",
-                      "aspect_mode": "fill",
-                      "resolution": "universal"
-                    }
+                    "currentArtworkId": "4"
                   },
                   {
                     "name": "Frame C",

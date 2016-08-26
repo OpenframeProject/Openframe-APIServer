@@ -60,9 +60,9 @@
       "model": "OpenframeUser"
     },
     "current_artwork": {
-      "type": "embedsOne",
+      "type": "belongsTo",
       "model": "Artwork",
-      "property": "current_artwork"
+      "foreignKey": "currentArtworkId"
     }
   },
   "acls": [

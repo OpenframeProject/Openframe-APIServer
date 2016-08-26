@@ -13,7 +13,11 @@ module.exports = function(Frame) {
                 Frame.app.pubsub.publish('/user/' + ctx.instance.ownerId + '/frame/new', ctx.instance.id);
             } else {
                 debug('Existing Frame, publishing: /frame/' + ctx.instance.id + '/db_updated');
-                Frame.app.pubsub.publish('/frame/' + ctx.instance.id + '/db_updated', ctx.instance);
+                debug(ctx.instance);
+                Frame.findById(ctx.instance.id, { include: 'current_artwork' }, function(err, frame) {
+                    debug(err, frame);
+                    Frame.app.pubsub.publish('/frame/' + frame.id + '/db_updated', frame);
+                });
             }
         }
         next();
