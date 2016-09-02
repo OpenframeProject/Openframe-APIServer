@@ -80,7 +80,8 @@
     },
     "currently_in": {
       "type": "hasMany",
-      "model": "Frame"
+      "model": "Frame",
+      "foreignKey": "currentArtworkId"
     }
   },
   "acls": [

@@ -136,5 +136,43 @@ module.exports = function(Frame) {
             }
         }
     );
+
+
+
+    /**
+     * Update the current artwork by artwork ID
+     * @param  {String}   currentArtworkId
+     * @param  {Function} callback
+     */
+    Frame.prototype.update_current_artwork = function(currentArtworkId, cb) {
+        debug(currentArtworkId);
+        var self = this;
+        self.updateAttribute('currentArtworkId', currentArtworkId, function(err, instance) {
+            cb(err, instance);
+        });
+    };
+
+    Frame.remoteMethod(
+        'update_current_artwork', {
+            description: 'Set the current artwork for this frame',
+            accepts: {
+                arg: 'currentArtworkId',
+                type: 'number',
+                required: true,
+                http: {
+                    source: 'path'
+                }
+            },
+            http: {
+                verb: 'put',
+                path: '/current_artwork/:currentArtworkId'
+            },
+            isStatic: false,
+            returns: {
+                arg: 'frame',
+                type: 'Object'
+            }
+        }
+    );
 };
 

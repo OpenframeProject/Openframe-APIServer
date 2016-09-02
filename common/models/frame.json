@@ -89,7 +89,7 @@
       "principalType": "ROLE",
       "principalId": "$frameManager",
       "permission": "ALLOW",
-      "property": "__update__current_artwork"
+      "property": "update_current_artwork"
     },
     {
       "accessType": "EXECUTE",
