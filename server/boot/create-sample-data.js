@@ -1607,10 +1607,10 @@ module.exports = function(app) {
             // });
 
             collections.forEach(function(col) {
-                console.log(col);
+                // console.log(col);
                 var _artworks = _.shuffle(artworks);
                 _artworks.forEach(function(art) {
-                    console.log(art);
+                    // console.log(art);
                     col.artwork.add(art);
                 });
             });
