@@ -71,15 +71,15 @@
       "foreignKey": "subscribersId",
       "through": "CollectionSubscriber"
     },
-    "owned_artwork": {
+    "created_artwork": {
       "type": "hasMany",
       "model": "Artwork",
       "foreignKey": "ownerId"
     },
-    "authored_artwork": {
-      "type": "hasMany",
+    "purchased_artwork": {
+      "type": "hasAndBelongsToMany",
       "model": "Artwork",
-      "foreignKey": "authorId"
+      "foreignKey": "purchasedById"
     },
     "liked_artwork": {
       "type": "hasAndBelongsToMany",
@@ -134,11 +134,7 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": [
-        "all_frames",
-        "primary_collection_new_artwork",
-        "primary_collection_add_artwork",
-        "like_artwork",
-        "unlike_artwork"
+        "all_frames"
       ]
     },
     {

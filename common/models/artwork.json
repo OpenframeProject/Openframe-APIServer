@@ -37,7 +37,7 @@
     "author_name": {
       "type": "string"
     },
-    "plugins": {
+    "required_extensions": {
       "type": "object",
       "required": true,
       "default": {}
@@ -58,24 +58,18 @@
       "model": "OpenframeUser",
       "foreignKey": "ownerId"
     },
-    "added_by": {
-      "type": "belongsTo",
-      "model": "OpenframeUser",
-      "foreignKey": "addedById"
-    },
-    "author_user": {
-      "type": "belongsTo",
-      "model": "OpenframeUser",
-      "foreignKey": "authorId"
-    },
-    "collections": {
+    "purchased_by": {
       "type": "hasAndBelongsToMany",
-      "model": "Collection",
-      "foreignKey": ""
+      "model": "OpenframeUser"
     },
     "liked_by": {
       "type": "hasAndBelongsToMany",
       "model": "OpenframeUser",
+      "foreignKey": ""
+    },
+    "collections": {
+      "type": "hasAndBelongsToMany",
+      "model": "Collection",
       "foreignKey": ""
     },
     "currently_in": {
