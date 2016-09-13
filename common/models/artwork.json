@@ -11,8 +11,7 @@
     "IsPublicOrOwner": {}
   },
   "scope": {
-    "order": "created DESC",
-    "limit": 100
+    "order": "created DESC"
   },
   "properties": {
     "title": {

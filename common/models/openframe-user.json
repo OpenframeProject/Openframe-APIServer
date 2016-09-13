@@ -15,8 +15,7 @@
     "modified"
   ],
   "scope": {
-    "order": "created",
-    "limit": 100
+    "order": "created"
   },
   "properties": {
     "bio": {
