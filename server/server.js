@@ -38,14 +38,11 @@ app.use(loopback.context());
 
 app.use(function(req, res, next) {
     if (!req.accessToken) return next();
-    // console.log('accessToken present', req.accessToken);
     app.models.OpenframeUser.findById(req.accessToken.userId, function(err, user) {
         if (err) return next(err);
         if (!user) return next(new Error('No user with this access token was found.'));
         var loopbackContext = loopback.getCurrentContext();
-        // console.log('loopbackContext', loopbackContext);
         if (loopbackContext) {
-            console.log('setting user on context', user);
             loopbackContext.set('currentUser', user);
         }
         next();
