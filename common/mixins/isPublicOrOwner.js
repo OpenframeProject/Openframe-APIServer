@@ -14,7 +14,7 @@ module.exports = function(Model, options) {
 
         reqCtx.query.where = reqCtx.query.where || {};
 
-        if (currentUser) {
+        if (currentUser && !reqCtx.query.where.is_public) {
             reqCtx.query.where.or = [
                 {is_public: true},
                 {ownerId: currentUser.id}
