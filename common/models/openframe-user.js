@@ -45,44 +45,6 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.disableRemoteMethod('__updateById__identities', false);
 
 
-    // HACK: add array of liked artworks to request so that it's available in the 'loaded' hook
-    // for artwork objects.
-    OpenframeUser.beforeRemote('prototype.primary_collection', addLikedToReq);
-
-    /**
-     * On artwork create, add to the current user's primary collection.
-     */
-    OpenframeUser.afterRemote('prototype.__create__owned_artwork', function(ctx, modelInstance, next) {
-        debug('afterRemote prototype.__create__owned_artwork', modelInstance);
-        var req = ctx.req,
-            user = req.user,
-            artwork = ctx.result;
-
-        // this shouldn't happen since auth is required to create artwork
-        if (!user) {
-            return next();
-        }
-
-        if (artwork) {
-            user.primary_collection(function(err, collection) {
-                if (collection) {
-                    collection.artwork.add(artwork, function(err) {
-                        if (err) {
-                            next(err);
-                        } else {
-                            next();
-                        }
-                    });
-                } else {
-                    next();
-                }
-            });
-        } else {
-            next();
-        }
-    });
-
-
     /**
      * CUSTOM remote methods
      */
@@ -161,8 +123,8 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.toJSON = function() {
         // TODO: this seems awfully fragile... not very clear when context is available
         var ctx = loopback.getCurrentContext(),
-            token = ctx.active.http.req.accessToken,
-            userId = token ? token.userId : null,
+            user = ctx.get('currentUser'),
+            userId = user && user.id,
             obj = this.toObject(false, true, false);
 
         debug('USER toJSON', userId, obj);

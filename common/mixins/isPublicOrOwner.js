@@ -1,24 +1,26 @@
-var loopback = require('loopback');
+var loopback = require('loopback'),
+    debug = require('debug')('openframe:isPublicOrOwner');
 
 /**
  * This mixin requires a model to have 'is_public: true' or the current user
  * to be the object's owner in order to provide access.
  */
 module.exports = function(Model, options) {
-    Model.observe('access', function(ctx, next) {
-        var context = loopback.getCurrentContext(),
-            req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
+    Model.observe('access', function(reqCtx, next) {
+        var appCtx = loopback.getCurrentContext(),
+            currentUser = appCtx && appCtx.get('currentUser');
 
-        ctx.query.where = ctx.query.where || {};
+        debug('currentUser', currentUser);
 
-        if (user) {
-            ctx.query.where.or = [
+        reqCtx.query.where = reqCtx.query.where || {};
+
+        if (currentUser) {
+            reqCtx.query.where.or = [
                 {is_public: true},
-                {ownerId: user.id}
+                {ownerId: currentUser.id}
             ];
         } else {
-            ctx.query.where.is_public = true;
+            reqCtx.query.where.is_public = true;
         }
 
         next();
