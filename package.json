@@ -4,7 +4,8 @@
   "description": "The Openframe API Server.",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon ./bin/cli.js -p",
+    "start": "./bin/cli.js -p",
+    "start:live": "nodemon ./bin/cli.js -p",
     "start-api": "./bin/cli.js",
     "start-pubsub": "node ./node_modules/openframe-pubsubserver/start",
     "pretest": "eslint .",
