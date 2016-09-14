@@ -157,7 +157,7 @@ module.exports = function(Frame) {
             description: 'Set the current artwork for this frame',
             accepts: {
                 arg: 'currentArtworkId',
-                type: 'number',
+                type: 'any',
                 required: true,
                 http: {
                     source: 'path'
