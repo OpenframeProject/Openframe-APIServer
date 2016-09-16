@@ -35,7 +35,7 @@ module.exports = function(app) {
         }
 
         // get current frame
-        context.model.findById(context.modelId, function(err, frame) {
+        context.model.findById(context.modelId, { include:{ managers: true, owner: true }}, function(err, frame) {
             if (err || !frame) {
                 return reject(err);
             }

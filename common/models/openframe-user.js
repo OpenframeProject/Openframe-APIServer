@@ -82,10 +82,10 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
             allFrames;
-        self.owned_frames({include: ['managers', 'current_artwork']},function(err, _ownFrames) {
+        self.owned_frames({include: ['managers', 'current_artwork', 'owner']},function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
             self.managed_frames({
-                include: 'current_artwork',
+                include: ['managers', 'current_artwork', 'owner'],
                 where: {
                     ownerId: {
                         neq: self.id
