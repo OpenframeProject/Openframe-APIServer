@@ -1,14 +1,10 @@
+var blacklist = require('the-big-username-blacklist');
+
 module.exports = {
     blacklist: [
-        "404",
-        "admin",
-        "create-account",
-        "error",
-        "home",
-        "login",
-        "login-success",
-        "logout",
-        "reset-password",
-        "test"
-    ]
+        'create-account',
+        'login-success',
+        'test',
+        'verified'
+    ].concat(blacklist.list)
 };

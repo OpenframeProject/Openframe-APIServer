@@ -1,6 +1,7 @@
 var loopback = require('loopback'),
-    debug = require('debug')('openframe:model:OpenframeUser'),
-    addLikedToReq = require('../../helpers').addLikedToReq;
+    path = require('path'),
+    debug = require('debug')('openframe:model:OpenframeUser');
+
 
 module.exports = function(OpenframeUser) {
 
@@ -44,6 +45,50 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.disableRemoteMethod('__get__identities', false);
     OpenframeUser.disableRemoteMethod('__updateById__identities', false);
 
+    OpenframeUser.afterRemote('create', function(context, OpenframeUserInstance, next) {
+        debug('> OpenframeUser.afterRemote triggered');
+
+        var options = {
+            type: 'email',
+            to: OpenframeUserInstance.email,
+            from: 'Openframe <noreply@openframe.io>',
+            subject: 'Welcome to Openframe!',
+            template: path.resolve(__dirname, '../../server/views/email-templates/verify.ejs'),
+            redirect: OpenframeUser.app.get('webapp_base_url') + '/verified',
+            OpenframeUser: OpenframeUser
+        };
+
+        OpenframeUserInstance.verify(options, function(err, response) {
+            if (err) return next(err);
+
+            debug('> verification email sent:', response);
+
+            context.res.send(JSON.stringify({
+                success: true
+            }));
+        });
+    });
+
+
+    OpenframeUser.on('resetPasswordRequest', function(info) {
+        debug(info.email); // the email of the requested user
+        debug(info.accessToken.id); // the temp access token to allow password reset
+        var url = OpenframeUser.app.get('webapp_base_url') + '/reset-password/' + info.accessToken.id;
+        var renderer = loopback.template(path.resolve(__dirname, '../../server/views/email-templates/reset-password.ejs'));
+        var html_body = renderer({
+            reset_link: url
+        });
+        OpenframeUser.app.models.Email.send({
+            to: info.email,
+            from: 'Openframe <noreply@openframe.io>',
+            subject: 'Openframe password reset',
+            html: html_body
+        }, function(err) {
+            if (err) return debug('> error sending password reset email');
+            debug('> sending password reset email to:', info.email);
+        });
+    });
+
 
     /**
      * CUSTOM remote methods
@@ -82,7 +127,9 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.prototype.all_frames = function(cb) {
         var self = this,
             allFrames;
-        self.owned_frames({include: ['managers', 'current_artwork', 'owner']},function(err, _ownFrames) {
+        self.owned_frames({
+            include: ['managers', 'current_artwork', 'owner']
+        }, function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
             self.managed_frames({
                 include: ['managers', 'current_artwork', 'owner'],

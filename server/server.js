@@ -1,7 +1,7 @@
 var loopback = require('loopback'),
     boot = require('loopback-boot'),
     bodyParser = require('body-parser'),
-    // path = require('path'),
+    path = require('path'),
     debug = require('debug')('openframe:apiserver'),
 
     // EXPORT THE APP
@@ -10,7 +10,9 @@ var loopback = require('loopback'),
 
 
 // Set some app configuration
+app.set('view engine', 'ejs'); // LoopBack comes with EJS out-of-box
 app.set('json spaces', 2); // format json responses for easier viewing
+app.set('views', path.resolve(__dirname, 'views'));
 
 app.use(loopback.token({
     cookies: ['access_token'],
