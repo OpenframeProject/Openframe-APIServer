@@ -29,3 +29,6 @@ db.Frame.find().snapshot().forEach(
 
 // Rename plugins to required_extensions
 db.Artwork.update({}, { $rename: {'plugins': 'required_extensions'}}, {multi: 1});
+
+// Make sure existing users are marked as 'verified'
+db.OpenframeUser.update({}, {$set: {emailVerified: true}}, {multi: 1});

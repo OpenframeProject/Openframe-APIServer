@@ -38,7 +38,7 @@ module.exports = {
         'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
         'public': true,
         'options': {
-            // 'emailVerificationRequired': true
+            'emailVerificationRequired': true
         }
     },
     'Frame': {
