@@ -8,7 +8,7 @@ module.exports = function(app) {
     var webapp_protocol = app.get('webapp_protocol'),
         webapp_host = app.get('webapp_host'),
         webapp_port = app.get('webapp_port'),
-        webapp_url = webapp_protocol + '://' + webapp_host + ':' + webapp_port;
+        webapp_url = webapp_protocol + '://' + webapp_host + (webapp_port ? ':' + webapp_port : '');
 
     app.set('webapp_base_url', webapp_url);
 };
