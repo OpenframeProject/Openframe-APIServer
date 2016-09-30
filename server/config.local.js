@@ -3,7 +3,7 @@ var p = require('../package.json'),
 module.exports = {
     restApiRoot: '/api' + (version > 0 ? '/v' + version : ''),
     protocol: process.env.PROTOCOL || 'http',
-    host: process.env.HOST || 'localhost',
+    host: process.env.HOST || '0.0.0.0',
     port: process.env.PORT || 8888,
     'remoting': {
         'context': {
@@ -30,7 +30,7 @@ module.exports = {
     'webapp_host': process.env.WEBAPP_HOST || 'localhost',
     'webapp_port': process.env.WEBAPP_PORT || null,
     'pubsub_protocol': process.env.PS_PROTOCOL || 'http',
-    'pubsub_host': process.env.PS_HOST || 'localhost',
+    'pubsub_host': process.env.PS_HOST || '0.0.0.0',
     'pubsub_port': process.env.PS_PORT || 8889,
     'pubsub_path': process.env.PS_PATH || '/faye',
     'pubsub_api_token': process.env.PS_API_TOKEN || '8629c101-4db7-4a0a-9bf1-33c5fc3cff23',

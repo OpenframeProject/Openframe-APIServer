@@ -138,7 +138,6 @@ module.exports = function(Frame) {
     );
 
 
-
     /**
      * Update the current artwork by artwork ID
      * @param  {String}   currentArtworkId

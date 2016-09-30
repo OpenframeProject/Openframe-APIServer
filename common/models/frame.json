@@ -12,7 +12,9 @@
   "scope": {
     "order": "created",
     "include": {
-      "current_artwork": true
+      "current_artwork": true,
+      "managers": true,
+      "owner": true
     }
   },
   "properties": {
@@ -97,13 +99,6 @@
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$frameManager",
-      "permission": "ALLOW",
-      "property": "update_managers_by_username"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$owner",
       "permission": "ALLOW",
       "property": "update_managers_by_username"
     },
