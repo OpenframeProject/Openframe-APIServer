@@ -128,7 +128,17 @@ module.exports = function(OpenframeUser) {
         var self = this,
             allFrames;
         self.owned_frames({
-            include: ['managers', 'current_artwork', 'owner']
+            include: [
+                'managers',
+                'current_artwork',
+                'owner'
+                // {
+                //     relation: 'owner', // include the owner object
+                //     scope: { // further filter the owner object
+                //         fields: ['username', 'email', 'id']
+                //     }
+                // }
+            ]
         }, function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
             self.managed_frames({
@@ -182,7 +192,4 @@ module.exports = function(OpenframeUser) {
 
         return obj;
     };
-
-
-
 };

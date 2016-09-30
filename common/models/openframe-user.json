@@ -9,6 +9,9 @@
   "mixins": {
     "Timestamp": {}
   },
+  "hidden": [
+    "emailVerified"
+  ],
   "protected": [
     "email",
     "created",

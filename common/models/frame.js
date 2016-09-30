@@ -1,4 +1,4 @@
-var debug = require('debug')('openframe:apiserver:model:Frame'),
+var debug = require('debug')('openframe:model:Frame'),
     loopback = require('loopback');
 
 module.exports = function(Frame) {
@@ -174,5 +174,35 @@ module.exports = function(Frame) {
             }
         }
     );
+
+    /**
+     * Override toJSON in order to remove inclusion of email address for users that are
+     * not the currently logged-in user.
+     *
+     * @return {Object} Plain JS Object which will be transformed to JSON for output.
+     */
+    // Frame.prototype.toJSON = function() {
+    //     // TODO: this seems awfully fragile... not very clear when context is available
+    //     var ctx = loopback.getCurrentContext(),
+    //         user = ctx.get('currentUser'),
+    //         userId = user && user.id,
+    //         obj = this.toObject(false, true, false);
+
+    //     debug('FRAME toJSON', userId, obj);
+
+    //     // Remove email from managers
+    //     if (obj.managers && obj.managers.length) {
+    //         obj.managers.forEach((manager) => {
+    //             delete manager.email;
+    //         });
+    //     }
+
+    //     // Remove email from owner unless it's the currently logged in user.
+    //     if (obj.owner && userId !== obj.owner.id) {
+    //         delete obj.owner.email;
+    //     }
+
+    //     return obj;
+    // };
 };
 

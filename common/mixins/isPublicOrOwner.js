@@ -10,7 +10,7 @@ module.exports = function(Model, options) {
         var appCtx = loopback.getCurrentContext(),
             currentUser = appCtx && appCtx.get('currentUser');
 
-        debug('currentUser', currentUser);
+        // debug('currentUser', currentUser);
 
         reqCtx.query.where = reqCtx.query.where || {};
 
