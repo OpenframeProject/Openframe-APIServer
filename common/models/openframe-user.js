@@ -54,7 +54,7 @@ module.exports = function(OpenframeUser) {
             from: 'Openframe <noreply@openframe.io>',
             subject: 'Welcome to Openframe!',
             template: path.resolve(__dirname, '../../server/views/email-templates/verify.ejs'),
-            redirect: OpenframeUser.app.get('webapp_base_url') + '/verified',
+            redirect: OpenframeUser.app.get('webapp_url') + '/verified',
             OpenframeUser: OpenframeUser
         };
 
@@ -73,7 +73,7 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.on('resetPasswordRequest', function(info) {
         debug(info.email); // the email of the requested user
         debug(info.accessToken.id); // the temp access token to allow password reset
-        var url = OpenframeUser.app.get('webapp_base_url') + '/reset-password/' + info.accessToken.id;
+        var url = OpenframeUser.app.get('webapp_url') + '/reset-password/' + info.accessToken.id;
         var renderer = loopback.template(path.resolve(__dirname, '../../server/views/email-templates/reset-password.ejs'));
         var html_body = renderer({
             reset_link: url
@@ -188,6 +188,7 @@ module.exports = function(OpenframeUser) {
         // if this isn't the currently logged in user, don't display email address
         if (!userId || this.id.toString() !== userId.toString()) {
             delete obj.email;
+            delete obj.settings;
         }
 
         return obj;

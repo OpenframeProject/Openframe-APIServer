@@ -15,7 +15,8 @@
   "protected": [
     "email",
     "created",
-    "modified"
+    "modified",
+    "settings"
   ],
   "scope": {
     "order": "created"
@@ -32,6 +33,12 @@
     },
     "full_name": {
       "type": "string"
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "enable_notifications": true
+      }
     }
   },
   "validations": [],

@@ -5,12 +5,8 @@ var faye = require('faye'),
 module.exports = function(app) {
     debug('instantiating pubsub module');
 
-    var ps_protocol = app.get('pubsub_protocol'),
-        ps_host = app.get('pubsub_host'),
-        ps_port = app.get('pubsub_port'),
-        ps_path = app.get('pubsub_path'),
+    var ps_url = app.get('pubsub_url'),
         ps_token = app.get('pubsub_api_token'),
-        ps_url = ps_protocol + '://' + ps_host + ':' + ps_port + ps_path,
         clientAuth = {
             outgoing: function(message, callback) {
                 // leave non-subscribe messages alone
