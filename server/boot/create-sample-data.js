@@ -1,7 +1,10 @@
 var debug = require('debug')('openframe:apiserver:sample-data');
 
 module.exports = function(app) {
-    var dataSource = process.env.LOOPBACK_DATASOURCE_NAME || 'memoryDb';
+    if (process.env.LB_DB_DS_NAME) {
+        return;
+    }
+    var dataSource = 'memoryDb';
     app.dataSources[dataSource].automigrate('Artwork', function(err) {
         if (err) throw err;
 
@@ -54,17 +57,29 @@ module.exports = function(app) {
                     username: 'slewitt',
                     email: 'slewitt@openframe.io',
                     password: 'asdf',
-                    full_name: 'Sol Lewitt'
+                    full_name: 'Sol Lewitt',
+                    emailVerified: true,
+                    settings: {
+                        enable_notifications: true
+                    }
                 }, {
                     username: 'ppan',
                     email: 'ppan@openframe.io',
                     password: 'asdf',
-                    full_name: 'Peter Pan'
+                    full_name: 'Peter Pan',
+                    emailVerified: true,
+                    settings: {
+                        enable_notifications: false
+                    }
                 }, {
                     username: 'melliot',
                     email: 'melliot@openframe.io',
                     password: 'asdf',
-                    full_name: 'Missy Elliot'
+                    full_name: 'Missy Elliot',
+                    emailVerified: true,
+                    settings: {
+                        enable_notifications: true
+                    }
                 }, ], function(err, users) {
                     if (err) reject(err);
                     debug('Users created');
