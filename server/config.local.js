@@ -1,7 +1,7 @@
 var p = require('../package.json'),
     version = p.version.split('.').shift();
 module.exports = {
-    restApiRoot: '/api' + (version > 0 ? '/v' + version : ''),
+    restApiRoot: '/v' + version,
     host: process.env.API_HOST || '0.0.0.0',
     port: process.env.API_PORT || 8888,
     'remoting': {
