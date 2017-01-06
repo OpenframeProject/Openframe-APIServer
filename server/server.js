@@ -52,7 +52,7 @@ app.middleware('auth', loopback.token({
     model: app.models.AccessToken
 }));
 
-// app.use(loopback.static(path.resolve(__dirname, '../client')));
+app.use(loopback.static(path.resolve(__dirname, '../client')));
 // app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
 
 // // Requests that get this far won't be handled
