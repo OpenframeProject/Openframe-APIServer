@@ -4,7 +4,6 @@ module.exports = {
             'loopback/common/models',
             'loopback/server/models',
             '../common/models',
-            '../node_modules/loopback-component-passport/lib/models',
             './models'
         ],
         'mixins': [
@@ -52,18 +51,6 @@ module.exports = {
     'Collection': {
         'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
         'public': true
-    },
-    'OpenframeUserIdentity': {
-        'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
-        'public': false
-    },
-    'OpenframeUserCredential': {
-        'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
-        'public': false
-    },
-    'OpenframeAccessToken': {
-        'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
-        'public': false
     },
     'Channel': {
         'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',

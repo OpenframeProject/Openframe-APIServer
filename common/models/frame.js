@@ -1,8 +1,9 @@
 var debug = require('debug')('openframe:model:Frame'),
+    loopbackCtx = require('loopback-context'),
     loopback = require('loopback');
 
 module.exports = function(Frame) {
-    Frame.disableRemoteMethod('createChangeStream', true);
+    Frame.disableRemoteMethodByName('createChangeStream');
 
     // whenever a Frame model is saved, broadcast an update event
     Frame.observe('after save', function(ctx, next) {
@@ -27,11 +28,14 @@ module.exports = function(Frame) {
     function removeManagers(frame, managers) {
         return new Promise((resolve, reject) => {
             frame.managers(function(err, current_managers) {
+                debug(current_managers);
                 if (current_managers.length) {
                     var count = 0,
                         total = current_managers.length;
                     current_managers.forEach(function(cur_man) {
+                        debug(cur_man);
                         if (managers.indexOf(cur_man.username) === -1) {
+                            debug('removing %s', cur_man.username);
                             frame.managers.remove(cur_man, function(err) {
                                 if (err) debug(err);
                                 count++;

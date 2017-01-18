@@ -1,6 +1,4 @@
-var debug = require('debug')('openframe:apiserver:routes'),
-    ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn,
-    auth = require('../lib/auth');
+var debug = require('debug')('openframe:apiserver:routes');
 
 module.exports = function(app) {
 
@@ -13,6 +11,20 @@ module.exports = function(app) {
     // });
 
     // TODO: Implement these...
+    // debug(app.get('env'));
+    if (app.get('env') === 'development') {
+        app.get('/ps', function(req, res) {
+            const { channel, data } = req.query;
+            if (channel) {
+                let message = data ? JSON.parse(data) : null;
+                app.pubsub.publish(channel, message);
+                res.send(`Published message ${JSON.stringify(message)} to ${channel}`);
+            } else {
+                res.send(`No message published. Please specify a 'channel' query param.`);
+            }
+            // next();
+        });
+    }
 
     //show password reset form
     // app.get('/reset-password', function(req, res, next) {

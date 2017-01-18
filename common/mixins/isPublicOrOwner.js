@@ -1,4 +1,4 @@
-var loopback = require('loopback'),
+var loopbackCtx = require('loopback-context'),
     debug = require('debug')('openframe:isPublicOrOwner');
 
 /**
@@ -6,21 +6,21 @@ var loopback = require('loopback'),
  * to be the object's owner in order to provide access.
  */
 module.exports = function(Model, options) {
-    Model.observe('access', function(reqCtx, next) {
-        var appCtx = loopback.getCurrentContext(),
-            currentUser = appCtx && appCtx.get('currentUser');
+    Model.observe('access', function(req, next) {
+        var ctx = loopbackCtx.getCurrentContext(),
+            currentUser = ctx && ctx.get('currentUser');
 
-        // debug('currentUser', currentUser);
+        debug('currentUser', currentUser);
 
-        reqCtx.query.where = reqCtx.query.where || {};
+        req.query.where = req.query.where || {};
 
-        if (currentUser && !reqCtx.query.where.is_public) {
-            reqCtx.query.where.or = [
+        if (currentUser && !req.query.where.is_public) {
+            req.query.where.or = [
                 {is_public: true},
                 {ownerId: currentUser.id}
             ];
         } else {
-            reqCtx.query.where.is_public = true;
+            req.query.where.is_public = true;
         }
 
         next();

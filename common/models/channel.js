@@ -1,7 +1,7 @@
 var loopback = require('loopback');
 
 module.exports = function(Channel) {
-    Channel.disableRemoteMethod('createChangeStream', true);
+    Channel.disableRemoteMethodByName('createChangeStream');
 
     /**
      * Ensure that only artworks that are public or are owned by the current user can be accessed.

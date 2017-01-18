@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+require('cls-hooked');
 
 var program = require('commander'),
     debug = require('debug')('openframe:apiserver:cli'),

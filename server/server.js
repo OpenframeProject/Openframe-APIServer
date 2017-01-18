@@ -1,4 +1,5 @@
 var loopback = require('loopback'),
+    loopbackCtx = require('loopback-context'),
     boot = require('loopback-boot'),
     bodyParser = require('body-parser'),
     path = require('path'),
@@ -6,8 +7,6 @@ var loopback = require('loopback'),
 
     // EXPORT THE APP
     app = module.exports = loopback();
-
-
 
 // Set some app configuration
 app.set('view engine', 'ejs'); // LoopBack comes with EJS out-of-box
@@ -21,17 +20,15 @@ app.use(loopback.token({
     currentUserLiteral: 'current'
 }));
 
-app.use(loopback.context());
-
 // Add current user to context per request
 app.use(function(req, res, next) {
     if (!req.accessToken) return next();
     app.models.OpenframeUser.findById(req.accessToken.userId, function(err, user) {
         if (err) return next(err);
         if (!user) return next(new Error('No user with this access token was found.'));
-        var loopbackContext = loopback.getCurrentContext();
-        if (loopbackContext) {
-            loopbackContext.set('currentUser', user);
+        var ctx = loopbackCtx.getCurrentContext();
+        if (ctx) {
+            ctx.set('currentUser', user);
         }
         next();
     });

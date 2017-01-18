@@ -10,7 +10,10 @@
     "Timestamp": {}
   },
   "hidden": [
-    "emailVerified"
+    "emailVerified",
+    "email",
+    "password",
+    "settings"
   ],
   "protected": [
     "email",

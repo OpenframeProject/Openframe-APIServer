@@ -11,8 +11,7 @@ module.exports = function(app) {
 
     Role.registerResolver('$frameManager', function(role, context, cb) {
 
-        var req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
+        debug(context);
 
         function reject(err) {
             debug('reject:', err);

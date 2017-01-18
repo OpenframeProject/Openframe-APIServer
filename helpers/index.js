@@ -1,13 +1,13 @@
 var debug = require('debug')('openframe:helpers'),
+    loopbackCtx = require('loopback-context'),
     loopback = require('loopback');
 
 module.exports = {
     addLikedToReq: function(ctx, something, next) {
         debug('something', something);
 
-        var context = loopback.getCurrentContext(),
-            req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
+        var context = loopbackCtx.getCurrentContext(),
+            user = ctx && ctx.get('currentUser');
 
         if (user) {
             user.liked_artwork({fields: {id: true}}, function(err, artwork) {

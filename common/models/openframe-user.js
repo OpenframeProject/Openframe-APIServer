@@ -1,4 +1,5 @@
 var loopback = require('loopback'),
+    loopbackCtx = require('loopback-context'),
     path = require('path'),
     debug = require('debug')('openframe:model:OpenframeUser');
 
@@ -10,40 +11,16 @@ module.exports = function(OpenframeUser) {
      * Disable specific default remote methods
      */
 
-    OpenframeUser.disableRemoteMethod('createChangeStream', true);
-    OpenframeUser.disableRemoteMethod('updateAll', true);
+    OpenframeUser.disableRemoteMethodByName('createChangeStream', true);
+    OpenframeUser.disableRemoteMethodByName('updateAll', true);
 
-    OpenframeUser.disableRemoteMethod('__count__accessTokens', false);
-    OpenframeUser.disableRemoteMethod('__create__accessTokens', false);
-    OpenframeUser.disableRemoteMethod('__delete__accessTokens', false);
-    OpenframeUser.disableRemoteMethod('__destroyById__accessTokens', false);
-    OpenframeUser.disableRemoteMethod('__findById__accessTokens', false);
-    OpenframeUser.disableRemoteMethod('__get__accessTokens', false);
-    OpenframeUser.disableRemoteMethod('__updateById__accessTokens', false);
-
-    OpenframeUser.disableRemoteMethod('__count__credentials', false);
-    OpenframeUser.disableRemoteMethod('__create__credentials', false);
-    OpenframeUser.disableRemoteMethod('__delete__credentials', false);
-    OpenframeUser.disableRemoteMethod('__destroyById__credentials', false);
-    OpenframeUser.disableRemoteMethod('__findById__credentials', false);
-    OpenframeUser.disableRemoteMethod('__get__credentials', false);
-    OpenframeUser.disableRemoteMethod('__updateById__credentials', false);
-
-    OpenframeUser.disableRemoteMethod('__count__credentials', false);
-    OpenframeUser.disableRemoteMethod('__create__credentials', false);
-    OpenframeUser.disableRemoteMethod('__delete__credentials', false);
-    OpenframeUser.disableRemoteMethod('__destroyById__credentials', false);
-    OpenframeUser.disableRemoteMethod('__findById__credentials', false);
-    OpenframeUser.disableRemoteMethod('__get__credentials', false);
-    OpenframeUser.disableRemoteMethod('__updateById__credentials', false);
-
-    OpenframeUser.disableRemoteMethod('__count__identities', false);
-    OpenframeUser.disableRemoteMethod('__create__identities', false);
-    OpenframeUser.disableRemoteMethod('__delete__identities', false);
-    OpenframeUser.disableRemoteMethod('__destroyById__identities', false);
-    OpenframeUser.disableRemoteMethod('__findById__identities', false);
-    OpenframeUser.disableRemoteMethod('__get__identities', false);
-    OpenframeUser.disableRemoteMethod('__updateById__identities', false);
+    // OpenframeUser.disableRemoteMethodByName('__count__accessTokens', false);
+    // OpenframeUser.disableRemoteMethodByName('__create__accessTokens', false);
+    // OpenframeUser.disableRemoteMethodByName('__delete__accessTokens', false);
+    // OpenframeUser.disableRemoteMethodByName('__destroyById__accessTokens', false);
+    // OpenframeUser.disableRemoteMethodByName('__findById__accessTokens', false);
+    // OpenframeUser.disableRemoteMethodByName('__get__accessTokens', false);
+    // OpenframeUser.disableRemoteMethodByName('__updateById__accessTokens', false);
 
     OpenframeUser.afterRemote('create', function(context, OpenframeUserInstance, next) {
         debug('> OpenframeUser.afterRemote triggered');
@@ -177,20 +154,20 @@ module.exports = function(OpenframeUser) {
      *
      * @return {Object} Plain JS Object which will be transformed to JSON for output.
      */
-    OpenframeUser.prototype.toJSON = function() {
-        // TODO: this seems awfully fragile... not very clear when context is available
-        var ctx = loopback.getCurrentContext(),
-            user = ctx.get('currentUser'),
-            userId = user && user.id,
-            obj = this.toObject(false, true, false);
+    // OpenframeUser.prototype.toJSON = function() {
+    //     // TODO: this seems awfully fragile... not very clear when context is available
+    //     var ctx = loopback.getCurrentContext(),
+    //         user = ctx.get('currentUser'),
+    //         userId = user && user.id,
+    //         obj = this.toObject(false, true, false);
 
-        debug('USER toJSON', userId, obj);
-        // if this isn't the currently logged in user, don't display email address
-        if (!userId || this.id.toString() !== userId.toString()) {
-            delete obj.email;
-            delete obj.settings;
-        }
+    //     debug('USER toJSON', userId, obj);
+    //     // if this isn't the currently logged in user, don't display email address
+    //     if (!userId || this.id.toString() !== userId.toString()) {
+    //         delete obj.email;
+    //         delete obj.settings;
+    //     }
 
-        return obj;
-    };
+    //     return obj;
+    // };
 };

@@ -9,6 +9,7 @@ module.exports = function(app) {
         ps_token = app.get('pubsub_api_token'),
         clientAuth = {
             outgoing: function(message, callback) {
+                debug(message);
                 // leave non-subscribe messages alone
                 if (message.channel !== '/meta/subscribe') {
                     return callback(message);
