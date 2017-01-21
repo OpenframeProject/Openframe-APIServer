@@ -7,8 +7,10 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {},
-    "IsPublicOrOwner": {}
+    "Timestamp": {}
+  },
+  "scopes": {
+    "stream": {"where": {"is_public": true}}
   },
   "properties": {
     "title": {
@@ -88,17 +90,17 @@
       "permission": "ALLOW"
     },
     {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "create"
-    },
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW"
     },
     {
       "accessType": "*",

@@ -1,6 +1,4 @@
-var debug = require('debug')('openframe:model:Frame'),
-    loopbackCtx = require('loopback-context'),
-    loopback = require('loopback');
+var debug = require('debug')('openframe:model:Frame');
 
 module.exports = function(Frame) {
     Frame.disableRemoteMethodByName('createChangeStream');
@@ -8,13 +6,13 @@ module.exports = function(Frame) {
     // whenever a Frame model is saved, broadcast an update event
     Frame.observe('after save', function(ctx, next) {
         if (ctx.instance && Frame.app.pubsub) {
-            debug('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
+            debug('Saved %s %s', ctx.Model.modelName, ctx.instance.id);
             if (ctx.isNewInstance) {
                 debug('New Frame, publishing: /user/' + ctx.instance.ownerId + '/frame/new');
                 Frame.app.pubsub.publish('/user/' + ctx.instance.ownerId + '/frame/new', ctx.instance.id);
             } else {
                 debug('Existing Frame, publishing: /frame/' + ctx.instance.id + '/db_updated');
-                debug(ctx.instance);
+                // debug(ctx.instance);
                 Frame.findById(ctx.instance.id, { include: 'current_artwork' }, function(err, frame) {
                     debug(err, frame);
                     Frame.app.pubsub.publish('/frame/' + frame.id + '/db_updated', frame);
@@ -120,7 +118,7 @@ module.exports = function(Frame) {
 
     // Expose update_managers_by_username remote method
     Frame.remoteMethod(
-        'update_managers_by_username', {
+        'prototype.update_managers_by_username', {
             description: 'Add a related item by username for managers.',
             accepts: {
                 arg: 'managers',
@@ -133,7 +131,6 @@ module.exports = function(Frame) {
                 verb: 'put',
                 path: '/managers/by_username'
             },
-            isStatic: false,
             returns: {
                 arg: 'frame',
                 type: 'Object'
@@ -156,7 +153,7 @@ module.exports = function(Frame) {
     };
 
     Frame.remoteMethod(
-        'update_current_artwork', {
+        'prototype.update_current_artwork', {
             description: 'Set the current artwork for this frame',
             accepts: {
                 arg: 'currentArtworkId',
@@ -170,7 +167,6 @@ module.exports = function(Frame) {
                 verb: 'put',
                 path: '/current_artwork/:currentArtworkId'
             },
-            isStatic: false,
             returns: {
                 arg: 'frame',
                 type: 'Object'

@@ -1,5 +1,4 @@
 var loopback = require('loopback'),
-    loopbackCtx = require('loopback-context'),
     boot = require('loopback-boot'),
     bodyParser = require('body-parser'),
     path = require('path'),
@@ -21,18 +20,17 @@ app.use(loopback.token({
 }));
 
 // Add current user to context per request
-app.use(function(req, res, next) {
-    if (!req.accessToken) return next();
-    app.models.OpenframeUser.findById(req.accessToken.userId, function(err, user) {
-        if (err) return next(err);
-        if (!user) return next(new Error('No user with this access token was found.'));
-        var ctx = loopbackCtx.getCurrentContext();
-        if (ctx) {
-            ctx.set('currentUser', user);
-        }
-        next();
-    });
-});
+// app.use(function(req, res, next) {
+//     debug('MIDDLEWARE', req.accessToken);
+//     if (!req.accessToken) return next();
+//     app.models.OpenframeUser.findById(req.accessToken.userId, function(err, user) {
+//         if (err) return next(err);
+//         if (!user) return next(new Error('No user with this access token was found.'));
+//         debug('USER', user);
+//         req.currentUser = user;
+//         next();
+//     });
+// });
 
 // boot scripts mount components like REST API
 boot(app, __dirname);

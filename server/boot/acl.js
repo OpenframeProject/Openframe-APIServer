@@ -9,6 +9,52 @@ var debug = require('debug')('loopback:security:frameManager');
 module.exports = function(app) {
     var Role = app.models.Role;
 
+    Role.registerResolver('$artworkViewer', function(role, context, cb) {
+        debug(context);
+
+        function reject(err) {
+            debug('reject:', err);
+            if (err) {
+                return cb(err);
+            }
+            cb(null, false);
+        }
+
+        // $frameManager is only applicabale to Artwork models
+        if (context.modelName !== 'Artwork') {
+            // the target model is not a Frame
+            return reject();
+        }
+
+        // do not allow anonymous users
+        var userId = context.accessToken.userId;
+        if (!userId) {
+            return reject();
+        }
+
+
+        // get the artwork
+        context.model.findById(context.modelId, {}, function(err, artwork) {
+            if (err || !artwork) {
+                return reject(err);
+            }
+
+            // work is public, allow it
+            if (artwork.is_public) {
+                return cb(null, true);
+            }
+
+            Role.isOwner(context.model, context.modelId, userId, function(err, owner) {
+                // user is owner, allow it
+                if (owner) {
+                    return cb(null, true);
+                }
+                return reject(err);
+            });
+
+        });
+    });
+
     Role.registerResolver('$frameManager', function(role, context, cb) {
 
         debug(context);
@@ -30,11 +76,11 @@ module.exports = function(app) {
         // do not allow anonymous users
         var userId = context.accessToken.userId;
         if (!userId) {
-          return reject();
+            return reject();
         }
 
         // get current frame
-        context.model.findById(context.modelId, { include:{ managers: true, owner: true }}, function(err, frame) {
+        context.model.findById(context.modelId, {include:{managers: true, owner: true}}, function(err, frame) {
             if (err || !frame) {
                 return reject(err);
             }

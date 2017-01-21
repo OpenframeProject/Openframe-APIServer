@@ -1,5 +1,5 @@
 var loopback = require('loopback'),
-    loopbackCtx = require('loopback-context'),
+    // loopbackCtx = require('loopback-context'),
     path = require('path'),
     debug = require('debug')('openframe:model:OpenframeUser');
 
@@ -88,7 +88,6 @@ module.exports = function(OpenframeUser) {
             http: {
                 verb: 'get',
             },
-            isStatic: true,
             returns: {
                 arg: 'config',
                 type: 'Object'
@@ -132,15 +131,15 @@ module.exports = function(OpenframeUser) {
             });
         });
     };
+
     OpenframeUser.remoteMethod(
-        'all_frames', {
+        'prototype.all_frames', {
             description: 'Get all frames (owned and managed) by this user.',
             accepts: [],
             http: {
                 verb: 'get',
                 path: '/all_frames'
             },
-            isStatic: false,
             returns: {
                 arg: 'frames',
                 type: 'Array'

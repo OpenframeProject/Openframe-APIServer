@@ -7,8 +7,7 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {},
-    "IsPublicOrOwner": {}
+    "Timestamp": {}
   },
   "properties": {
     "name": {
