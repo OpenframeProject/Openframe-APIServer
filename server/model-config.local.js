@@ -50,11 +50,11 @@ module.exports = {
     },
     'Collection': {
         'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
-        'public': true
+        'public': false
     },
     'Channel': {
         'dataSource': process.env.LB_DB_DS_NAME || 'memoryDb',
-        'public': true
+        'public': false
     },
     'Email': {
         'dataSource': process.env.LB_EMAIL_DS_NAME || null
