@@ -12,7 +12,9 @@ var debug = require('debug')('openframe:isPublicOrOwner');
  * to be the object's owner in order to provide access.
  */
 module.exports = function(Model, options) {
-    /*
+
+
+
     Model.observe('access', function(req, next) {
         debug(options, req.options.accessToken);
 
@@ -41,6 +43,7 @@ module.exports = function(Model, options) {
         next();
     });
 
+    /*
     Model.observe('loaded', function(ctx, next) {
         debug(ctx);
 
@@ -76,5 +79,5 @@ module.exports = function(Model, options) {
 
         next();
     });
-    */
+     */
 };

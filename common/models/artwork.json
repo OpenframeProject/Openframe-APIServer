@@ -7,7 +7,8 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {}
+    "Timestamp": {},
+    "IsPublicOrOwner": {}
   },
   "scopes": {
     "stream": {"where": {"is_public": true}}
