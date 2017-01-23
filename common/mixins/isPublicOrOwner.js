@@ -1,8 +1,25 @@
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 //
 // IMPORTANT NOTE
 //
-// As of Loopback 3.0, this no longer works. For the time being, we're removing the built-in find remote method and
-// replacing it with our own which automatically filters out is_public: false things.
+// As of Loopback 3.0, it's unclear whether or not this works.
 //
 
 var debug = require('debug')('openframe:isPublicOrOwner');
@@ -14,16 +31,10 @@ var debug = require('debug')('openframe:isPublicOrOwner');
 module.exports = function(Model, options) {
 
 
-
     Model.observe('access', function(req, next) {
         debug(options, req.options.accessToken);
 
         let userId = req.options.accessToken && req.options.accessToken.userId;
-
-        // var ctx = loopbackCtx.getCurrentContext(),
-        //     currentUser = ctx && ctx.get('currentUser');
-
-        // debug('currentUser', currentUser);
 
         debug(req.query);
 
@@ -42,42 +53,4 @@ module.exports = function(Model, options) {
 
         next();
     });
-
-    /*
-    Model.observe('loaded', function(ctx, next) {
-        debug(ctx);
-
-        let userId = ctx.options.accessToken && ctx.options.accessToken.userId;
-
-        if (ctx.data && !ctx.data.is_public && ctx.data.ownerId !== userId) {
-            delete ctx.data;
-        }
-
-        debug(ctx.data);
-        // var ctx = loopbackCtx.getCurrentContext(),
-        //     currentUser = ctx && ctx.get('currentUser');
-
-        // debug('currentUser', currentUser);
-
-        // debug(req.query);
-
-        // debug(ctx.data);
-
-
-        // req.query.where = req.query.where || {};
-
-        // if (userId && !req.query.where.is_public) {
-        //     req.query.where.or = [
-        //         {is_public: true},
-        //         {ownerId: userId}
-        //     ];
-        // } else {
-        //     req.query.where.is_public = true;
-        // }
-
-        // debug(req.query);
-
-        next();
-    });
-     */
 };

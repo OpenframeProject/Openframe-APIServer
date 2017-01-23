@@ -1,3 +1,21 @@
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 var loopback = require('loopback'),
     boot = require('loopback-boot'),
     bodyParser = require('body-parser'),
@@ -19,19 +37,6 @@ app.use(loopback.token({
     currentUserLiteral: 'current'
 }));
 
-// Add current user to context per request
-// app.use(function(req, res, next) {
-//     debug('MIDDLEWARE', req.accessToken);
-//     if (!req.accessToken) return next();
-//     app.models.OpenframeUser.findById(req.accessToken.userId, function(err, user) {
-//         if (err) return next(err);
-//         if (!user) return next(new Error('No user with this access token was found.'));
-//         debug('USER', user);
-//         req.currentUser = user;
-//         next();
-//     });
-// });
-
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
@@ -48,23 +53,6 @@ app.middleware('auth', loopback.token({
 }));
 
 app.use(loopback.static(path.resolve(__dirname, '../client')));
-// app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
-
-// // Requests that get this far won't be handled
-// // by any middleware. Convert them into a 404 error
-// // that will be handled later down the chain.
-// app.use(loopback.urlNotFound());
-
-// Catch LOGIN_FAILED error (bug in loopback-component-passport
-// see https://github.com/strongloop/loopback-component-passport/pull/112)
-app.use(function(err, req, res, next) {
-    debug(err.code);
-    if (err.code === 'LOGIN_FAILED') {
-        req.flash('error', 'Login failed.');
-        return res.redirect('back');
-    }
-    next(err);
-});
 
 app.start = function() {
     // start the web server

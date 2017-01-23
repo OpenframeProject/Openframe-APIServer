@@ -1,64 +1,48 @@
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 var debug = require('debug')('openframe:apiserver:routes');
 
 module.exports = function(app) {
 
-    // add path to response locals
-    // app.use(function(req, res, next) {
-    //     res.locals.path = req.path;
-    //     res.locals.ps_url = app.get('ps_url');
-    //     res.locals.access_token = req.accessToken ? req.accessToken.id : '';
-    //     next();
-    // });
-
-    // TODO: Implement these...
-    // debug(app.get('env'));
+    /**
+     * In dev environment, add an endpoint that lets us publish messages on the GEB
+     *
+     * The endpoint expects two query params, 'channel' which specifies the channel on which to publish,
+     * and 'data', a JSON string of data to be parsed and passed along as the message payload.
+     *
+     * Example:
+     *
+     * http://localhost:8888/ps?channel=/frame/12345/connected&data={"some":"data"}
+     */
     if (app.get('env') === 'development') {
         app.get('/ps', function(req, res) {
             const { channel, data } = req.query;
             if (channel) {
                 let message = data ? JSON.parse(data) : null;
+                debug(channel, message);
                 app.pubsub.publish(channel, message);
                 res.send(`Published message ${JSON.stringify(message)} to ${channel}`);
             } else {
                 res.send(`No message published. Please specify a 'channel' query param.`);
             }
-            // next();
         });
     }
-
-    //show password reset form
-    // app.get('/reset-password', function(req, res, next) {
-    //     if (!req.accessToken) return res.sendStatus(401);
-    //     res.render('password-reset', {
-    //         accessToken: req.accessToken.id
-    //     });
-    // });
-
-    // //reset the user's pasword
-    // app.post('/reset-password', function(req, res, next) {
-    //     if (!req.accessToken) return res.sendStatus(401);
-
-    //     //verify passwords match
-    //     if (!req.body.password ||
-    //         !req.body.confirmation ||
-    //         req.body.password !== req.body.confirmation) {
-    //         return res.sendStatus(400, new Error('Passwords do not match'));
-    //     }
-
-    //     User.findById(req.accessToken.userId, function(err, user) {
-    //         if (err) return res.sendStatus(404);
-    //         user.updateAttribute('password', req.body.password, function(err, user) {
-    //             if (err) return res.sendStatus(404);
-    //             debug('> password reset processed successfully');
-    //             res.render('response', {
-    //                 title: 'Password reset success',
-    //                 content: 'Your password has been reset successfully',
-    //                 redirectTo: '/',
-    //                 redirectToLinkText: 'Log in'
-    //             });
-    //         });
-    //     });
-    // });
 
 };
 

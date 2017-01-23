@@ -28,7 +28,7 @@
       "url": "http://ishacbertran.com"
     }
   ],
-  "license": "GPL-3.0",
+  "license": "AGPL-3.0+",
   "dependencies": {
     "bcrypt": "^0.8.5",
     "bluebird": "^3.3.3",
