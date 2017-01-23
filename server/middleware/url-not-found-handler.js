@@ -16,13 +16,12 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var blacklist = require('the-big-username-blacklist');
+'use strict';
 
-module.exports = {
-    blacklist: [
-        'create-account',
-        'login-success',
-        'test',
-        'verified'
-    ].concat(blacklist.list)
+module.exports = function() {
+    //4XX - URLs not found
+    return function customRaiseUrlNotFoundError(req, res, next) {
+        // res.redirect('http://openframe.io');
+        res.render('404');
+    };
 };

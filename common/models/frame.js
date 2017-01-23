@@ -1,19 +1,22 @@
-var debug = require('debug')('openframe:apiserver:model:Frame'),
-    loopback = require('loopback');
+var debug = require('debug')('openframe:model:Frame');
 
 module.exports = function(Frame) {
-    Frame.disableRemoteMethod('createChangeStream', true);
+    Frame.disableRemoteMethodByName('createChangeStream');
 
     // whenever a Frame model is saved, broadcast an update event
     Frame.observe('after save', function(ctx, next) {
         if (ctx.instance && Frame.app.pubsub) {
-            debug('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
+            debug('Saved %s %s', ctx.Model.modelName, ctx.instance.id);
             if (ctx.isNewInstance) {
                 debug('New Frame, publishing: /user/' + ctx.instance.ownerId + '/frame/new');
                 Frame.app.pubsub.publish('/user/' + ctx.instance.ownerId + '/frame/new', ctx.instance.id);
             } else {
                 debug('Existing Frame, publishing: /frame/' + ctx.instance.id + '/db_updated');
-                Frame.app.pubsub.publish('/frame/' + ctx.instance.id + '/db_updated', ctx.instance);
+                // debug(ctx.instance);
+                Frame.findById(ctx.instance.id, { include: 'current_artwork' }, function(err, frame) {
+                    debug(err, frame);
+                    Frame.app.pubsub.publish('/frame/' + frame.id + '/db_updated', frame);
+                });
             }
         }
         next();
@@ -23,11 +26,14 @@ module.exports = function(Frame) {
     function removeManagers(frame, managers) {
         return new Promise((resolve, reject) => {
             frame.managers(function(err, current_managers) {
+                debug(current_managers);
                 if (current_managers.length) {
                     var count = 0,
                         total = current_managers.length;
                     current_managers.forEach(function(cur_man) {
+                        debug(cur_man);
                         if (managers.indexOf(cur_man.username) === -1) {
+                            debug('removing %s', cur_man.username);
                             frame.managers.remove(cur_man, function(err) {
                                 if (err) debug(err);
                                 count++;
@@ -112,7 +118,7 @@ module.exports = function(Frame) {
 
     // Expose update_managers_by_username remote method
     Frame.remoteMethod(
-        'update_managers_by_username', {
+        'prototype.update_managers_by_username', {
             description: 'Add a related item by username for managers.',
             accepts: {
                 arg: 'managers',
@@ -125,12 +131,77 @@ module.exports = function(Frame) {
                 verb: 'put',
                 path: '/managers/by_username'
             },
-            isStatic: false,
             returns: {
                 arg: 'frame',
                 type: 'Object'
             }
         }
     );
+
+
+    /**
+     * Update the current artwork by artwork ID
+     * @param  {String}   currentArtworkId
+     * @param  {Function} callback
+     */
+    Frame.prototype.update_current_artwork = function(currentArtworkId, cb) {
+        debug(currentArtworkId);
+        var self = this;
+        self.updateAttribute('currentArtworkId', currentArtworkId, function(err, instance) {
+            cb(err, instance);
+        });
+    };
+
+    Frame.remoteMethod(
+        'prototype.update_current_artwork', {
+            description: 'Set the current artwork for this frame',
+            accepts: {
+                arg: 'currentArtworkId',
+                type: 'any',
+                required: true,
+                http: {
+                    source: 'path'
+                }
+            },
+            http: {
+                verb: 'put',
+                path: '/current_artwork/:currentArtworkId'
+            },
+            returns: {
+                arg: 'frame',
+                type: 'Object'
+            }
+        }
+    );
+
+    /**
+     * Override toJSON in order to remove inclusion of email address for users that are
+     * not the currently logged-in user.
+     *
+     * @return {Object} Plain JS Object which will be transformed to JSON for output.
+     */
+    // Frame.prototype.toJSON = function() {
+    //     // TODO: this seems awfully fragile... not very clear when context is available
+    //     var ctx = loopback.getCurrentContext(),
+    //         user = ctx.get('currentUser'),
+    //         userId = user && user.id,
+    //         obj = this.toObject(false, true, false);
+
+    //     debug('FRAME toJSON', userId, obj);
+
+    //     // Remove email from managers
+    //     if (obj.managers && obj.managers.length) {
+    //         obj.managers.forEach((manager) => {
+    //             delete manager.email;
+    //         });
+    //     }
+
+    //     // Remove email from owner unless it's the currently logged in user.
+    //     if (obj.owner && userId !== obj.owner.id) {
+    //         delete obj.owner.email;
+    //     }
+
+    //     return obj;
+    // };
 };
 

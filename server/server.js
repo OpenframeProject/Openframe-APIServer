@@ -1,31 +1,34 @@
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 var loopback = require('loopback'),
     boot = require('loopback-boot'),
-    flash = require('express-flash'),
     bodyParser = require('body-parser'),
     path = require('path'),
     debug = require('debug')('openframe:apiserver'),
-    providers = require('./providers.json'),
 
     // EXPORT THE APP
     app = module.exports = loopback();
-
-
-
-// Create an instance of PassportConfigurator with the app instance
-var PassportConfigurator = require('loopback-component-passport').PassportConfigurator;
-var passportConfigurator = new PassportConfigurator(app);
-
 
 // Set some app configuration
 app.set('view engine', 'ejs'); // LoopBack comes with EJS out-of-box
 app.set('json spaces', 2); // format json responses for easier viewing
 app.set('views', path.resolve(__dirname, 'views'));
-
-// var oneMonthInMillis = 2592000000;
-// app.set('session_duration', oneMonthInMillis);
-
-// Use express flash for session-based flash messages (used by passport)
-app.use(flash());
 
 app.use(loopback.token({
     cookies: ['access_token'],
@@ -49,50 +52,7 @@ app.middleware('auth', loopback.token({
     model: app.models.AccessToken
 }));
 
-
-app.middleware('session:before', loopback.cookieParser(app.get('cookieSecret')));
-app.middleware('session', loopback.session({
-    secret: app.get('cookieSecret'),
-    saveUninitialized: true,
-    resave: true
-}));
-
-passportConfigurator.init();
-
-// Set up related models for Passport
-passportConfigurator.setupModels({
-    userModel: app.models.OpenframeUser,
-    userIdentityModel: app.models.OpenframeUserIdentity,
-    userCredentialModel: app.models.OpenframeUserCredential
-});
-
-// Configure passport strategies for third party auth providers
-for (var s in providers) {
-    var c = providers[s];
-    c.session = c.session !== false;
-    passportConfigurator.configureProvider(s, c);
-}
-
-// Set static file dirs here, NOT in middleware.json...
-// that doesn't work in this case (not sure why)
 app.use(loopback.static(path.resolve(__dirname, '../client')));
-app.use(loopback.static(path.resolve(__dirname, '../node_modules')));
-
-// // Requests that get this far won't be handled
-// // by any middleware. Convert them into a 404 error
-// // that will be handled later down the chain.
-// app.use(loopback.urlNotFound());
-
-// Catch LOGIN_FAILED error (bug in loopback-component-passport
-// see https://github.com/strongloop/loopback-component-passport/pull/112)
-app.use(function(err, req, res, next) {
-    debug(err.code);
-    if (err.code === 'LOGIN_FAILED') {
-        req.flash('error', 'Login failed.');
-        return res.redirect('back');
-    }
-    next(err);
-});
 
 app.start = function() {
     // start the web server

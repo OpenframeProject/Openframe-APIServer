@@ -4,7 +4,6 @@
       "loopback/common/models",
       "loopback/server/models",
       "../common/models",
-      "../node_modules/loopback-component-passport/lib/models",
       "./models"
     ],
     "mixins": [
@@ -47,18 +46,6 @@
     "public": true
   },
   "Collection": {
-    "dataSource": "memoryDb",
-    "public": false
-  },
-  "OpenframeUserIdentity": {
-    "dataSource": "memoryDb",
-    "public": false
-  },
-  "OpenframeUserCredential": {
-    "dataSource": "memoryDb",
-    "public": false
-  },
-  "OpenframeAccessToken": {
     "dataSource": "memoryDb",
     "public": false
   },

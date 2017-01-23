@@ -1,3 +1,21 @@
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 var debug = require('debug')('loopback:security:frameManager');
 
 /**
@@ -9,10 +27,55 @@ var debug = require('debug')('loopback:security:frameManager');
 module.exports = function(app) {
     var Role = app.models.Role;
 
+    Role.registerResolver('$artworkViewer', function(role, context, cb) {
+        debug(context);
+
+        function reject(err) {
+            debug('reject:', err);
+            if (err) {
+                return cb(err);
+            }
+            cb(null, false);
+        }
+
+        // $frameManager is only applicabale to Artwork models
+        if (context.modelName !== 'Artwork') {
+            // the target model is not a Frame
+            return reject();
+        }
+
+        // do not allow anonymous users
+        var userId = context.accessToken.userId;
+        if (!userId) {
+            return reject();
+        }
+
+
+        // get the artwork
+        context.model.findById(context.modelId, {}, function(err, artwork) {
+            if (err || !artwork) {
+                return reject(err);
+            }
+
+            // work is public, allow it
+            if (artwork.is_public) {
+                return cb(null, true);
+            }
+
+            Role.isOwner(context.model, context.modelId, userId, function(err, owner) {
+                // user is owner, allow it
+                if (owner) {
+                    return cb(null, true);
+                }
+                return reject(err);
+            });
+
+        });
+    });
+
     Role.registerResolver('$frameManager', function(role, context, cb) {
 
-        var req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
+        debug(context);
 
         function reject(err) {
             debug('reject:', err);
@@ -31,11 +94,11 @@ module.exports = function(app) {
         // do not allow anonymous users
         var userId = context.accessToken.userId;
         if (!userId) {
-          return reject();
+            return reject();
         }
 
         // get current frame
-        context.model.findById(context.modelId, function(err, frame) {
+        context.model.findById(context.modelId, {include:{managers: true, owner: true}}, function(err, frame) {
             if (err || !frame) {
                 return reject(err);
             }

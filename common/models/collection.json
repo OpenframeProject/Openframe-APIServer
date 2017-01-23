@@ -11,6 +11,19 @@
   },
   "properties": {
     "name": {
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "type": "string",
+      "required": false
+    },
+    "is_public": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "thumb_url": {
       "type": "string"
     }
   },
@@ -28,8 +41,7 @@
     },
     "artwork": {
       "type": "hasAndBelongsToMany",
-      "model": "Artwork",
-      "foreignKey": ""
+      "model": "Artwork"
     }
   },
   "acls": [
@@ -42,7 +54,7 @@
     {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "$authenticated",
+      "principalId": "$everyone",
       "permission": "ALLOW"
     },
     {

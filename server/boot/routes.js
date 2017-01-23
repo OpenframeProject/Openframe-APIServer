@@ -1,264 +1,48 @@
-var debug = require('debug')('openframe:apiserver:routes'),
-    ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn,
-    auth = require('../lib/auth');
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+var debug = require('debug')('openframe:apiserver:routes');
 
 module.exports = function(app) {
 
-    // add path to response locals
-    app.use(function(req, res, next) {
-        res.locals.path = req.path;
-        res.locals.ps_url = app.get('ps_url');
-        res.locals.access_token = req.accessToken ? req.accessToken.id : '';
-        next();
-    });
-
-    // index route redirects to user profile for the moment (requires login)
-    app.get('/', function(req, res, next) {
-        return res.redirect('/login');
-    });
-
-    // Render login page
-    app.get('/login', function(req, res, next) {
-        var user = req.user;
-
-        if (user) {
-            return res.redirect('/' + user.username);
-        }
-
-        return res.render('login');
-    });
-
-    // Render login page
-    app.get('/login-popup', function(req, res, next) {
-        return res.render('login-popup');
-    });
-
     /**
-     * Login success handler route
+     * In dev environment, add an endpoint that lets us publish messages on the GEB
      *
-     * Sets access_token and userId cookies then redirects to user profile.
+     * The endpoint expects two query params, 'channel' which specifies the channel on which to publish,
+     * and 'data', a JSON string of data to be parsed and passed along as the message payload.
+     *
+     * Example:
+     *
+     * http://localhost:8888/ps?channel=/frame/12345/connected&data={"some":"data"}
      */
-    app.get('/login-success', ensureLoggedIn('/login'), function(req, res, next) {
-        var user = req.user;
-        debug(req.params);
-        user.accessTokens(function(err, tokens) {
-            // use the first access token
-            var token = tokens && tokens.length ? tokens[0] : null;
-            if (token && token.id) {
-                res.cookie('access_token', token.id, {
-                    signed: req.signedCookies ? true : false,
-                    maxAge: 1000 * token.ttl
-                });
-                res.cookie('userId', token.userId.toString(), {
-                    signed: req.signedCookies ? true : false,
-                    maxAge: 1000 * token.ttl
-                });
+    if (app.get('env') === 'development') {
+        app.get('/ps', function(req, res) {
+            const { channel, data } = req.query;
+            if (channel) {
+                let message = data ? JSON.parse(data) : null;
+                debug(channel, message);
+                app.pubsub.publish(channel, message);
+                res.send(`Published message ${JSON.stringify(message)} to ${channel}`);
+            } else {
+                res.send(`No message published. Please specify a 'channel' query param.`);
             }
-            res.redirect('/' + user.username);
         });
-    });
+    }
 
-    // Log out route - clear cookies, redirect to login
-    app.get('/logout', ensureLoggedIn('/login'), function(req, res, next) {
-        var OpenframeUser = app.models.OpenframeUser;
-        debug(req.accessToken);
-        req.logout();
-        res.clearCookie('access_token');
-        res.clearCookie('userId');
-        if (req.accessToken) {
-            debug('logging out');
-            OpenframeUser.logout(req.accessToken.id, function(err) {
-                res.redirect('/login');
-            });
-        } else {
-            res.redirect('/login');
-        }
-    });
-
-    // Render create account page
-    app.get('/create-account', function(req, res, next) {
-        return res.render('create-account');
-    });
-
-    // Create account form handler
-    app.post('/create-account', function(req, res, next) {
-
-        var OpenframeUser = app.models.OpenframeUser,
-            Collection = app.models.Collection,
-            newUser = {};
-
-        if (req.body.password !== req.body.password_confirm) {
-            req.flash('error', 'Password fields do not match.');
-            return res.redirect('back');
-        }
-
-        newUser.email = req.body.email.toLowerCase();
-        newUser.username = req.body.username.trim();
-        newUser.website = req.body.website.trim();
-        newUser.twitter = req.body.twitter.replace('@', '').trim();
-        newUser.password = req.body.password;
-
-        if (auth.blacklist.indexOf(newUser.username) !== -1) {
-            req.flash('error', 'Username unavailable, please try another.');
-            return res.redirect('back');
-        }
-
-        // Tip of dreaded callback pyramid... sounds like loopback will be supporting Promises eventually.
-        OpenframeUser.create(newUser, function(err, user) {
-            if (err) {
-                // TODO: better user-facing error messages...
-                req.flash('error', err.message);
-                return res.redirect('back');
-            }
-
-            // new user created... create default collection
-            Collection.create({
-                ownerId: user.id
-            }, function(err, collection) {
-                if (err) {
-                    debug(err);
-                }
-
-                // In order to create an accessToken for the new user, we need to
-                // login via loopback. Then we'll login via req.login (passport) in
-                // order to create the user session.
-                OpenframeUser.login({
-                    email: newUser.email,
-                    password: newUser.password
-                    // ttl: app.get('session_duration')
-                }, function(err, token) {
-                    if (err) {
-                        debug(err);
-                        req.flash('error', err.message);
-                        return req.redirect('back');
-                    }
-                    req.login(user, function(err) {
-                        if (err) {
-                            req.flash('error', err.message);
-                            return res.redirect('back');
-                        }
-                        // all successful login-ing, hit success route to set cookies.
-                        return res.redirect('/login-success');
-                    });
-
-                });
-
-
-            });
-        });
-    });
-
-    // Render add artwork page
-    // TODO: this will become a modal
-    app.get('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
-        var user = req.user;
-
-        return res.render('add-artwork', {
-            user: user
-        });
-    });
-
-    // Add artwork form handler route
-    app.post('/add-artwork', ensureLoggedIn('/login'), function(req, res, next) {
-        var user = req.user,
-            newArtwork = {};
-
-        // TODO: validation... or let the model validator handle it?
-
-        newArtwork.author_name = req.body.author_name;
-        newArtwork.title = req.body.title;
-        newArtwork.format = req.body.format;
-        newArtwork.url = req.body.url;
-        newArtwork.thumb_url = req.body.thumb_url;
-        newArtwork.ownerId = user.id;
-
-        user.collections(function(err, collections) {
-            if (err) {
-                // TODO: better user-facing error messages...
-                req.flash('error', err.message);
-                return res.redirect('back');
-            }
-
-            // TODO: once we support multiple collections, select
-            // which collection to add to... for now, add to first
-            collections[0].artwork.create(newArtwork, function(err, artwork) {
-                if (err) {
-                    // TODO: better user-facing error messages...
-                    req.flash('error', err.message);
-                    return res.redirect('back');
-                }
-                return res.redirect('/' + user.username);
-            });
-        });
-    });
-
-
-
-    // TODO: Implement these...
-
-    //show password reset form
-    // app.get('/reset-password', function(req, res, next) {
-    //     if (!req.accessToken) return res.sendStatus(401);
-    //     res.render('password-reset', {
-    //         accessToken: req.accessToken.id
-    //     });
-    // });
-
-    // //reset the user's pasword
-    // app.post('/reset-password', function(req, res, next) {
-    //     if (!req.accessToken) return res.sendStatus(401);
-
-    //     //verify passwords match
-    //     if (!req.body.password ||
-    //         !req.body.confirmation ||
-    //         req.body.password !== req.body.confirmation) {
-    //         return res.sendStatus(400, new Error('Passwords do not match'));
-    //     }
-
-    //     User.findById(req.accessToken.userId, function(err, user) {
-    //         if (err) return res.sendStatus(404);
-    //         user.updateAttribute('password', req.body.password, function(err, user) {
-    //             if (err) return res.sendStatus(404);
-    //             debug('> password reset processed successfully');
-    //             res.render('response', {
-    //                 title: 'Password reset success',
-    //                 content: 'Your password has been reset successfully',
-    //                 redirectTo: '/',
-    //                 redirectToLinkText: 'Log in'
-    //             });
-    //         });
-    //     });
-    // });
-
-    // Stream route
-    app.get('/stream', ensureLoggedIn('/login'), function(req, res, next) {
-        var user = req.user;
-
-        // For the moment, only let people view their own profile
-        // if (req.params.username !== user.username) {
-        //     return res.redirect('/' + user.username);
-        // }
-
-        return res.render('stream', {
-            user: user
-        });
-
-    });
-
-    // PROFILE route (i.e. 'collection' for the moment)
-    // This route is handled last -- this way we can use /[username] as the route
-    app.get('/:username', ensureLoggedIn('/login'), function(req, res, next) {
-        var user = req.user;
-
-        // For the moment, only let people view their own profile
-        if (req.params.username !== user.username) {
-            return res.redirect('/' + user.username);
-        }
-
-        return res.render('profile', {
-            user: user
-        });
-
-    });
 };
 

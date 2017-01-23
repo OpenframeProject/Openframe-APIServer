@@ -9,15 +9,20 @@
   "mixins": {
     "Timestamp": {}
   },
+  "hidden": [
+    "emailVerified",
+    "email",
+    "password",
+    "settings"
+  ],
   "protected": [
     "email",
-    "full_name",
     "created",
-    "modified"
+    "modified",
+    "settings"
   ],
   "scope": {
-    "order": "created",
-    "limit": 100
+    "order": "created"
   },
   "properties": {
     "bio": {
@@ -31,6 +36,12 @@
     },
     "full_name": {
       "type": "string"
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "enable_notifications": true
+      }
     }
   },
   "validations": [],
@@ -66,20 +77,26 @@
       "model": "Collection",
       "foreignKey": "ownerId"
     },
-    "owned_artwork": {
+    "subscribed_collections": {
+      "type": "hasAndBelongsToMany",
+      "model": "Collection",
+      "foreignKey": "subscribersId",
+      "through": "CollectionSubscriber"
+    },
+    "created_artwork": {
       "type": "hasMany",
       "model": "Artwork",
       "foreignKey": "ownerId"
     },
-    "authored_artwork": {
-      "type": "hasMany",
+    "purchased_artwork": {
+      "type": "hasAndBelongsToMany",
       "model": "Artwork",
-      "foreignKey": "authorId"
+      "foreignKey": "purchasedById"
     },
     "liked_artwork": {
       "type": "hasAndBelongsToMany",
       "model": "Artwork",
-      "foreignKey": ""
+      "foreignKey": "likedById"
     },
     "identities": {
       "type": "hasMany",
@@ -114,7 +131,7 @@
     {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "$owner",
+      "principalId": "$everyone",
       "permission": "ALLOW"
     },
     {
@@ -129,11 +146,7 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": [
-        "all_frames",
-        "primary_collection_new_artwork",
-        "primary_collection_add_artwork",
-        "like_artwork",
-        "unlike_artwork"
+        "all_frames"
       ]
     },
     {

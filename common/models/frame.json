@@ -3,6 +3,7 @@
   "plural": "frames",
   "base": "PersistedModel",
   "idInjection": true,
+  "strict": true,
   "options": {
     "validateUpsert": true
   },
@@ -11,7 +12,11 @@
   },
   "scope": {
     "order": "created",
-    "limit": 100
+    "include": {
+      "current_artwork": true,
+      "managers": true,
+      "owner": true
+    }
   },
   "properties": {
     "name": {
@@ -32,7 +37,7 @@
       "required": true,
       "default": {}
     },
-    "plugins": {
+    "extensions": {
       "type": "object",
       "required": true,
       "default": {
@@ -60,9 +65,9 @@
       "model": "OpenframeUser"
     },
     "current_artwork": {
-      "type": "embedsOne",
+      "type": "belongsTo",
       "model": "Artwork",
-      "property": "current_artwork"
+      "foreignKey": "currentArtworkId"
     }
   },
   "acls": [
@@ -89,12 +94,12 @@
       "principalType": "ROLE",
       "principalId": "$frameManager",
       "permission": "ALLOW",
-      "property": "__update__current_artwork"
+      "property": "update_current_artwork"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "$owner",
+      "principalId": "$frameManager",
       "permission": "ALLOW",
       "property": "update_managers_by_username"
     },

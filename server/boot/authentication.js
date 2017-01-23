@@ -1,45 +1,23 @@
+/*
+Openframe-APIServer is the server component of Openframe, a platform for displaying digital art.
+Copyright (C) 2017  Jonathan Wohl
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 module.exports = function enableAuthentication(app) {
     // enable authentication
     app.enableAuth();
-
-    // Pure ugliness
-    //
-    // Because the API's token-based auth doesn't automatically sync up with passport,
-    // if a user logs in via the API we need to manually handle the passport (i.e. session / cookie)
-    // login/logout stuff.
-    app.models.OpenframeUser.afterRemote('login', function(ctx, accessToken, next) {
-        var res = ctx.res,
-            req = ctx.req;
-
-        if (accessToken !== null) {
-            if (accessToken.id !== null) {
-                app.models.OpenframeUser.findById(accessToken.userId, function(err, user) {
-                    if (err) {
-                        return next();
-                    }
-                    req.login(user, function(err) {
-                        res.cookie('access_token', accessToken.id, {
-                            signed: req.signedCookies ? true : false,
-                            maxAge: 1000 * accessToken.ttl
-                        });
-                        res.cookie('userId', accessToken.userId.toString(), {
-                            signed: req.signedCookies ? true : false,
-                            maxAge: 1000 * accessToken.ttl
-                        });
-                        return next();
-                    });
-                });
-            }
-        } else {
-            return next();
-        }
-    });
-
-    app.models.OpenframeUser.afterRemote('logout', function(ctx, result, next) {
-        var res = ctx.res;
-        res.clearCookie('access_token');
-        res.clearCookie('userId');
-        return next();
-    });
 };
 

@@ -72,3 +72,7 @@ This repo includes the [pubsub server](https://github.com/OpenframeProject/Openf
 ### REST API Docs
 
 Loopback provides auto-generated documentation (via swagger) based on the data model definitions. After starting up the server locally, visit [localhost:8888/explorer/](http://localhost:8888/explorer/) to view the docs and test out the API.
+
+### License
+
+The code in this project is licensed under the GNU AGPLv3, a copyleft license that promotes server-based software freedom. For me info, see the description [here](https://choosealicense.com/licenses/agpl-3.0/), or take a look at the LICENSE included in the repo.

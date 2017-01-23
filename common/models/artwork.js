@@ -1,116 +1,71 @@
-var loopback = require('loopback'),
-    _ = require('lodash'),
-    debug = require('debug')('openframe:model:Artwork'),
-    addLikedToReq = require('../../helpers').addLikedToReq;
+var debug = require('debug')('openframe:model:Artwork');
 
 module.exports = function(Artwork) {
-    Artwork.disableRemoteMethod('createChangeStream', true);
-    Artwork.disableRemoteMethod('create', true);
+    Artwork.disableRemoteMethodByName('createChangeStream');
+    Artwork.disableRemoteMethodByName('create');
+    // Artwork.disableRemoteMethodByName('find');
 
-    /**
-     * Ensure that only artworks that are public or are owned by the current user can be accessed.
-     */
-    Artwork.observe('access', function(ctx, next) {
-        var context = loopback.getCurrentContext(),
-            req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null;
+    // Emulate default scope but with more flexibility.
+    // const queryOnlyPublic = { is_public: true };
 
-        ctx.query.where = ctx.query.where || {};
+    // Artwork.once('attached', function() {
+    //     const _find = Artwork.find;
 
-        if (user) {
-            ctx.query.where.or = [
-                {is_public: true},
-                {ownerId: user.id}
-            ];
-        } else {
-            ctx.query.where.is_public = true;
-        }
+    //     Artwork.remoteFind = function(query = {}, ...rest) {
+    //         if (!query.where || Object.keys(query.where).length === 0) {
+    //             query.where = queryOnlyPublic;
+    //         } else {
+    //             // for remoteFind, is_public is ALWAYS true.
+    //             query.where.is_public = true;
+    //             query.where = {
+    //                 and: [query.where]
+    //             };
+    //         }
 
-        next();
-    });
+    //         return _find.call(Artwork, query, ...rest);
+    //     };
 
-    // Add a computed 'liked' value to each artwork object at runtime
-    Artwork.observe('loaded', function(ctx, next) {
-        // We don't act on new instances
-        if (!ctx.instance) {
-            return next();
-        }
-        debug('loaded', ctx.instance.id);
+    //     Artwork.remoteMethod(
+    //         'remoteFind', {
+    //             description: 'Get all public artworks.',
+    //             accepts: [{arg: 'filter', type: 'object'}],
+    //             http: {
+    //                 verb: 'get',
+    //                 path: '/'
+    //             },
+    //             returns: {
+    //                 root: true,
+    //                 type: 'Array'
+    //             }
+    //         }
+    //     );
+    // });
 
-        var context = loopback.getCurrentContext(),
-            req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null,
-            liked_artwork = req ? req.liked_artwork : null;
 
-        debug('liked_artwork', liked_artwork);
+    // Artwork.afterRemote('*', function(ctx, artwork, next) {
+    //     let userId = ctx.options.accessToken && ctx.options.accessToken.userId;
 
-        ctx.instance.liked = false;
+    //     debug(ctx.result);
 
-        if (user && liked_artwork) {
-            if (liked_artwork.indexOf(ctx.instance.id.toString()) !== -1) {
-                ctx.instance.liked = true;
-            }
-            next();
-        } else {
-            next();
-        }
-    });
+    //     // if result is true, we want to reject this item
+    //     function check(work) {
+    //         return (!work.is_public && work.ownerId !== userId);
+    //     }
 
-    // Another ugly hack...
-    //
-    // Add this user's liked_artwork to the request object
-    // so that we can check it in the 'loaded' hook without making a god damn database call
-    // (the db call f's up sort order, loopback issue submitted)
-    Artwork.beforeRemote('stream', addLikedToReq);
+    //     if (ctx.result) {
+    //         if (Array.isArray(ctx.result)) {
+    //             ctx.result.forEach(function(result, idx, srcAry) {
+    //                 if (check(result)) {
+    //                     debug('Rejecting result', result.id);
+    //                     srcAry.splice(idx, 1);
+    //                 }
+    //             });
+    //         } else if (artwork && check(artwork)) {
+    //             debug('Rejecting result', result.id);
+    //             throw('Bad artwork');
+    //         }
+    //     }
 
-    Artwork.stream = function(filter, cb) {
-        filter = filter || {};
-
-        var context = loopback.getCurrentContext(),
-            req = context && context.active ? context.active.http.req : null,
-            user = req ? req.user : null,
-            liked_artwork = req.liked_artwork || null;
-
-        debug('LIKED ART:', req.liked_artwork);
-
-        var _filter = Object.assign({
-            order: 'created DESC',
-            limit: 25,
-            where: {
-                is_public: true
-            }
-        }, filter);
-        debug('_filter', _filter);
-        Artwork.find(_filter, function(err, artwork) {
-            // XXX: it seems like the combo of beforeRemote and observe('loaded') will get us
-            // a computed 'liked' property and preserve sort order. Mother of GOD!
-            //
-            // if (liked_artwork && liked_artwork.length) {
-            //     artwork.forEach(function(art) {
-            //         if (liked_artwork.indexOf(art.id.toString()) !== -1) {
-            //             art.liked = true;
-            //         } else {
-            //             art.liked = false;
-            //         }
-            //     });
-            // }
-            cb(null, artwork);
-        });
-    };
-
-    Artwork.remoteMethod(
-        'stream', {
-            'http': {
-                'verb': 'get'
-            },
-            accepts: {
-                arg: 'filter',
-                type: 'object'
-            },
-            returns: {
-                arg: 'artwork',
-                type: 'object'
-            }
-        }
-    );
+    //     next();
+    // });
 };

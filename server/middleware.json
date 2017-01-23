@@ -28,9 +28,14 @@
     "loopback#static": []
   },
   "final": {
-    "loopback#urlNotFound": {}
+    "./middleware/url-not-found-handler": {}
   },
   "final:after": {
-    "loopback#errorHandler": {}
+    "strong-error-handler": {
+      "params": {
+         "debug": false,
+         "log": false
+       }
+    }
   }
 }

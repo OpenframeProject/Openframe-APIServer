@@ -7,11 +7,11 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {}
+    "Timestamp": {},
+    "IsPublicOrOwner": {}
   },
-  "scope": {
-    "order": "created DESC",
-    "limit": 100
+  "scopes": {
+    "stream": {"where": {"is_public": true}}
   },
   "properties": {
     "title": {
@@ -24,7 +24,7 @@
     "is_public": {
       "type": "boolean",
       "required": true,
-      "default": true
+      "default": false
     },
     "url": {
       "type": "string",
@@ -36,7 +36,7 @@
     "author_name": {
       "type": "string"
     },
-    "plugins": {
+    "required_extensions": {
       "type": "object",
       "required": true,
       "default": {}
@@ -45,8 +45,9 @@
       "type": "string",
       "required": true
     },
-    "liked": {
-      "type": "boolean"
+    "options": {
+      "type": "object",
+      "require": false
     }
   },
   "validations": [],
@@ -56,20 +57,24 @@
       "model": "OpenframeUser",
       "foreignKey": "ownerId"
     },
-    "author_user": {
-      "type": "belongsTo",
+    "purchased_by": {
+      "type": "hasAndBelongsToMany",
+      "model": "OpenframeUser"
+    },
+    "liked_by": {
+      "type": "hasAndBelongsToMany",
       "model": "OpenframeUser",
-      "foreignKey": "authorId"
+      "foreignKey": ""
     },
     "collections": {
       "type": "hasAndBelongsToMany",
       "model": "Collection",
       "foreignKey": ""
     },
-    "likers": {
-      "type": "hasAndBelongsToMany",
-      "model": "OpenframeUser",
-      "foreignKey": ""
+    "currently_in": {
+      "type": "hasMany",
+      "model": "Frame",
+      "foreignKey": "currentArtworkId"
     }
   },
   "acls": [
@@ -86,17 +91,17 @@
       "permission": "ALLOW"
     },
     {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "create"
-    },
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW"
     },
     {
       "accessType": "*",
