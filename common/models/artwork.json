@@ -11,7 +11,13 @@
     "IsPublicOrOwner": {}
   },
   "scopes": {
-    "stream": {"where": {"is_public": true}}
+    "stream": {
+      "where": {
+        "is_public": true
+      },
+      "order": "created DESC",
+      "limit": 100
+    }
   },
   "properties": {
     "title": {
