@@ -15,8 +15,7 @@
       "where": {
         "is_public": true
       },
-      "order": "created DESC",
-      "limit": 100
+      "order": "created DESC"
     }
   },
   "properties": {
