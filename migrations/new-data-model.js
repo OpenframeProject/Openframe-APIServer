@@ -30,5 +30,11 @@ db.Frame.find().snapshot().forEach(
 // Rename plugins to required_extensions
 db.Artwork.update({}, { $rename: {'plugins': 'required_extensions'}, $unset: {aspect_mode: 1, format_other: 1, passwordConfirm: 1}}, {multi: 1});
 
+// Use https for artworks on BOS
+db.Artwork.find({url: /http:\/\/thebookofshaders\.com.*/}).forEach(function(e,i) {
+    e.url=e.url.replace("http://","https://");
+    db.Artwork.save(e);
+});
+
 // Make sure existing users are marked as 'verified'
 db.OpenframeUser.update({}, {$set: {emailVerified: true}}, {multi: 1});
