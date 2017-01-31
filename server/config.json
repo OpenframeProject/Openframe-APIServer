@@ -21,10 +21,10 @@
       "disableStackTrace": false
     }
   },
-  "pubsub_protocol": "http",
-  "pubsub_host": "0.0.0.0",
-  "pubsub_port": 8889,
-  "pubsub_path": "/faye",
+  "api_url": "http://0.0.0.0:8888",
+  "webapp_url": "http://0.0.0.0:8000",
+  "pubsub_url": "http://0.0.0.0:8889/faye",
+  "pubsub_api_token": "8629c101-4db7-4a0a-9bf1-33c5fc3cff23",
   "legacyExplorer": false,
   "secret_cookie": "yabbadabbadoo!"
 }

@@ -32,7 +32,12 @@ module.exports = function(OpenframeUser) {
             subject: 'Welcome to Openframe!',
             template: path.resolve(__dirname, '../../server/views/email-templates/verify.ejs'),
             redirect: OpenframeUser.app.get('webapp_url') + '/verified',
-            OpenframeUser: OpenframeUser
+            verifyHref: OpenframeUser.app.get('api_url') +
+                        OpenframeUser.http.path +
+                        OpenframeUser.sharedClass.findMethodByName('confirm').http.path +
+                        '?uid=' + OpenframeUserInstance.id +
+                        '&redirect=' + OpenframeUser.app.get('webapp_url') +
+                        '/verified'
         };
 
         OpenframeUserInstance.verify(options, function(err, response) {
