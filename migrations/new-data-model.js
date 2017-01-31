@@ -36,5 +36,11 @@ db.Artwork.find({url: /http:\/\/thebookofshaders\.com.*/}).forEach(function(e,i)
     db.Artwork.save(e);
 });
 
+// Use https for preview images on BOS
+db.Artwork.find({thumb_url: /http:\/\/thebookofshaders\.com.*/}).forEach(function(e,i) {
+    e.thumb_url=e.thumb_url.replace("http://","https://");
+    db.Artwork.save(e);
+});
+
 // Make sure existing users are marked as 'verified'
 db.OpenframeUser.update({}, {$set: {emailVerified: true}}, {multi: 1});
