@@ -28,7 +28,7 @@ db.Frame.find().snapshot().forEach(
 );
 
 // Rename plugins to required_extensions
-db.Artwork.update({}, { $rename: {'plugins': 'required_extensions'}, $unset: {aspect_mode: 1, format_other: 1, passwordConfirm: 1}}, {multi: 1});
+db.Artwork.update({}, { $rename: {'plugins': 'required_extensions', 'config': 'settings'}, $unset: {aspect_mode: 1, format_other: 1, passwordConfirm: 1}}, {multi: 1});
 
 // Use https for artworks on BOS
 db.Artwork.find({url: /http:\/\/thebookofshaders\.com.*/}).forEach(function(e,i) {

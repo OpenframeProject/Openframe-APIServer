@@ -7,7 +7,23 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {}
+    "Timestamp": {},
+    "IsPublicOrOwner": {
+      "methods": [
+        "prototype.__get__created_artwork",
+        "prototype.__findById__created_artwork",
+        "prototype.__findOne__created_artwork",
+        "prototype.__count__created_artwork",
+        "prototype.__get__liked_artwork",
+        "prototype.__findById__liked_artwork",
+        "prototype.__findOne__liked_artwork",
+        "prototype.__count__liked_artwork",
+        "prototype.__get__purchased_artwork",
+        "prototype.__findById__purchased_artwork",
+        "prototype.__findOne__purchased_artwork",
+        "prototype.__count__purchased_artwork"
+      ]
+    }
   },
   "hidden": [
     "emailVerified",
@@ -117,21 +133,22 @@
       "permission": "DENY"
     },
     {
-      "accessType": "EXECUTE",
+      "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "$authenticated",
+      "principalId": "$everyone",
       "permission": "ALLOW",
       "property": [
         "find",
         "findById",
         "findOne",
-        "config"
+        "config",
+        "__get__created_artwork"
       ]
     },
     {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "$everyone",
+      "principalId": "$owner",
       "permission": "ALLOW"
     },
     {

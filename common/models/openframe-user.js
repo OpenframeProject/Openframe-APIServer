@@ -14,13 +14,13 @@ module.exports = function(OpenframeUser) {
     OpenframeUser.disableRemoteMethodByName('createChangeStream', true);
     OpenframeUser.disableRemoteMethodByName('updateAll', true);
 
-    // OpenframeUser.disableRemoteMethodByName('__count__accessTokens', false);
-    // OpenframeUser.disableRemoteMethodByName('__create__accessTokens', false);
-    // OpenframeUser.disableRemoteMethodByName('__delete__accessTokens', false);
-    // OpenframeUser.disableRemoteMethodByName('__destroyById__accessTokens', false);
-    // OpenframeUser.disableRemoteMethodByName('__findById__accessTokens', false);
-    // OpenframeUser.disableRemoteMethodByName('__get__accessTokens', false);
-    // OpenframeUser.disableRemoteMethodByName('__updateById__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__count__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__create__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__delete__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__destroyById__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__findById__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__get__accessTokens', false);
+    OpenframeUser.disableRemoteMethodByName('__updateById__accessTokens', false);
 
     OpenframeUser.afterRemote('create', function(context, OpenframeUserInstance, next) {
         debug('> OpenframeUser.afterRemote triggered');
@@ -113,12 +113,6 @@ module.exports = function(OpenframeUser) {
                 'managers',
                 'current_artwork',
                 'owner'
-                // {
-                //     relation: 'owner', // include the owner object
-                //     scope: { // further filter the owner object
-                //         fields: ['username', 'email', 'id']
-                //     }
-                // }
             ]
         }, function(err, _ownFrames) {
             var ownFrames = _ownFrames || [];
@@ -151,27 +145,4 @@ module.exports = function(OpenframeUser) {
             }
         }
     );
-
-    /**
-     * Override toJSON in order to remove inclusion of email address for users that are
-     * not the currently logged-in user.
-     *
-     * @return {Object} Plain JS Object which will be transformed to JSON for output.
-     */
-    // OpenframeUser.prototype.toJSON = function() {
-    //     // TODO: this seems awfully fragile... not very clear when context is available
-    //     var ctx = loopback.getCurrentContext(),
-    //         user = ctx.get('currentUser'),
-    //         userId = user && user.id,
-    //         obj = this.toObject(false, true, false);
-
-    //     debug('USER toJSON', userId, obj);
-    //     // if this isn't the currently logged in user, don't display email address
-    //     if (!userId || this.id.toString() !== userId.toString()) {
-    //         delete obj.email;
-    //         delete obj.settings;
-    //     }
-
-    //     return obj;
-    // };
 };
