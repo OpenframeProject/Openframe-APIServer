@@ -7,7 +7,8 @@
     "validateUpsert": true
   },
   "mixins": {
-    "Timestamp": {}
+    "Timestamp": {},
+    "IsPublicOrOwner": {}
   },
   "scope": {
     "order": "created",
@@ -35,6 +36,11 @@
       "type": "object",
       "required": true,
       "default": {}
+    },
+    "is_public": {
+      "type": "boolean",
+      "required": true,
+      "default": false
     },
     "extensions": {
       "type": "object",
@@ -79,7 +85,7 @@
     {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "$authenticated",
+      "principalId": "$everyone",
       "permission": "ALLOW"
     },
     {

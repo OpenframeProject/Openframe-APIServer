@@ -58,13 +58,15 @@ module.exports = function(Model, options) {
         let userId = ctx.req.accessToken && ctx.req.accessToken.userId;
 
         // if result is true, we want to reject this item
-        function allowResult(work) {
-            return (work.is_public || work.ownerId.toString() === userId.toString());
+        function allowResult(model) {
+            // debug('model', model.is_public, model.ownerId, userId);
+            return (model.is_public || (userId && model.ownerId && model.ownerId.toString() === userId.toString()));
         }
 
         if (ctx.result) {
             let newResult;
             if (Array.isArray(resultInstance)) {
+                debug('isArray', resultInstance.length);
                 newResult = [];
                 ctx.result.forEach(function(result) {
                     if (allowResult(result)) {
