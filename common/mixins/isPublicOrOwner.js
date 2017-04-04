@@ -30,27 +30,58 @@ var debug = require('debug')('openframe:isPublicOrOwner');
  */
 module.exports = function(Model, options) {
 
+    // If the mixin specifies specific methods, add remote hooks for those only,
+    // otherwise add global hook for all methods
+    if (options.methods) {
+        options.methods.forEach((method) => {
+            Model.afterRemote(method, function(ctx, resultInstance, next) {
+                modifyResults(ctx, resultInstance, next);
+            });
+        });
+        // Used ONLY to find the method name -- not sure where else to look this up? It's
+        // probably buried in loopback docs somewhere?
+        // Model.afterRemote('**', function(ctx, resultInstance, next) {
+        //     debug('ctx.methodString', ctx.methodString);
+        // });
+    } else {
+        Model.afterRemote('**', function(ctx, resultInstance, next) {
+            modifyResults(ctx, resultInstance, next);
+        });
+    }
 
-    Model.observe('access', function(req, next) {
-        debug(options, req.options.accessToken);
+    // Modify the results to include only those which are public or owned-by current user
+    function modifyResults(ctx, resultInstance, next) {
+        debug('ctx.methodString', ctx.methodString);
 
-        let userId = req.options.accessToken && req.options.accessToken.userId;
+        debug('ctx.req.accessToken', ctx.req.accessToken);
 
-        debug(req.query);
+        let userId = ctx.req.accessToken && ctx.req.accessToken.userId;
 
-        req.query.where = req.query.where || {};
-
-        if (userId && !req.query.where.is_public) {
-            req.query.where.or = [
-                {is_public: true},
-                {ownerId: userId}
-            ];
-        } else {
-            req.query.where.is_public = true;
+        // if result is true, we want to reject this item
+        function allowResult(work) {
+            return (work.is_public || work.ownerId.toString() === userId.toString());
         }
 
-        debug(req.query);
+        if (ctx.result) {
+            let newResult;
+            if (Array.isArray(resultInstance)) {
+                newResult = [];
+                ctx.result.forEach(function(result) {
+                    if (allowResult(result)) {
+                        newResult.push(result);
+                    } else {
+                        debug('Rejecting result', result.id);
+                    }
+                });
+            } else if (allowResult(ctx.result)) {
+                newResult = ctx.result;
+            } else {
+                debug('Rejecting result', resultInstance.id);
+                ctx.res.status(404).render('404');
+            }
+            ctx.result = newResult;
+        }
 
         next();
-    });
+    }
 };

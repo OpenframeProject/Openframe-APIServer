@@ -3,12 +3,12 @@
   "plural": "channels",
   "base": "PersistedModel",
   "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
   "mixins": {
     "Timestamp": {},
     "IsPublicOrOwner": {}
-  },
-  "options": {
-    "validateUpsert": true
   },
   "properties": {
     "name": {
