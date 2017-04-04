@@ -59,7 +59,7 @@ module.exports = function(Model, options) {
 
         // if result is true, we want to reject this item
         function allowResult(model) {
-            debug('model', model.is_public, model.ownerId, userId);
+            // debug('model', model.is_public, model.ownerId, userId);
             return (model.is_public || (userId && model.ownerId && model.ownerId.toString() === userId.toString()));
         }
 
