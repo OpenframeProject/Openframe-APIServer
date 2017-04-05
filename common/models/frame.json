@@ -3,12 +3,20 @@
   "plural": "frames",
   "base": "PersistedModel",
   "idInjection": true,
+  "strict": true,
   "options": {
     "validateUpsert": true
   },
   "mixins": {
     "Timestamp": {},
-    "IsPublicOrOwner": {}
+    "IsPublicOrOwner": {
+      "methods": [
+        "find",
+        "findOne",
+        "findById",
+        "prototype.__get__current_artwork"
+      ]
+    }
   },
   "scope": {
     "order": "created",
