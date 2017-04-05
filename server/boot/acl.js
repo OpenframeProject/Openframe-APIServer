@@ -29,7 +29,7 @@ module.exports = function(app) {
 
     Role.registerResolver('$frameManager', function(role, context, cb) {
 
-        // debug(context);
+        debug('$frameManager');
 
         function reject(err) {
             debug('reject:', err);
@@ -51,11 +51,15 @@ module.exports = function(app) {
             return reject();
         }
 
+        debug('userId', userId);
+
         // get current frame
         context.model.findById(context.modelId, {include:{managers: true, owner: true}}, function(err, frame) {
             if (err || !frame) {
                 return reject(err);
             }
+
+            debug('frame', frame);
 
             // if user is $owner, allow
             // XXX: Hack to work around $frameManager role taking precedence of $owner

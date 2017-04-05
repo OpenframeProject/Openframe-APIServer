@@ -3,6 +3,51 @@ var debug = require('debug')('openframe:model:Frame');
 module.exports = function(Frame) {
     Frame.disableRemoteMethodByName('createChangeStream');
 
+    // Remove sensitive data from Artworks being returned
+    // in public frames
+    // Frame.afterRemote('**', function(ctx, resultInstance, next) {
+    //     debug('ctx.methodString', ctx.methodString);
+
+    //     function updateResult(result) {
+    //         if (result.current_artwork) {
+    //             let newArtwork = {
+    //                 title: result.current_artwork.title,
+    //                 author_name: result.current_artwork.author_name
+    //             };
+    //             if (result.current_artwork.is_public) {    
+    //                 newArtwork.id = result.current_artwork.id;
+    //             }
+    //             result.current_artwork(newArtwork);
+    //             // debug(result.current_artwork);
+    //         }
+    //     }
+    //     if (ctx.result) {
+    //         if (Array.isArray(resultInstance)) {
+    //             debug('isArray', resultInstance.length);
+    //             ctx.result.forEach(function(result) {
+    //                 updateResult(result);
+    //             });
+    //         } else {
+    //             updateResult(ctx.result);
+    //         }
+    //     }
+    //     next();
+    // });
+
+    // Never save 'current_artwork' object into DB -- it comes from relation, via currentArtworkId
+    // TODO: I think this is a(nother) loopback bug, since with strict on we should be enforcing
+    // properties, but since this property is the name of a relation it's allowing it to be saved (?)
+    Frame.observe('before save', function(ctx, next) {
+        debug('before save', typeof ctx.instance);
+        if (ctx.instance) {
+            ctx.instance.unsetAttribute('current_artwork');
+        } else {
+            delete ctx.data.current_artwork;
+        }
+        debug('before save - MODIFIED', ctx.instance);
+        next();
+    });
+
     // whenever a Frame model is saved, broadcast an update event
     Frame.observe('after save', function(ctx, next) {
         if (ctx.instance && Frame.app.pubsub) {
@@ -145,7 +190,7 @@ module.exports = function(Frame) {
      * @param  {Function} callback
      */
     Frame.prototype.update_current_artwork = function(currentArtworkId, cb) {
-        debug(currentArtworkId);
+        debug('update_current_artwork', currentArtworkId);
         var self = this;
         self.updateAttribute('currentArtworkId', currentArtworkId, function(err, instance) {
             cb(err, instance);
