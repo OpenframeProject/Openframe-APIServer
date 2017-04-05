@@ -38,7 +38,7 @@ module.exports = function(Frame) {
     // TODO: I think this is a(nother) loopback bug, since with strict on we should be enforcing
     // properties, but since this property is the name of a relation it's allowing it to be saved (?)
     Frame.observe('before save', function(ctx, next) {
-        debug('before save', typeof ctx.instance, ctx.instance.prototype);
+        debug('before save', typeof ctx.instance);
         if (ctx.instance) {
             ctx.instance.unsetAttribute('current_artwork');
         } else {
